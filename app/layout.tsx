@@ -12,17 +12,17 @@ const audiowide = Audiowide({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://vaniyathans.com"),
   title: "Vaniyathans Software Solutions | Digital Product Engineering",
-  description: "Vaniyathans Software Solutions designs and builds high-performance digital products, intelligent platforms, and scalable technology systems.",
+  description: "The world's first software company built to deliver software within 8 hours, powered by a 24/7 workforce.",
   icons: { icon: "/vss-logo.png" },
   openGraph: {
     title: "Vaniyathans Software Solutions",
-    description: "Engineering digital momentum.",
+    description: "Software delivered within 8 hours. Powered by a 24/7 workforce.",
     images: [{ url: "/og.png", width: 1731, height: 909, alt: "Vaniyathans Software Solutions" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vaniyathans Software Solutions",
-    description: "Engineering digital momentum.",
+    description: "Software delivered within 8 hours. Powered by a 24/7 workforce.",
     images: ["/og.png"],
   },
 };

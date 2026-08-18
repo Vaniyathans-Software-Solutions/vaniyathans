@@ -28,12 +28,12 @@ export default function Home() {
         </div>
 
         <div className="heroCopy">
-          <p className="eyebrow"><span /> Independent software studio · India / Global</p>
+          <p className="eyebrow"><span /> 8-hour delivery · 24/7 workforce</p>
           <h1 id="hero-title">
             Engineering<br />digital <em>momentum.</em>
           </h1>
           <div className="heroBottom">
-            <p>We design and build high-performance digital products for ambitious businesses ready to move forward.</p>
+            <p>The world&apos;s first software company built to deliver software within 8 hours, powered by a 24/7 workforce.</p>
             <a className="primaryButton" href="#expertise">Explore our work <span aria-hidden="true">↘</span></a>
           </div>
         </div>
@@ -44,10 +44,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="uspBar" aria-labelledby="usp-title">
+        <div className="uspLabel"><span>VSS / USP</span><i /></div>
+        <div className="uspPromise">
+          <span className="uspMetric">08<small>HRS</small></span>
+          <h2 id="usp-title">Software delivered<br /><em>within 8 hours.</em></h2>
+        </div>
+        <p><strong>World&apos;s first.</strong> Our 24/7 workforce keeps every project moving around the clock.</p>
+      </section>
+
       <div className="ticker" aria-hidden="true">
         <div className="tickerTrack">
-          <span>PRODUCT STRATEGY</span><i>✦</i><span>EXPERIENCE DESIGN</span><i>✦</i><span>SOFTWARE ENGINEERING</span><i>✦</i><span>AI SYSTEMS</span><i>✦</i><span>CLOUD PLATFORMS</span><i>✦</i>
-          <span>PRODUCT STRATEGY</span><i>✦</i><span>EXPERIENCE DESIGN</span><i>✦</i><span>SOFTWARE ENGINEERING</span><i>✦</i><span>AI SYSTEMS</span><i>✦</i><span>CLOUD PLATFORMS</span><i>✦</i>
+          <span>8-HOUR DELIVERY</span><i>✦</i><span>24/7 WORKFORCE</span><i>✦</i><span>PRODUCT STRATEGY</span><i>✦</i><span>EXPERIENCE DESIGN</span><i>✦</i><span>SOFTWARE ENGINEERING</span><i>✦</i>
+          <span>8-HOUR DELIVERY</span><i>✦</i><span>24/7 WORKFORCE</span><i>✦</i><span>PRODUCT STRATEGY</span><i>✦</i><span>EXPERIENCE DESIGN</span><i>✦</i><span>SOFTWARE ENGINEERING</span><i>✦</i>
         </div>
       </div>
 

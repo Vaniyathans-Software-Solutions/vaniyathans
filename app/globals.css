@@ -103,11 +103,30 @@ h1, h2, h3,
 @keyframes spin { to { transform: rotate(336deg); } }
 @keyframes spinReverse { to { transform: rotate(-384deg); } }
 
+.uspBar {
+  display: grid;
+  grid-template-columns: .48fr 1.65fr .65fr;
+  align-items: end;
+  gap: clamp(30px, 5vw, 90px);
+  padding: 54px clamp(24px, 7vw, 136px) 58px;
+  background: var(--signal);
+  color: var(--ink);
+}
+.uspLabel { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; font-family: var(--font-geist-mono); font-size: 12px; letter-spacing: .12em; }
+.uspLabel i { display: block; width: 52px; height: 2px; background: var(--ink); }
+.uspPromise { display: flex; align-items: flex-end; gap: clamp(22px, 3vw, 48px); }
+.uspMetric { flex: 0 0 auto; display: flex; align-items: flex-end; gap: 8px; font-family: var(--font-audiowide), Arial, sans-serif; font-size: clamp(58px, 6vw, 94px); line-height: .78; letter-spacing: -.06em; }
+.uspMetric small { padding-bottom: 5px; font-family: var(--font-geist-mono); font-size: 13px; letter-spacing: .08em; }
+.uspPromise h2 { margin: 0; font-size: clamp(25px, 2.5vw, 40px); line-height: 1.12; letter-spacing: -.025em; }
+.uspPromise h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 1.3px var(--ink); }
+.uspBar > p { margin: 0 0 2px; font-size: 17px; line-height: 1.55; }
+.uspBar > p strong { display: block; margin-bottom: 8px; font-family: var(--font-audiowide), Arial, sans-serif; font-size: 13px; font-weight: 400; letter-spacing: .05em; text-transform: uppercase; }
+
 .ticker {
   overflow: hidden;
   border-block: 1px solid var(--line);
-  background: var(--signal);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--signal);
   padding: 17px 0;
 }
 .tickerTrack {
@@ -378,6 +397,13 @@ h1, h2, h3,
   .heroBottom { width: 100%; align-items: flex-start; flex-direction: column; gap: 28px; }
   .orbitStage { width: 88vw; right: -45vw; top: 13vh; opacity: .6; }
   .heroRail { display: none; }
+  .uspBar { grid-template-columns: 1fr; gap: 34px; padding-block: 44px; }
+  .uspLabel { flex-direction: row; align-items: center; }
+  .uspLabel i { width: 42%; }
+  .uspPromise { align-items: flex-start; flex-direction: column; gap: 26px; }
+  .uspMetric { font-size: 68px; }
+  .uspPromise h2 { font-size: clamp(24px, 7vw, 32px); }
+  .uspBar > p { max-width: 390px; }
   .manifesto { min-height: auto; padding-block: 86px; }
   .manifestoCopy { display: block; margin-top: 75px; }
   .manifestoNote { margin-top: 60px; }
