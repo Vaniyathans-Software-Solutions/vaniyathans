@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
+import { Audiowide } from "next/font/google";
 import "./globals.css";
+
+const audiowide = Audiowide({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-audiowide",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://vaniyathans.com"),
@@ -21,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={audiowide.variable}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
