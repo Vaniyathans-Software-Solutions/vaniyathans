@@ -280,17 +280,22 @@ a { color: inherit; text-decoration: none; }
 .contactMain { display: flex; align-items: end; justify-content: space-between; gap: 50px; }
 .contactMain > div > p { margin: 0 0 30px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
 .contact h2 { font-size: clamp(68px, 9.8vw, 158px); line-height: .78; }
+.contactActions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 24px; }
 .contactButton { flex: 0 0 auto; width: clamp(190px, 20vw, 290px); aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 34px; border-radius: 50%; background: var(--ink); color: var(--paper); transition: transform .35s ease, background-color .35s ease; }
 .contactButton:hover { transform: rotate(-7deg) scale(1.04); background: #1b1d18; }
 .contactButton span { font-size: 16px; line-height: 1.35; }
 .contactButton b { align-self: flex-end; color: var(--signal); font-size: 33px; font-weight: 400; }
+.contactMail { display: flex; align-items: baseline; gap: 18px; padding-bottom: 8px; border-bottom: 1px solid rgba(7,8,6,.45); }
+.contactMail span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.contactMail strong { font-size: 14px; font-weight: 600; }
 
-.siteFooter { display: grid; grid-template-columns: 1.2fr 1fr .8fr; gap: 50px; align-items: end; padding: 70px clamp(24px, 7vw, 136px); background: var(--ink); }
+.siteFooter { display: grid; grid-template-columns: 1.15fr .8fr .85fr .65fr; gap: 42px; align-items: end; padding: 70px clamp(24px, 7vw, 136px); background: var(--ink); }
 .footerBrand { display: flex; flex-direction: column; gap: 12px; }
 .footerBrand > span { font-size: clamp(48px, 5vw, 82px); font-weight: 720; letter-spacing: .16em; line-height: .8; }
 .footerBrand small { color: #8b8e85; font-size: 8px; letter-spacing: .16em; }
 .siteFooter > p { margin: 0; color: #8b8e85; font-size: 11px; line-height: 1.7; }
-.siteFooter > div { display: flex; justify-content: space-between; gap: 25px; color: #8b8e85; font-family: var(--font-geist-mono); font-size: 9px; letter-spacing: .08em; }
+.footerContacts { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; color: #b9bbb2; font-size: 11px; }
+.footerMeta { display: flex; justify-content: space-between; gap: 25px; color: #8b8e85; font-family: var(--font-geist-mono); font-size: 9px; letter-spacing: .08em; }
 .siteFooter a:hover { color: var(--signal); }
 
 @media (hover: hover) {
@@ -335,9 +340,11 @@ a { color: inherit; text-decoration: none; }
   .contact { min-height: 680px; padding-block: 28px 58px; }
   .contactTop span:last-child { display: none; }
   .contactMain { align-items: flex-start; flex-direction: column; }
-  .contactButton { width: 185px; align-self: flex-end; padding: 26px; }
+  .contactActions { width: 100%; align-items: flex-end; }
+  .contactButton { width: 185px; padding: 26px; }
+  .contactMail { flex-direction: column; align-items: flex-end; gap: 7px; }
   .siteFooter { grid-template-columns: 1fr; gap: 40px; padding-block: 58px; }
-  .siteFooter > div { border-top: 1px solid var(--line); padding-top: 25px; }
+  .footerContacts, .footerMeta { border-top: 1px solid var(--line); padding-top: 25px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

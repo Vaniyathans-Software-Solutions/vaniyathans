@@ -149,16 +149,32 @@ export default function Home() {
             <p>Let&apos;s build the next move.</p>
             <h2 id="contact-title">Start a<br />conversation.</h2>
           </div>
-          <a className="contactButton" href="mailto:richardson@binschool.com" aria-label="Email Vaniyathans Software Solutions">
-            <span>Tell us about<br />your project</span><b aria-hidden="true">↗</b>
-          </a>
+          <div className="contactActions">
+            <a
+              className="contactButton"
+              href="https://wa.me/919074577932?text=Hello%20Vaniyathans%20Software%20Solutions%2C%20I%27d%20like%20to%20discuss%20a%20project."
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Message Vaniyathans Software Solutions on WhatsApp"
+            >
+              <span>Message us on<br />WhatsApp</span><b aria-hidden="true">↗</b>
+            </a>
+            <a className="contactMail" href="mailto:mail@vaniyathans.com">
+              <span>Prefer email?</span>
+              <strong>mail@vaniyathans.com ↗</strong>
+            </a>
+          </div>
         </div>
       </section>
 
       <footer className="siteFooter">
         <a className="footerBrand" href="#top" aria-label="Back to top"><span>VSS</span><small>VANIYATHANS SOFTWARE SOLUTIONS PVT. LTD.</small></a>
         <p>Strategy · Design · Engineering · Intelligence</p>
-        <div><span>© 2026 VSS</span><a href="#top">Back to top ↑</a></div>
+        <div className="footerContacts">
+          <a href="mailto:mail@vaniyathans.com">mail@vaniyathans.com</a>
+          <a href="https://wa.me/919074577932" target="_blank" rel="noopener noreferrer">WhatsApp +91 90745 77932</a>
+        </div>
+        <div className="footerMeta"><span>© 2026 VSS</span><a href="#top">Back to top ↑</a></div>
       </footer>
     </main>
   );
