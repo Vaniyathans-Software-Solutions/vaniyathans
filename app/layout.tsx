@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Audiowide } from "next/font/google";
 import "./globals.css";
+import "./studio.css";
 
 const audiowide = Audiowide({
   weight: "400",
