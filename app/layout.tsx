@@ -17,13 +17,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Vaniyathans Software Solutions",
     description: "Software delivered within 8 hours. Powered by a 24/7 workforce.",
-    images: [{ url: "/og.png", width: 1731, height: 909, alt: "Vaniyathans Software Solutions" }],
+    images: [{ url: "/og-color.png", width: 1731, height: 909, alt: "Vaniyathans Software Solutions" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vaniyathans Software Solutions",
     description: "Software delivered within 8 hours. Powered by a 24/7 workforce.",
-    images: ["/og.png"],
+    images: ["/og-color.png"],
   },
 };
 
