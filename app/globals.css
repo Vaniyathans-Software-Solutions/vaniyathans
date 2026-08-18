@@ -453,7 +453,7 @@ h1, h2, h3,
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-areas:
     "one two three"
-    "six five four"
+    "four five six"
     "seven eight nine";
   gap: 48px 58px;
   margin: 88px 0 0;
@@ -503,12 +503,12 @@ h1, h2, h3,
 }
 .journeyCard:nth-child(1)::after,
 .journeyCard:nth-child(2)::after,
+.journeyCard:nth-child(4)::after,
+.journeyCard:nth-child(5)::after,
 .journeyCard:nth-child(7)::after,
 .journeyCard:nth-child(8)::after { content: "→"; top: calc(50% - 17px); right: -47px; }
 .journeyCard:nth-child(3)::after,
-.journeyCard:nth-child(6)::after { content: "↓"; bottom: -41px; left: calc(50% - 17px); }
-.journeyCard:nth-child(4)::after,
-.journeyCard:nth-child(5)::after { content: "←"; top: calc(50% - 17px); left: -47px; }
+.journeyCard:nth-child(6)::after { content: "↙"; bottom: -41px; left: calc(50% - 17px); }
 .journeyCardTop { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .journeyCardTop > span {
   color: var(--journey-color);
