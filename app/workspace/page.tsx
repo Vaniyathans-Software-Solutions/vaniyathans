@@ -21,12 +21,14 @@ type WorkItem = {
 };
 
 type Profile = {
+  accountType?: "client" | "workforce";
   fullName?: string;
   email?: string;
   company?: string;
   projectName?: string;
   epic?: string;
   timeline?: string;
+  primaryRole?: string;
 };
 
 const noopSubscribe = () => () => {};
@@ -75,8 +77,8 @@ export default function WorkspacePage() {
   const profile = useMemo<Profile>(() => {
     try { return profileRaw ? JSON.parse(profileRaw) as Profile : {}; } catch { return {}; }
   }, [profileRaw]);
-  const session = useMemo<{ name?: string; email?: string }>(() => {
-    try { return sessionRaw ? JSON.parse(sessionRaw) as { name?: string; email?: string } : {}; } catch { return {}; }
+  const session = useMemo<{ name?: string; email?: string; accountType?: "client" | "workforce" }>(() => {
+    try { return sessionRaw ? JSON.parse(sessionRaw) as { name?: string; email?: string; accountType?: "client" | "workforce" } : {}; } catch { return {}; }
   }, [sessionRaw]);
 
   const [view, setView] = useState<StudioView>("kanban");
@@ -94,7 +96,10 @@ export default function WorkspacePage() {
   const donePoints = projectItems.filter((item) => item.status === "done").reduce((sum, item) => sum + item.points, 0);
   const progress = Math.round((donePoints / totalPoints) * 100);
   const firstName = (profile.fullName || session.name || "Alex").split(" ")[0];
-  const projectName = profile.projectName || "Momentum Client Portal";
+  const accountType = session.accountType ?? profile.accountType ?? "client";
+  const isWorkforce = accountType === "workforce";
+  const projectName = profile.projectName || (isWorkforce ? "Vaniyathans Delivery Hub" : "Momentum Client Portal");
+  const accountLabel = isWorkforce ? (profile.primaryRole || "Workforce member").toUpperCase() : "CLIENT OWNER";
 
   const moveItem = (id: string, direction: -1 | 1) => {
     setItems((current) => current.map((item) => {
@@ -172,12 +177,12 @@ export default function WorkspacePage() {
       <section className="studioMain">
         <header className="studioTopbar">
           <div className="projectSwitcher"><span className="projectMark">{projectName.slice(0, 2).toUpperCase()}</span><div><small>ACTIVE PROJECT</small><strong>{projectName}</strong></div><i>⌄</i></div>
-          <div className="studioTopActions"><label className="studioSearch"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search work items" aria-label="Search work items" /></label><button className="notificationButton" aria-label="Notifications">♢<span>3</span></button><div className="profileChip"><span>{firstName.slice(0, 2).toUpperCase()}</span><div><strong>{firstName}</strong><small>CLIENT OWNER</small></div></div></div>
+          <div className="studioTopActions"><label className="studioSearch"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search work items" aria-label="Search work items" /></label><button className="notificationButton" aria-label="Notifications">♢<span>3</span></button><div className="profileChip"><span>{firstName.slice(0, 2).toUpperCase()}</span><div><strong>{firstName}</strong><small>{accountLabel}</small></div></div></div>
         </header>
 
         <div className="studioContent">
           <div className="studioHero">
-            <div><p className="studioEyebrow">WORKSPACE STUDIO / {view.toUpperCase()}</p><h1>{view === "kanban" ? "Delivery in motion." : view === "backlog" ? "Work, clearly structured." : "Progress, made visible."}</h1><p>{view === "kanban" ? "Move work from backlog to deployment across your always-on engineering team." : view === "backlog" ? "Break every epic down into features, stories, tasks, and actionable subtasks." : "Understand delivery health, throughput, and where the team is focusing next."}</p></div>
+            <div><p className="studioEyebrow">{isWorkforce ? "WORKFORCE STUDIO" : "CLIENT STUDIO"} / {view.toUpperCase()}</p><h1>{view === "kanban" ? "Delivery in motion." : view === "backlog" ? "Work, clearly structured." : "Progress, made visible."}</h1><p>{view === "kanban" ? "Move work from backlog to deployment across your always-on engineering team." : view === "backlog" ? "Break every epic down into features, stories, tasks, and actionable subtasks." : "Understand delivery health, throughput, and where the team is focusing next."}</p></div>
             <div className="studioHeroActions"><button className="secondaryStudioButton" onClick={() => setView("backlog")}>View hierarchy</button><button className="primaryStudioButton" onClick={() => { setComposer({ parent: null, type: "Epic" }); setNewTitle(""); }}>+ New Epic</button></div>
           </div>
 

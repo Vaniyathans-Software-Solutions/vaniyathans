@@ -11,7 +11,7 @@ export default function Home() {
         <nav className="mainNav" aria-label="Main navigation">
           <a href="#expertise">Expertise</a>
           <a href="#method">Method</a>
-          <Link className="navCta" href="/signup">Start a project <span>↗</span></Link>
+          <Link className="navCta" href="/signup/client">Start a project <span>↗</span></Link>
         </nav>
       </header>
 
