@@ -1,0 +1,5 @@
+Mode: built-in image_gen edit
+Source: public/business-journey.png
+Output: public/business-journey-brand.png
+
+Edit target: the attached business-journey illustration sheet. Recolor only this nine-scene 3-by-3 square sprite sheet to the Vaniyathans logo palette: cyan #00cfee, blue #008cff, purple #8a3dff, magenta #f000df, pink #ff4279, orange #ffb800. Apply these colors tastefully across clothing, chairs, interface cards, screens and rocket accents, with a balanced distribution across all nine scenes. Preserve natural skin tones, dark hair, navy outlines, white background, all people, actions, objects and the exact original 3-by-3 composition, cell boundaries, spacing, margins and scene order. Every scene must remain entirely in its original equal-size square cell because the website crops this as a sprite sheet. Keep the clean professional illustrated style. Do not add text, logos, borders or new objects. Output a square image.

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 type AuthMethod = "password" | "otp";
@@ -16,18 +17,19 @@ type StoredProfile = {
 
 const normalizePhone = (value: string) => value.replace(/\D/g, "");
 
-export default function SigninForm() {
+export default function SigninForm({ initialEmail, created, createdType }: {
+  initialEmail: string;
+  created: boolean;
+  createdType: AccountType;
+}) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [method, setMethod] = useState<AuthMethod>("password");
-  const [email, setEmail] = useState(searchParams.get("email") ?? "");
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
-  const created = searchParams.get("created") === "1";
-  const createdType = searchParams.get("type") === "workforce" ? "workforce" : "client";
 
   const readProfiles = () => {
     const keys = ["vss_client_profile", "vss_workforce_profile", "vss_profile"];
@@ -103,7 +105,9 @@ export default function SigninForm() {
   return (
     <main className="authPage authPageSignin">
       <section className="authStory" aria-label="Vaniyathans workspace">
-        <Link className="authLogo" href="/">VANIYATHANS</Link>
+        <Link className="authLogo" href="/" aria-label="Vaniyathans home">
+          <Image src="/vaniyathans-logo-2026.png" alt="Vaniyathans Software Solutions" width={1984} height={793} preload />
+        </Link>
         <div className="authStoryCopy">
           <p className="authEyebrow"><span /> ONE SIGN-IN · TWO ACCOUNT TYPES</p>
           <h1>Your product.<br /><em>Always in motion.</em></h1>

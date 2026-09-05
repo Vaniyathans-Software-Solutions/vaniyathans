@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -136,7 +137,9 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
   return (
     <main className={`authPage ${isClient ? "clientSignup" : "workforceSignup"}`}>
       <section className="authStory" aria-label={`Vaniyathans ${accountType} onboarding`}>
-        <Link className="authLogo" href="/">VANIYATHANS</Link>
+        <Link className="authLogo" href="/" aria-label="Vaniyathans home">
+          <Image src="/vaniyathans-logo-2026.png" alt="Vaniyathans Software Solutions" width={1984} height={793} preload />
+        </Link>
         <div className="authStoryCopy">
           <p className="authEyebrow"><span /> {isClient ? "CLIENT ONBOARDING · PROJECT INTAKE" : "WORKFORCE ONBOARDING · GLOBAL DELIVERY"}</p>
           <span className="accountTypeBadge">{isClient ? "CLIENT" : "WORKFORCE"}</span>

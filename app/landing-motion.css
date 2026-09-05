@@ -1,0 +1,154 @@
+/* Sketchbook details sit between each section's background and its content. */
+.pitchLanding > [data-pitch-section] { position: relative; isolation: isolate; }
+.pitchLanding .contact { overflow: hidden; }
+.pitchLanding .contact > :not(.backgroundDoodles) { position: relative; z-index: 1; }
+.pitchLanding .heroSlide { animation: none; }
+.backgroundDoodles {
+  --doodle-ink: #9270ef;
+  --doodle-accent: #069eb6;
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  contain: strict;
+  opacity: .38;
+}
+.doodles-hero, .doodles-process { --doodle-ink: #a68aff; --doodle-accent: #55dfdb; opacity: .42; }
+.doodles-contact { --doodle-ink: #382786; --doodle-accent: #16616b; opacity: .27; }
+.doodle {
+  position: absolute;
+  display: block;
+  color: var(--doodle-ink);
+  animation: doodleFloat 10s ease-in-out infinite alternate;
+}
+.doodle i, .doodle b { display: block; font-style: normal; font-weight: 400; }
+.doodleGlyph { position: relative; }
+.doodleGlyph::before, .doodleGlyph::after { content: ""; position: absolute; }
+.doodleGlyph b { position: absolute; }
+/* Code editor and terminal windows. */
+.doodleBrowser { top: 13%; left: 4%; rotate: -12deg; }
+.doodleTerminal { bottom: 10%; right: 18%; rotate: 9deg; animation-delay: -5s; }
+.doodleBrowser .doodleGlyph, .doodleTerminal .doodleGlyph {
+  width: 80px; height: 60px; border: 2px solid currentColor; border-radius: 9px 7px 8px 6px;
+}
+.doodleBrowser .doodleGlyph::before, .doodleTerminal .doodleGlyph::before {
+  inset: 13px 0 auto; border-top: 2px solid currentColor;
+}
+.doodleBrowser .doodleGlyph::after, .doodleTerminal .doodleGlyph::after {
+  top: 5px; left: 7px; width: 3px; height: 3px; border-radius: 50%; background: currentColor; box-shadow: 7px 0, 14px 0;
+}
+.doodleBrowser b, .doodleTerminal b { inset: 21px 9px auto; font: 23px/1 monospace; color: var(--doodle-accent); }
+.doodleBrowser b { text-align: center; }
+/* Database cylinder, with the familiar stacked data rings. */
+.doodleDatabase { top: 26%; right: 4%; rotate: 12deg; animation-delay: -3s; }
+.doodleDatabase .doodleGlyph { width: 56px; height: 68px; border: 2px solid currentColor; border-top: 0; border-radius: 0 0 50% 50% / 0 0 14% 14%; }
+.doodleDatabase .doodleGlyph::before { inset: -8px -2px auto; height: 17px; border: 2px solid currentColor; border-radius: 50%; }
+.doodleDatabase .doodleGlyph::after, .doodleDatabase b { left: 0; right: 0; height: 17px; border-bottom: 2px solid currentColor; border-radius: 50%; }
+.doodleDatabase .doodleGlyph::after { top: 16px; }
+.doodleDatabase b { top: 36px; }
+/* Cloud deployment. */
+.doodleCloud { top: 11%; left: 43%; color: var(--doodle-accent); rotate: -7deg; animation-delay: -7s; }
+.doodleCloud .doodleGlyph { width: 76px; height: 36px; border: 2px solid currentColor; border-top: 0; border-radius: 22px; }
+.doodleCloud .doodleGlyph::before { width: 42px; height: 30px; top: -19px; left: 16px; border: 2px solid currentColor; border-bottom: 0; border-radius: 28px 28px 0 0; }
+.doodleCloud b { top: 2px; left: 26px; font: 30px/1 monospace; }
+/* Connected services and a branching development workflow. */
+.doodleNetwork { bottom: 14%; left: 21%; rotate: -8deg; animation-delay: -4s; }
+.doodleNetwork .doodleGlyph { width: 82px; height: 64px; }
+.doodleNetwork .doodleGlyph::before { top: 24px; left: 12px; right: 12px; height: 20px; border: 2px solid currentColor; border-bottom: 0; }
+.doodleNetwork .doodleGlyph::after { height: 12px; top: 14px; left: 40px; border-left: 2px solid currentColor; }
+.doodleNetwork b { width: 24px; height: 19px; border: 2px solid currentColor; border-radius: 5px; }
+.doodleNetwork b:nth-child(1) { left: 29px; top: -4px; }
+.doodleNetwork b:nth-child(2) { left: 1px; bottom: 2px; }
+.doodleNetwork b:nth-child(3) { right: 1px; bottom: 2px; }
+.doodleBranch { top: 39%; left: 21%; opacity: .55; rotate: 13deg; animation-delay: -6s; }
+.doodleBranch .doodleGlyph { width: 60px; height: 76px; }
+.doodleBranch .doodleGlyph::before { top: 10px; bottom: 10px; left: 10px; border-left: 2px solid currentColor; }
+.doodleBranch .doodleGlyph::after { top: 19px; left: 11px; width: 37px; height: 34px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; border-radius: 0 0 25px 0; }
+.doodleBranch b { width: 12px; height: 12px; border: 2px solid currentColor; border-radius: 50%; }
+.doodleBranch b:nth-child(1) { left: 5px; top: 0; }
+.doodleBranch b:nth-child(2) { left: 5px; bottom: 0; }
+.doodleBranch b:nth-child(3) { right: 5px; top: 8px; }
+/* AI chip, including pins on all four edges. */
+.doodleChip { top: 54%; left: 3%; rotate: -14deg; color: var(--doodle-accent); animation-delay: -2s; }
+.doodleChip .doodleGlyph { width: 46px; height: 46px; border: 2px solid currentColor; border-radius: 8px; }
+.doodleChip .doodleGlyph::before {
+  inset: -9px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 8px, currentColor 8px 10px, transparent 10px 14px) top / 42px 5px,
+    repeating-linear-gradient(90deg, transparent 0 8px, currentColor 8px 10px, transparent 10px 14px) bottom / 42px 5px,
+    repeating-linear-gradient(0deg, transparent 0 8px, currentColor 8px 10px, transparent 10px 14px) left / 5px 42px,
+    repeating-linear-gradient(0deg, transparent 0 8px, currentColor 8px 10px, transparent 10px 14px) right / 5px 42px;
+  background-repeat: no-repeat;
+}
+.doodleChip b { inset: 12px 0 auto; text-align: center; font: 17px/1 monospace; }
+/* Mobile products, server infrastructure, and tested, secure delivery. */
+.doodleMobile { top: 60%; right: 3%; rotate: 16deg; animation-delay: -8s; }
+.doodleMobile .doodleGlyph { width: 36px; height: 66px; border: 2px solid currentColor; border-radius: 8px; }
+.doodleMobile .doodleGlyph::before { top: 5px; left: 10px; width: 12px; border-top: 2px solid currentColor; }
+.doodleMobile .doodleGlyph::after { bottom: 5px; left: 14px; width: 4px; height: 4px; border: 1px solid currentColor; border-radius: 50%; }
+.doodleServers { bottom: 6%; left: 48%; rotate: -9deg; color: var(--doodle-accent); animation-delay: -1s; }
+.doodleServers .doodleGlyph { display: flex; flex-direction: column; gap: 5px; width: 66px; }
+.doodleServers b { position: relative; height: 18px; border: 2px solid currentColor; border-radius: 4px; }
+.doodleServers b::before { content: ""; position: absolute; top: 5px; left: 6px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.doodleServers b::after { content: ""; position: absolute; top: 6px; right: 6px; width: 20px; border-top: 2px solid currentColor; }
+.doodleShield { top: 12%; right: 18%; rotate: 13deg; animation-delay: -9s; }
+.doodleShield .doodleGlyph { width: 47px; height: 56px; border: 2px solid currentColor; border-radius: 10px 10px 50% 50%; }
+.doodleShield b { inset: 11px 0 auto; text-align: center; font: 28px/1 sans-serif; color: var(--doodle-accent); }
+.doodleApi { top: 44%; right: 24%; rotate: -9deg; opacity: .55; animation-delay: -3s; }
+.doodleApi .doodleGlyph { width: 65px; height: 34px; border: 2px solid currentColor; border-radius: 8px; }
+.doodleApi .doodleGlyph::before, .doodleApi .doodleGlyph::after { top: 14px; width: 15px; border-top: 2px dashed currentColor; }
+.doodleApi .doodleGlyph::before { left: -19px; }
+.doodleApi .doodleGlyph::after { right: -19px; }
+.doodleApi b { inset: 8px 0 auto; text-align: center; font: 16px/1 monospace; }
+.doodleCode { bottom: 5%; left: 4%; rotate: -12deg; animation-delay: -4s; }
+.doodleCode .doodleGlyph { font: 52px/1 monospace; white-space: nowrap; }
+/* Change the mix around each chapter without competing with its content. */
+.doodles-hero .doodleCloud { left: 58%; top: 15%; }
+.doodles-hero .doodleApi { top: 74%; right: 29%; }
+.doodles-process .doodleNetwork { left: 30%; bottom: 8%; }
+.doodles-process .doodleBranch { top: 30%; left: 8%; }
+.doodles-shape { --doodle-ink: #ab4793; --doodle-accent: #6052d4; }
+.doodles-shape .doodleCloud { left: 64%; }
+.doodles-shape .doodleShield { right: 36%; }
+.doodles-launch { --doodle-ink: #258e87; --doodle-accent: #9254de; }
+.doodles-launch .doodleServers { left: 62%; }
+.doodles-launch .doodleTerminal { right: 5%; }
+.doodles-contact .doodleApi { right: 42%; top: 65%; }
+.doodles-contact .doodleCloud { left: 63%; }
+@keyframes doodleFloat {
+  from { transform: translate3d(0, -9px, 0) rotate(-4deg); }
+  to { transform: translate3d(10px, 12px, 0) rotate(5deg); }
+}
+/* Only the visible chapter animates; a page without JavaScript keeps static art. */
+.backgroundDoodles .doodle, .backgroundDoodles .doodle i { animation-play-state: paused; }
+[data-motion-active="true"] > .backgroundDoodles .doodle,
+[data-motion-active="true"] > .backgroundDoodles .doodle i { animation-play-state: running; }
+@media (max-width: 760px) {
+  .backgroundDoodles { opacity: .25; }
+  .backgroundDoodles .doodle { scale: .65; }
+  .doodleBranch, .doodleNetwork, .doodleApi, .doodleShield { display: none; }
+  .backgroundDoodles .doodleBrowser { top: 9%; left: -13px; }
+  .backgroundDoodles .doodleCloud { top: 7%; left: auto; right: 3%; }
+  .backgroundDoodles .doodleDatabase { top: 31%; right: -12px; }
+  .backgroundDoodles .doodleChip { top: 43%; left: 0; }
+  .backgroundDoodles .doodleMobile { top: 66%; right: -4px; }
+  .backgroundDoodles .doodleTerminal { bottom: 6%; right: -5px; }
+  .backgroundDoodles .doodleServers { bottom: 3%; left: 43%; }
+  .backgroundDoodles .doodleCode { bottom: 18%; left: -11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .backgroundDoodles .doodle, .backgroundDoodles .doodle i { animation: none; }
+}
+@media print {
+  .backgroundDoodles { display: none; }
+  .pitchLanding * { opacity: 1 !important; translate: none !important; }
+}
+
+/* Match section artwork to the shared logo colors. */
+.doodles-process { --doodle-ink: #ac77ff; --doodle-accent: var(--brand-cyan); }
+.doodles-discover { --doodle-ink: #0757dd; --doodle-accent: #007e99; }
+.doodles-shape { --doodle-ink: #7024d9; --doodle-accent: #b509a7; }
+.doodles-launch { --doodle-ink: #0757dd; --doodle-accent: #a65b00; }
+.doodles-contact { --doodle-ink: #ac77ff; --doodle-accent: var(--brand-cyan); }

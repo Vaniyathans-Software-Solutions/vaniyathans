@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FormEvent, Fragment, useMemo, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 
@@ -160,7 +161,7 @@ export default function WorkspacePage() {
   return (
     <main className="workspaceApp">
       <aside className="studioSidebar">
-        <Link className="studioBrand" href="/"><span>V</span><strong>VANIYATHANS</strong></Link>
+        <Link className="studioBrand" href="/" aria-label="Vaniyathans home"><span aria-hidden="true">V</span><Image src="/vaniyathans-logo-2026.png" alt="Vaniyathans Software Solutions" width={1984} height={793} /></Link>
         <nav className="studioNav" aria-label="Workspace views">
           <button className={view === "kanban" ? "isActive" : ""} onClick={() => setView("kanban")}><i>▦</i><span>Kanban</span></button>
           <button className={view === "backlog" ? "isActive" : ""} onClick={() => setView("backlog")}><i>≡</i><span>Backlog</span></button>

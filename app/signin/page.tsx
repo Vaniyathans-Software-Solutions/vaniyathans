@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import SigninForm from "./SigninForm";
 
 export const metadata: Metadata = {
@@ -18,6 +17,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SigninPage() {
-  return <Suspense fallback={<main className="authLoading">Opening secure access…</main>}><SigninForm /></Suspense>;
+export default async function SigninPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const first = (value: string | string[] | undefined) => Array.isArray(value) ? value[0] : value;
+
+  return <SigninForm initialEmail={first(params.email) ?? ""} created={first(params.created) === "1"} createdType={first(params.type) === "workforce" ? "workforce" : "client"} />;
 }

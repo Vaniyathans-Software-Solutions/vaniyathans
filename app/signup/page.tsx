@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Create an account | Vaniyathans",
@@ -21,7 +22,9 @@ export default function SignupPage() {
   return (
     <main className="accountChoicePage">
       <header className="accountChoiceHeader">
-        <Link className="authLogo" href="/">VANIYATHANS</Link>
+        <Link className="authLogo" href="/" aria-label="Vaniyathans home">
+          <Image src="/vaniyathans-logo-2026.png" alt="Vaniyathans Software Solutions" width={1984} height={793} preload />
+        </Link>
         <Link href="/signin">Already registered? <strong>Sign in →</strong></Link>
       </header>
 
