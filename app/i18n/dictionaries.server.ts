@@ -8,7 +8,7 @@ const dictionaryLoaders: Partial<Record<Locale, () => Promise<Dictionary>>> = {
   hi: () => import("./dictionaries/hi.json").then((module) => module.default),
   ml: () => import("./dictionaries/ml.json").then((module) => module.default),
   ta: () => import("./dictionaries/ta.json").then((module) => module.default),
-  bn: () => import("./dictionaries/bn.json").then((module) => module.default),
+  // bn: () => import("./dictionaries/bn.json").then((module) => module.default),
 };
 
 export const getDictionary = cache(async (locale: Locale): Promise<Dictionary> => {
