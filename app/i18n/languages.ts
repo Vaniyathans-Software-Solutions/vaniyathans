@@ -1,0 +1,85 @@
+export const locales = [
+  "en",
+  "hi",
+  // "bn",
+  // "te",
+  // "mr",
+  "ta",
+  // "ur",
+  // "gu",
+  // "kn",
+  "ml",
+  // "or",
+  // "pa",
+  // "as",
+  // "mai",
+  // "sat",
+  // "ks",
+  // "ne",
+  // "sd",
+  // "kok",
+  // "doi",
+  // "mni",
+  // "brx",
+  // "sa",
+] as const;
+export type Locale = (typeof locales)[number];
+
+export const languageNames: Record<Locale, string> = {
+  en: "English",
+  hi: "हिन्दी",
+  // bn: "বাংলা",
+  // te: "తెలుగు",
+  // mr: "मराठी",
+  ta: "தமிழ்",
+  // ur: "اردو",
+  // gu: "ગુજરાતી",
+  // kn: "ಕನ್ನಡ",
+  ml: "മലയാളം",
+  // or: "ଓଡ଼ିଆ",
+  // pa: "ਪੰਜਾਬੀ",
+  // as: "অসমীয়া",
+  // mai: "मैथिली",
+  // sat: "ᱥᱟᱱᱛᱟᱲᱤ",
+  // ks: "کٲشُر",
+  // ne: "नेपाली",
+  // sd: "سنڌي",
+  // kok: "कोंकणी",
+  // doi: "डोगरी",
+  // mni: "ꯃꯤꯇꯩꯂꯣꯟ",
+  // brx: "बड़ो",
+  // sa: "संस्कृतम्",
+};
+
+export const languageEnglishNames: Record<Locale, string> = {
+  en: "English",
+  hi: "Hindi",
+  // bn: "Bengali",
+  // te: "Telugu",
+  // mr: "Marathi",
+  ta: "Tamil",
+  // ur: "Urdu",
+  // gu: "Gujarati",
+  // kn: "Kannada",
+  ml: "Malayalam",
+  // or: "Odia",
+  // pa: "Punjabi",
+  // as: "Assamese",
+  // mai: "Maithili",
+  // sat: "Santali",
+  // ks: "Kashmiri",
+  // ne: "Nepali",
+  // sd: "Sindhi",
+  // kok: "Konkani",
+  // doi: "Dogri",
+  // mni: "Manipuri",
+  // brx: "Bodo",
+  // sa: "Sanskrit",
+};
+
+export function isLocale(value: string): value is Locale {
+  return locales.includes(value as Locale);
+}
+export function languageDirection(locale: Locale): "ltr" | "rtl" {
+  return ["ur", "ks", "sd"].includes(locale) ? "rtl" : "ltr";
+}

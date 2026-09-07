@@ -1,0 +1,75 @@
+.languageSwitcher { position: relative; display: inline-flex; align-items: center; min-width: 0; color: #251545; }
+.languageSwitcher::after { content: ""; position: absolute; right: 14px; top: 50%; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.languageSwitcher select { appearance: none; min-height: 44px; max-width: 150px; padding: 8px 38px 8px 10px; border: 1px solid #8a3dff66; border-radius: 10px; background: #fff; color: #251545; font: inherit; letter-spacing: inherit; cursor: pointer; text-transform: uppercase; }
+.siteHeader .languageSwitcher { color: #fff; }
+.siteHeader .languageSwitcher select { background: #101025; color: #fff; }
+.languageSwitcher select:focus-visible { outline: 3px solid #008cff; outline-offset: 3px; }
+.languageSwitcher option { font-family: var(--locale-font, system-ui), sans-serif; }
+.languageSwitcher option:lang(en) { --locale-font: system-ui; }
+.languageSwitcher option:lang(ml) { --locale-font: "Noto Sans Malayalam"; }
+.languageSwitcher option:lang(ta) { --locale-font: "Noto Sans Tamil"; }
+.accountChoiceHeader > .languageSwitcher { order: 2; }
+.authPanelTop { flex-wrap: wrap; }
+.contactButton span[data-chat-label]::before { content: attr(data-chat-label); }
+.contactButton[data-chat-label]::before { content: ""; }
+html:lang(ml) { --locale-font: "Noto Sans Malayalam", "Malayalam Sangam MN", "Kartika", sans-serif; }
+html:lang(ta) { --locale-font: "Noto Sans Tamil", "Tamil Sangam MN", "Latha", sans-serif; }
+html:lang(hi) { --locale-font: "Noto Sans Devanagari", "Devanagari Sangam MN", "Mangal", sans-serif; }
+:is(html, option):is(:lang(hi), :lang(mr), :lang(mai), :lang(ne), :lang(kok), :lang(doi), :lang(brx), :lang(sa)) { --locale-font: "Noto Sans Devanagari", "Mangal", sans-serif; }
+:is(html, option):is(:lang(bn), :lang(as)) { --locale-font: "Noto Sans Bengali", "Bangla Sangam MN", sans-serif; }
+:is(html, option):lang(te) { --locale-font: "Noto Sans Telugu", "Telugu Sangam MN", sans-serif; }
+:is(html, option):lang(gu) { --locale-font: "Noto Sans Gujarati", "Gujarati Sangam MN", sans-serif; }
+:is(html, option):lang(kn) { --locale-font: "Noto Sans Kannada", "Kannada Sangam MN", sans-serif; }
+:is(html, option):lang(or) { --locale-font: "Noto Sans Oriya", "Oriya Sangam MN", sans-serif; }
+:is(html, option):lang(pa) { --locale-font: "Noto Sans Gurmukhi", "Gurmukhi MN", sans-serif; }
+:is(html, option):lang(sat) { --locale-font: "Noto Sans Ol Chiki", sans-serif; }
+:is(html, option):lang(mni) { --locale-font: "Noto Sans Meetei Mayek", sans-serif; }
+:is(html, option):is(:lang(ur), :lang(ks), :lang(sd)) { --locale-font: "Noto Naskh Arabic", "Geeza Pro", sans-serif; }
+html:not(:lang(en)) body { font-family: var(--locale-font); }
+html:not(:lang(en)) body :is(h1, h2, h3, p, a, button, span, strong, small, label, input, textarea, select, li) { font-family: var(--locale-font); letter-spacing: normal; text-transform: none; }
+html:not(:lang(en)) body :is(h1, h2, h3) { line-height: 1.5; }
+html:not(:lang(en)) body :is(p, label, li) { line-height: 1.8; }
+html:not(:lang(en)) .pitchLanding .hero h1 { font-size: clamp(28px, 3vw, 54px); }
+html:not(:lang(en)) .primaryButton { white-space: normal; }
+html:not(:lang(en)) .carouselTabLabel { white-space: normal; }
+html:not(:lang(en)) .pitchLanding .carouselTabs { grid-template-columns: repeat(5, minmax(150px, 1fr)); overflow-x: auto; }
+html:not(:lang(en)) .authMethodTabs button { font-size: 15px; }
+html:not(:lang(en)) .studioTopActions { flex-wrap: wrap; }
+html[dir="rtl"] body { text-align: start; }
+html[dir="rtl"] :is(input[type="email"], input[type="tel"], input[type="url"], input[type="password"], a[href^="mailto:"], .contactMail strong) { direction: ltr; unicode-bidi: isolate; }
+html[dir="rtl"] .languageSwitcher select { padding-inline: 10px 38px; }
+html[dir="rtl"] .languageSwitcher::after { right: auto; left: 14px; }
+html[dir="rtl"] .mobileMenu .languageSwitcher::after { right: auto; left: 28px; }
+html[dir="rtl"] .mobileMenu > nav { right: auto; left: 0; }
+html[dir="rtl"] .accountChoiceCard li::before { margin-right: 0; margin-left: 9px; }
+html[dir="rtl"] .backlogIdentity { padding-left: 0; padding-right: calc(var(--tree-depth) * 30px); }
+html[dir="rtl"] :is(.authPanelTop > span, th, td) { text-align: start; }
+html[dir="rtl"] .carouselActions { direction: ltr; }
+html[dir="rtl"] .pitchLanding .carouselTabs a .carouselTabLabel { text-align: start; }
+html[dir="rtl"] .pitchLanding .carouselActions { margin-left: 0; margin-right: auto; }
+html[dir="rtl"] .serviceRow li::before { margin-right: 0; margin-left: 10px; }
+html[dir="rtl"] .workforceAvatars :is(i, b) { margin-left: 0; margin-right: -5px; }
+html[dir="rtl"] .workforceAvatars i:first-child { margin-right: 0; }
+html[dir="rtl"] .healthGood i { margin-right: 0; margin-left: 5px; }
+@media (min-width: 601px) {
+  html[dir="rtl"] .journeyOverview .journeyCard:not(:last-child)::after { content: "←"; right: auto; left: -19px; }
+}
+@media (max-width: 1100px) {
+  .mainNav > .languageSwitcher { display: none; }
+  .mobileMenu .languageSwitcher { padding: 8px 14px; }
+  .mobileMenu .languageSwitcher::after { right: 28px; }
+}
+@media (max-width: 600px) {
+  html:not(:lang(en)) .pitchLanding .hero h1 { font-size: clamp(26px, 6.5vw, 38px); }
+  html:not(:lang(en)) .studioTopbar { align-items: flex-start; flex-direction: column; }
+  html:not(:lang(en)) .accountChoiceHeader { gap: 16px; }
+}
+
+html:not(:lang(en)) .pitchPosition { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+html:not(:lang(en)) .pitchNavigation { width: max-content; }
+html:not(:lang(en)) .accountChoiceCard > a { white-space: normal; }
+@media (min-width: 1101px) and (max-width: 1440px) {
+  html:not(:lang(en)) .mainNav { gap: 10px; font-size: 14px; }
+  html:not(:lang(en)) .siteHeader .brandLogo { width: 190px; }
+  html:not(:lang(en)) .mainNav .languageSwitcher select { max-width: 120px; }
+}

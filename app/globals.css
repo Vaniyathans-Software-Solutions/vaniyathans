@@ -71,6 +71,25 @@ h1, h2, h3,
 .mainNav { display: flex; align-items: center; gap: clamp(20px, 3vw, 48px); font-size: 16px; }
 .mainNav a { transition: color .25s ease; }
 .mainNav a:hover { color: var(--signal); }
+.mainNav .mainNavSection { position: relative; padding-block: 10px; }
+.mainNav .mainNavSection::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 2px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--brand-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+  pointer-events: none;
+}
+.mainNav .mainNavSection[aria-current="location"] { color: #fff; }
+.mainNav .mainNavSection[aria-current="location"]::after { transform: scaleX(1); }
+.mobileMenu .mainNavSection::after { left: 14px; right: 14px; bottom: 5px; }
+@media (prefers-reduced-motion: reduce) {
+  .mainNav .mainNavSection::after { transition: none; }
+}
 .navCta { border: 1px solid rgba(255,255,255,.34); padding: 12px 17px; }
 .navCta span { color: var(--signal); margin-left: 8px; }
 
@@ -86,19 +105,24 @@ h1, h2, h3,
   padding: 140px clamp(24px, 7vw, 136px) 9vh;
 }
 .heroGrid {
+  --grid-cell: 76px;
+  --grid-row-color: rgba(255,255,255,.035);
+  --grid-column-color: rgba(255,255,255,.035);
   position: absolute;
   inset: 0;
   opacity: .34;
-  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size: 76px 76px;
+  overflow: hidden;
+  pointer-events: none;
   mask-image: linear-gradient(to right, transparent, black 44%, black);
 }
-.heroGrid::after {
+.heroGrid::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 76% 50%, rgba(215,255,63,.09), transparent 32%);
+  background-image: linear-gradient(var(--grid-row-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-column-color) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
 }
+.heroGridCanvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .heroCopy { position: relative; z-index: 2; width: min(970px, 83vw); }
 .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 34px; color: #c3c5bc; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; }
 .eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 16px var(--signal); }
@@ -909,12 +933,10 @@ h1, h2, h3,
   background: rgba(255, 93, 143, .18);
 }
 .heroGrid {
+  --grid-row-color: rgba(107, 128, 255, .12);
+  --grid-column-color: rgba(50, 223, 252, .1);
   opacity: .56;
-  background-image:
-    linear-gradient(rgba(107, 128, 255, .075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(50, 223, 252, .065) 1px, transparent 1px);
 }
-.heroGrid::after { background: radial-gradient(circle at 76% 50%, rgba(138, 92, 255, .18), transparent 34%); }
 .eyebrow { color: #c9d9f5; }
 .eyebrow span { background: var(--coral); box-shadow: 0 0 18px var(--coral), 0 0 38px rgba(255, 93, 143, .5); }
 .hero h1 { text-shadow: 0 12px 55px rgba(8, 5, 32, .28); }
@@ -1039,7 +1061,8 @@ h1, h2, h3,
   gap: 28px;
 }
 .carouselTabs { width: min(720px, 64vw); display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-.carouselTabs button {
+.heroAnchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+.carouselTabs a {
   position: relative;
   min-width: 0;
   display: flex;
@@ -1054,8 +1077,8 @@ h1, h2, h3,
   font-size: 10px;
   cursor: pointer;
 }
-.carouselTabs button i { width: 100%; height: 2px; overflow: hidden; background: rgba(255, 255, 255, .14); }
-.carouselTabs button i::after {
+.carouselTabs a i { width: 100%; height: 2px; overflow: hidden; background: rgba(255, 255, 255, .14); }
+.carouselTabs a i::after {
   content: "";
   display: block;
   width: 100%;
@@ -1064,8 +1087,8 @@ h1, h2, h3,
   transform: scaleX(0);
   transform-origin: left;
 }
-.carouselTabs button.isActive { color: #fff; }
-.carouselTabs button.isActive i::after { animation: heroProgress 7s linear forwards; }
+.carouselTabs a.isActive { color: #fff; }
+.carouselTabs a.isActive i::after { animation: heroProgress 7s linear forwards; }
 .carouselActions { display: flex; align-items: center; gap: 8px; }
 .carouselActions button {
   min-width: 40px;
@@ -1081,9 +1104,9 @@ h1, h2, h3,
 }
 .carouselActions .carouselPause { min-width: 66px; padding-inline: 12px; font-family: var(--font-geist-mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
 .carouselActions button:focus-visible,
-.carouselTabs button:focus-visible,
+.carouselTabs a:focus-visible,
 .heroActions a:focus-visible { outline: 2px solid var(--slide-accent); outline-offset: 4px; }
-.heroCarousel[data-paused="true"] .carouselTabs button.isActive i::after {
+.heroCarousel[data-paused="true"] .carouselTabs a.isActive i::after {
   animation: none;
   transform: scaleX(0);
 }
@@ -1353,7 +1376,7 @@ h1, h2, h3,
   .primaryButton:hover span { transform: translate(3px, 3px); }
   .primaryButton span { transition: transform .25s ease; }
   .carouselActions button:hover { border-color: var(--slide-accent); color: var(--slide-accent); }
-  .carouselTabs button:hover { color: #fff; }
+  .carouselTabs a:hover { color: #fff; }
 }
 
 @media (max-width: 760px) {
@@ -1387,8 +1410,8 @@ h1, h2, h3,
   .secondaryButton { font-size: 12px; }
   .carouselControls { right: 24px; bottom: 24px; left: 24px; align-items: flex-end; }
   .carouselTabs { width: auto; flex: 1; gap: 5px; }
-  .carouselTabs button { gap: 7px; }
-  .carouselTabs button span { display: none; }
+  .carouselTabs a { gap: 7px; }
+  .carouselTabs a span { display: none; }
   .carouselActions { gap: 5px; }
   .carouselActions button { min-width: 34px; height: 34px; font-size: 13px; }
   .carouselActions .carouselPause { min-width: 54px; padding-inline: 8px; font-size: 8px; }
@@ -1469,8 +1492,8 @@ h1, h2, h3,
   .lifecycleStep, .lifecycleIcon { transition: none; }
   .journeyCard { transition: none; }
   .journeyLoop i { animation: none; }
-  .heroSlide, .carouselTabs button.isActive i::after { animation: none; }
-  .carouselTabs button.isActive i::after { transform: scaleX(1); }
+  .heroSlide, .carouselTabs a.isActive i::after { animation: none; }
+  .carouselTabs a.isActive i::after { transform: scaleX(1); }
 }
 
 /* Desktop pitch layout: one chapter per viewport, with natural overflow for zoom. */
@@ -1540,9 +1563,9 @@ h1, h2, h3,
 /* A shorter pitch sequence, using the existing colors, type, and artwork. */
 .pitchLanding > [data-pitch-section] { scroll-margin-top: 0; }
 .pitchLanding .carouselTabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.pitchLanding .carouselTabs button { color: #b3bdd4; font-size: 14px; line-height: 1.5; text-transform: uppercase; }
-.pitchLanding .carouselTabs button.isActive { color: #fff; }
-.pitchLanding .carouselTabs button.isActive i::after { animation: none; transform: scaleX(1); }
+.pitchLanding .carouselTabs a { color: #b3bdd4; font-size: 14px; line-height: 1.5; text-transform: uppercase; }
+.pitchLanding .carouselTabs a.isActive { color: #fff; }
+.pitchLanding .carouselTabs a.isActive i::after { animation: none; transform: scaleX(1); }
 .pitchLanding .carouselActions button:disabled { opacity: .35; cursor: default; }
 .pitchLanding .heroBottom { align-items: flex-start; flex-direction: column; gap: 24px; }
 .pitchLanding .heroDescription { max-width: 680px; }
@@ -1590,8 +1613,8 @@ h1, h2, h3,
   .pitchLanding .heroCarousel .heroDescription p { max-width: 100%; }
   .pitchLanding .carouselControls { align-items: center; flex-wrap: wrap; gap: 18px; }
   .pitchLanding .carouselTabs { flex: 1 1 100%; width: 100%; min-width: 0; grid-template-columns: repeat(5, minmax(130px, 1fr)); gap: 14px; overflow-x: auto; }
-  .pitchLanding .carouselTabs button { font-size: 14px; }
-  .pitchLanding .carouselTabs button span { display: block; }
+  .pitchLanding .carouselTabs a { font-size: 14px; }
+  .pitchLanding .carouselTabs a span { display: block; }
   .pitchLanding .carouselActions { margin-left: auto; }
   .pitchLanding .contactMain { gap: 40px; }
   .pitchLanding .contactActions { align-items: flex-start; }
@@ -1607,7 +1630,7 @@ h1, h2, h3,
   .pitchLanding .heroCarousel, .pitchLanding .heroCarousel::after { transition: none; }
 }
 
-.pitchLanding .carouselTabs button .carouselTabLabel { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.pitchLanding .carouselTabs a .carouselTabLabel { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
 .carouselTabIcon { flex: 0 0 auto; }
 
 .siteHeader .navCta,
@@ -1634,8 +1657,8 @@ h1, h2, h3,
 .pitchLanding :is(.heroCopy, .heroBottom, .heroDescription, .contactMain > *, .journeyHeader > *, .lifecycleHeader > *) { min-width: 0; }
 .pitchLanding :is(h1, h2, h3, p, .contactMail strong) { overflow-wrap: anywhere; }
 .pitchLanding .carouselTabs { width: min(850px, calc(100% - 190px)); gap: 16px; }
-.pitchLanding .carouselTabs button { min-height: 44px; }
-.pitchLanding .carouselTabs button .carouselTabLabel { white-space: normal; text-align: left; }
+.pitchLanding .carouselTabs a { min-height: 44px; }
+.pitchLanding .carouselTabs a .carouselTabLabel { white-space: normal; text-align: left; }
 .pitchLanding .carouselActions button, .pitchNavigation button { min-width: 44px; min-height: 44px; }
 .pitchNavigation { bottom: max(12px, env(safe-area-inset-bottom)); }
 .pitchLanding .contact { padding-bottom: max(120px, calc(96px + env(safe-area-inset-bottom))); }
@@ -1759,4 +1782,77 @@ h1, h2, h3,
   }
 }
 
-.contactButton .whatsappIcon { display: block; width: 36px; height: 36px; }
+/* All nine journey steps share a single pitch slide. */
+.journeyOverview .journeyHeader { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.journeyOverview .journeyHeader h2 { margin: 0; font-size: clamp(26px, 3vw, 44px); line-height: 1.15; }
+.journeyPhases { position: relative; z-index: 1; display: grid; gap: 14px; margin-top: 24px; }
+.journeyPhase { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 20px; scroll-margin-top: 120px; }
+.journeyPhase > h3 { margin: 0; color: #7024d9; font: 600 12px/1.6 system-ui, sans-serif; letter-spacing: .05em; }
+.journeyOverview .journeyMap { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; gap: 18px; }
+.journeyOverview .journeyCard { display: grid; grid-template-columns: clamp(60px, 6vw, 92px) minmax(0, 1fr); grid-template-rows: auto 1fr; align-items: center; min-height: 0; padding: 12px; border-radius: 16px; gap: 8px 10px; }
+.journeyOverview .journeyIllustration { width: 100%; margin: 0; }
+.journeyOverview .journeyCardCopy { min-width: 0; }
+.journeyOverview .journeyCard:hover { transform: translateY(-3px); }
+.journeyOverview .journeyCard:not(:last-child)::after { content: "→"; top: calc(50% - 10px); right: -19px; bottom: auto; left: auto; width: 18px; font-size: 12px; border: 0; box-shadow: none; background: transparent; }
+.journeyOverview .journeyCardTop { grid-column: 1 / -1; gap: 8px; }
+.journeyOverview .journeyCardTop > span { font-size: 12px; }
+.journeyOverview .journeyOwner small { font-size: 10px; }
+.journeyOverview .journeyCard h4 { margin: 0 0 6px; color: var(--ink); font-size: 15px; line-height: 1.35; letter-spacing: -.02em; }
+.journeyOverview .journeyCard p { font-size: 13px; line-height: 1.45; }
+.journeyOverview .journeyLoop { margin-top: 16px; padding-block: 6px; }
+@media (max-width: 980px) {
+  .journeyOverview .journeyHeader { align-items: flex-start; flex-direction: column; }
+  .journeyPhase { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .journeyPhases { gap: 28px; }
+}
+@media (max-width: 600px) {
+  .journeyOverview .journeyMap { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .journeyOverview .journeyCard { grid-template-columns: 88px minmax(0, 1fr); padding: 16px; }
+  .journeyOverview .journeyCard h4 { font-size: 17px; }
+  .journeyOverview .journeyCard p { font-size: 14px; }
+  .journeyOverview .journeyCard:not(:last-child)::after { content: "↓"; top: auto; right: auto; bottom: -18px; left: calc(50% - 9px); }
+}
+
+.contactButton > span { position: absolute; inset: 0; padding-top: 70%; text-align: center; font-size: 14px; line-height: 1.3; }
+.contactButton > span::before { position: absolute; top: 16%; left: 0; width: 100%; margin: 0; font-size: 10px; }
+.contactButton > b { position: absolute; top: 50%; left: 50%; width: 34%; transform: translate(-50%, -50%); }
+.contactButton .whatsappIcon { display: block; width: 100%; height: auto; }
+
+/* Each hero pairs its message with the corresponding business outcome. */
+.pitchLanding#top > .heroCarousel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+  grid-template-areas: "copy artwork" "controls controls";
+  align-content: center;
+  align-items: center;
+  gap: 38px clamp(24px, 3vw, 56px);
+  padding-block: 120px 105px;
+}
+.pitchLanding .heroSlide { grid-area: copy; width: 100%; min-width: 0; }
+.pitchLanding .hero h1 { font-size: clamp(30px, 3.4vw, 64px); line-height: 1.12; }
+.pitchLanding .heroCarousel .heroBottom { width: 100%; }
+.heroOutcomeArt { --art-enter-y: 24px; --art-float-y: -8px; position: relative; z-index: 1; grid-area: artwork; width: 100%; max-width: 620px; aspect-ratio: 1; justify-self: center; pointer-events: none; }
+.heroOutcomeArt img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .45s ease; }
+.heroOutcomeArt img.isActive { opacity: 1; animation: heroArtworkIn 4.8s cubic-bezier(.22, .61, .36, 1) both; }
+/* Enter, gently float once, then settle before the next automatic slide. */
+@keyframes heroArtworkIn {
+  0% { opacity: 0; transform: translateY(var(--art-enter-y)) scale(.96); }
+  18% { opacity: 1; transform: translateY(0) scale(1); }
+  60% { opacity: 1; transform: translateY(var(--art-float-y)) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.pitchLanding .heroCarousel .carouselControls { grid-area: controls; position: relative; inset: auto; width: 100%; }
+.pitchLanding .heroRail { display: none; }
+@media (max-width: 1100px) {
+  .pitchLanding#top > .heroCarousel { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "artwork" "controls"; gap: 30px; }
+  .pitchLanding .hero h1 { font-size: clamp(30px, 5.5vw, 56px); }
+  .heroOutcomeArt { width: min(100%, 380px); }
+}
+@media (max-width: 600px) {
+  .pitchLanding .hero h1 { font-size: clamp(27px, 7.8vw, 44px); }
+  .heroOutcomeArt { --art-enter-y: 12px; --art-float-y: -4px; width: min(80vw, 300px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroOutcomeArt img { transition: none; }
+  .heroOutcomeArt img.isActive { animation: none; }
+}

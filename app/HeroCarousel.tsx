@@ -1,11 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import { useLocale } from "@/app/i18n/LocaleProvider";
+
+import Link from "@/app/i18n/LocalizedLink";
+import Image from "next/image";
 import BackgroundDoodles from "./BackgroundDoodles";
+import HeroGridBackground from "./HeroGridBackground";
 import { useEffect, useRef, useState } from "react";
 import type { PointerEvent } from "react";
 
 type HeroSlide = {
+  anchor: string;
   index: string;
   label: string;
   tab: string;
@@ -19,6 +24,7 @@ type HeroSlide = {
 
 export const heroSlides: HeroSlide[] = [
   {
+    anchor: "vision",
     index: "00",
     label: "One partner for your digital growth",
     tab: "Vision",
@@ -30,6 +36,7 @@ export const heroSlides: HeroSlide[] = [
     theme: "vision",
   },
   {
+    anchor: "personal-brand",
     index: "01",
     label: "Personal Brand Websites",
     tab: "Brand",
@@ -41,6 +48,7 @@ export const heroSlides: HeroSlide[] = [
     theme: "personal",
   },
   {
+    anchor: "webshops",
     index: "02",
     label: "Websites & Webshops",
     tab: "Webshops",
@@ -52,6 +60,7 @@ export const heroSlides: HeroSlide[] = [
     theme: "commerce",
   },
   {
+    anchor: "software",
     index: "03",
     label: "Custom Software",
     tab: "Software",
@@ -63,6 +72,7 @@ export const heroSlides: HeroSlide[] = [
     theme: "software",
   },
   {
+    anchor: "ai-agents",
     index: "04",
     label: "AI Agents & Automation",
     tab: "AI agents",
@@ -88,75 +98,6 @@ function TabIcon({ theme }: { theme: string }) {
   );
 }
 
-function NetworkGlobe() {
-  return (
-    <div className="globeStage" aria-hidden="true">
-      <div className="globeGlow" />
-      <svg className="buildGlobe" viewBox="0 0 620 620">
-        <defs>
-          <radialGradient id="globe-surface" cx="36%" cy="28%" r="72%">
-            <stop offset="0%" stopColor="#8a5cff" stopOpacity=".2" />
-            <stop offset="58%" stopColor="#183b72" stopOpacity=".12" />
-            <stop offset="100%" stopColor="#061725" stopOpacity=".04" />
-          </radialGradient>
-          <clipPath id="globe-clip"><circle cx="310" cy="286" r="218" /></clipPath>
-          <filter id="node-glow" x="-200%" y="-200%" width="400%" height="400%">
-            <feGaussianBlur stdDeviation="5" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-
-        <circle className="globeOuterRing" cx="310" cy="286" r="246" />
-        <circle className="globeSurface" cx="310" cy="286" r="218" />
-
-        <g className="globeGrid" clipPath="url(#globe-clip)">
-          <ellipse cx="310" cy="286" rx="92" ry="218" />
-          <ellipse cx="310" cy="286" rx="164" ry="218" />
-          <ellipse cx="310" cy="286" rx="218" ry="74" />
-          <ellipse cx="310" cy="286" rx="218" ry="148" />
-          <path d="M92 286h436" />
-          <path d="M310 68v436" />
-        </g>
-
-        <g className="globeRoutes" clipPath="url(#globe-clip)">
-          <path className="globeRoute routeCyan" d="M127 226C216 132 392 143 501 243" />
-          <path className="globeRoute routeMint" d="M111 328C232 426 408 411 519 292" />
-          <path className="globeRoute routeCoral" d="M218 89C181 236 267 420 423 482" />
-          <path className="globeRoute routeGold" d="M464 125C376 226 390 371 483 431" />
-        </g>
-
-        <g className="globeNodes" filter="url(#node-glow)">
-          <circle className="globeNode nodeCyan" cx="155" cy="203" r="6" />
-          <circle className="globeNode nodeMint" cx="258" cy="169" r="6" />
-          <circle className="globeNode nodeCoral" cx="390" cy="181" r="6" />
-          <circle className="globeNode nodeGold" cx="481" cy="230" r="6" />
-          <circle className="globeNode nodeMint" cx="132" cy="343" r="6" />
-          <circle className="globeNode nodeCyan" cx="265" cy="397" r="6" />
-          <circle className="globeNode nodeGold" cx="410" cy="386" r="6" />
-          <circle className="globeNode nodeCoral" cx="501" cy="315" r="6" />
-          <circle className="globeNode nodeGold" cx="212" cy="111" r="6" />
-          <circle className="globeNode nodeCyan" cx="407" cy="468" r="6" />
-          <circle className="globeNode nodeCoral" cx="457" cy="145" r="6" />
-          <circle className="globeNode nodeMint" cx="477" cy="414" r="6" />
-        </g>
-
-        <g className="routeTraveler travelerCyan"><path d="M-8-5 8 0-8 5Z" /><animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto" path="M127 226C216 132 392 143 501 243" /></g>
-        <g className="routeTraveler travelerMint"><path d="M-8-5 8 0-8 5Z" /><animateMotion begin="-2s" dur="6.4s" repeatCount="indefinite" rotate="auto" path="M111 328C232 426 408 411 519 292" /></g>
-        <g className="routeTraveler travelerCoral"><path d="M-8-5 8 0-8 5Z" /><animateMotion begin="-3.5s" dur="7.2s" repeatCount="indefinite" rotate="auto" path="M218 89C181 236 267 420 423 482" /></g>
-        <g className="routeTraveler travelerGold"><path d="M-8-5 8 0-8 5Z" /><animateMotion begin="-1s" dur="5.8s" repeatCount="indefinite" rotate="auto" path="M464 125C376 226 390 371 483 431" /></g>
-      </svg>
-
-      <span className="globeZone zoneAmericas">BRAND <i>↘</i></span>
-      <span className="globeZone zoneEurope">BUILD <i>↘</i></span>
-      <span className="globeZone zoneAsia">AUTOMATE <i>↘</i></span>
-      <div className="globeStatus">
-        <span />
-        <div><strong>IDEA TO IMPACT</strong><small>ONE TECHNOLOGY PARTNER</small></div>
-      </div>
-    </div>
-  );
-}
-
 type HeroCarouselProps = {
   autoPlay: boolean;
   onAutoAdvance: () => void;
@@ -167,6 +108,7 @@ type HeroCarouselProps = {
 };
 
 export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onSelect, onNext, onPrevious }: HeroCarouselProps) {
+  const { t, locale } = useLocale();
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const slides = heroSlides;
   const sectionRef = useRef<HTMLElement>(null);
@@ -216,73 +158,92 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
       data-pitch-section
       data-theme={slide.theme}
       aria-roledescription="carousel"
-      aria-label="Our vision and services"
+      aria-label={t("Our vision and services")}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={() => { pointerStart.current = null; }}
     >
-      <div className="heroGrid" aria-hidden="true" />
+      {slides.map((item) => <span key={item.anchor} id={item.anchor} className="heroAnchor" aria-hidden="true" />)}
+      <HeroGridBackground />
       <BackgroundDoodles variant="hero" />
-      <NetworkGlobe />
 
       <article
         className="heroCopy heroSlide"
         key={slide.index}
         aria-roledescription="slide"
-        aria-label={`${activeIndex + 1} of ${slides.length}`}
+        aria-label={t("{number} of {total}", { number: activeIndex + 1, total: slides.length })}
       >
-        <p className="eyebrow"><span /> {slide.index} — {slide.label}</p>
+        <p className="eyebrow"><span /> {slide.index} — {t(slide.label)}</p>
         <h1 id={activeIndex === 0 ? "hero-title" : undefined}>
           {slide.title.map((line, index) => (
-            <span className={index === slide.title.length - 1 ? "heroTitleAccent" : undefined} key={line}>
-              {line}
+            <span className={index === slide.title.length - 1 ? "heroTitleAccent" : undefined} key={t(line)}>
+              {t(line)}
             </span>
           ))}
         </h1>
 
         <div className="heroBottom">
           <div className="heroDescription">
-            <p>{slide.description}</p>
-            {slide.supporting && <strong>{slide.supporting}</strong>}
+            <p>{t(slide.description)}</p>
+            {slide.supporting && <strong>{t(slide.supporting)}</strong>}
           </div>
           <div className="heroActions">
             <Link className="primaryButton" href={slide.primary.href}>
-              {slide.theme === "personal" ? "Build\u00a0My\u00a0Personal Brand" : slide.primary.label} <span aria-hidden="true">↘</span>
+              {slide.theme === "personal" && locale === "en" ? "Build\u00a0My\u00a0Personal Brand" : t(slide.primary.label)} <span aria-hidden="true">↘</span>
             </Link>
             {slide.secondary && (
               <a className="secondaryButton" href={slide.secondary.href}>
-                {slide.secondary.label}
+                {t(slide.secondary.label)}
               </a>
             )}
           </div>
         </div>
       </article>
 
-      <div className="carouselControls" data-pitch-controls aria-label="Hero carousel controls">
+      <div className="heroOutcomeArt" aria-hidden="true">
+        {slides.map((item, index) => (
+          <Image
+            key={item.theme}
+            className={index === activeIndex ? "isActive" : undefined}
+            src={`/hero-${item.theme}.png`}
+            alt=""
+            width={1280}
+            height={1280}
+            sizes="(max-width: 600px) 80vw, (max-width: 1100px) 380px, 40vw"
+            preload={index === 0}
+          />
+        ))}
+      </div>
+
+      <div className="carouselControls" data-pitch-controls aria-label={t("Hero carousel controls")}>
         <div className="carouselTabs">
           {slides.map((item, index) => (
-            <button
+            <a
               className={index === activeIndex ? "isActive" : undefined}
               key={item.index}
-              type="button"
-              aria-label={`Show slide ${index + 1}: ${item.label}`}
+              href={`#${item.anchor}`}
+              aria-label={t("Show slide {number}: {label}", { number: index + 1, label: t(item.label) })}
               aria-current={index === activeIndex ? "true" : undefined}
-              onClick={() => onSelect(index)}
+              onClick={(event) => {
+                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onSelect(index);
+              }}
             >
-              <span className="carouselTabLabel"><TabIcon theme={item.theme} />{item.tab}</span>
+              <span className="carouselTabLabel"><TabIcon theme={item.theme} />{t(item.tab)}</span>
               <i aria-hidden="true" />
-            </button>
+            </a>
           ))}
         </div>
         <div className="carouselActions">
-          {autoPlay && <button className="carouselPause" type="button" aria-label={paused ? "Resume automatic slides" : "Pause automatic slides"} aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? "Play" : "Pause"}</button>}
-          <button type="button" aria-label="Previous slide" disabled={activeIndex === 0} onClick={onPrevious}>←</button>
-          <button type="button" aria-label={activeIndex === slides.length - 1 ? "Continue to our process" : "Next slide"} onClick={onNext}>→</button>
+          {autoPlay && <button className="carouselPause" type="button" aria-label={paused ? t("Resume automatic slides") : t("Pause automatic slides")} aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? t("Play") : t("Pause")}</button>}
+          <button type="button" aria-label={t("Previous slide")} disabled={activeIndex === 0} onClick={onPrevious}>←</button>
+          <button type="button" aria-label={activeIndex === slides.length - 1 ? t("Continue to our process") : t("Next slide")} onClick={onNext}>→</button>
         </div>
       </div>
 
       <div className="heroRail" aria-hidden="true">
-        <span>PERSONAL BRAND × BUSINESS × SOFTWARE × AI</span>
+        <span>{t("PERSONAL BRAND × BUSINESS × SOFTWARE × AI")}</span>
         <span>{String(activeIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
       </div>
     </section>

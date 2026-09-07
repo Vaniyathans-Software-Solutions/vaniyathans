@@ -1,0 +1,17 @@
+Mode: built-in image_gen generation, one request per image.
+Shared prompt: Create one square hero illustration for Vaniyathans Software Solutions. [Scene below] Style: polished editorial technology illustration, crisp navy outlines, subtle dimensional shading, friendly professional characters, coherent restrained detail. Main color palette cyan #00cfee, blue #008cff, purple #8a3dff, magenta #f000df, pink #ff4279, and orange #ffb800. Natural skin and dark hair. Centered composition with all objects entirely inside frame, 8% empty margin. Transparent background, no white rectangle, no scene backdrop or floor; intended to sit on very dark navy #060617. Use light panels for screens so UI is clear. No legible text, no letters, no watermarks, no brand names. Focus on tangible finished business outcomes rather than abstract decoration.
+
+hero-vision.png
+A small team of two South Asian entrepreneurs proudly presenting a connected digital business ecosystem: a polished personal portfolio website, an online storefront, a business dashboard and a small friendly AI assistant linked into one ascending growth composition. Outcome: an idea becoming a growing digital business.
+
+hero-personal.png
+A confident South Asian independent professional beside a large elegant personal portfolio website mockup: portrait avatar, work gallery cards, an about section and contact button, plus a matching mobile portfolio. Outcome: a memorable personal brand and credible online presence.
+
+hero-commerce.png
+A professional online storefront on desktop and mobile, beautiful colorful product cards, a shopping bag, two parcels and a checkout confirmation tick; one South Asian shop owner delighted with an incoming order. Outcome: a functioning webshop making sales.
+
+hero-software.png
+Two South Asian software professionals beside a custom business application dashboard with modular charts, a task board, connected records and a small code panel. Outcome: tailored software organizing business operations, with clean structured interfaces.
+
+hero-ai.png
+A friendly sophisticated small AI robot orchestrating a clear connected workflow between a customer chat bubble, document knowledge cards, a calendar and a completed-task checkmark, with a South Asian professional reviewing the results. Outcome: autonomous assistance that handles repetitive business work.

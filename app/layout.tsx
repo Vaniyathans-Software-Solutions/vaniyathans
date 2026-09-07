@@ -1,4 +1,11 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { LocaleProvider } from "./i18n/LocaleProvider";
+import { isLocale, languageDirection } from "./i18n/languages";
+import { getDictionary } from "./i18n/dictionaries.server";
+import "./i18n/locale.css";
+import "./i18n/fonts.css";
+import "./i18n/additional-fonts.css";
 import { Audiowide } from "next/font/google";
 import "./globals.css";
 import "./studio.css";
@@ -28,10 +35,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const requestedLocale = (await headers()).get("x-site-locale") ?? "en";
+  const locale = isLocale(requestedLocale) ? requestedLocale : "en";
+  const dictionary = await getDictionary(locale);
   return (
-    <html lang="en" className={audiowide.variable}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang={locale} dir={languageDirection(locale)} className={audiowide.variable}>
+      <body className="min-h-full flex flex-col"><LocaleProvider locale={locale} dictionary={dictionary}>{children}</LocaleProvider></body>
     </html>
   );
 }
