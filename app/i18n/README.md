@@ -6,7 +6,7 @@ Run `node --test tests/i18n.test.cjs` to check loading, message validity,
 interpolation, and localized links.
 
 `dictionaries/en.json` is the canonical source dictionary. Each of the 23
-supported locales has its own JSON file with the same 470 English message keys.
+supported locales has its own JSON file with the same 467 English message keys.
 Edit English copy in `en.json`, then update the corresponding translations.
 `messages.json` is the earlier seed catalog and is no longer used by generation,
 coverage checks, or the site runtime.

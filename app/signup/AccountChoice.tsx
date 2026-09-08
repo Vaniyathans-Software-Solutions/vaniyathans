@@ -1,3 +1,4 @@
+import ArrowIcon from "@/app/ArrowIcon";
 import LanguageSwitcher from "@/app/i18n/LanguageSwitcher";
 import Link from "@/app/i18n/LocalizedLink";
 import BrandLogo from "@/app/BrandLogo";
@@ -13,7 +14,7 @@ export default async function AccountChoice({ locale = "en" }: { locale?: Locale
         <Link className="authLogo" href="/" aria-label={t("Vaniyathans home")}>
           <BrandLogo locale={locale} preload />
         </Link>
-        <Link href="/signin">{t("Already registered?")} <strong>{t("Sign in →")}</strong></Link>
+        <Link href="/signin">{t("Already registered?")} <strong>{t("Sign in")} <ArrowIcon /></strong></Link>
       </header>
 
       <section className="accountChoiceIntro" aria-labelledby="account-choice-title">
@@ -29,7 +30,7 @@ export default async function AccountChoice({ locale = "en" }: { locale?: Locale
           <h2>{t("Start a software project")}</h2>
           <p>{t("Share your vision, frame the first Epic, and follow delivery from backlog to deployment.")}</p>
           <ul><li>{t("Project intake and workspace setup")}</li><li>{t("Live Kanban, backlog, and analytics")}</li><li>{t("Direct visibility into delivery")}</li></ul>
-          <Link href="/signup/client">{t("Create client account")} <span>→</span></Link>
+          <Link href="/signup/client">{t("Create client account")} <ArrowIcon /></Link>
         </article>
 
         <article className="accountChoiceCard workforceChoice">
@@ -38,7 +39,7 @@ export default async function AccountChoice({ locale = "en" }: { locale?: Locale
           <h2>{t("Join the delivery workforce")}</h2>
           <p>{t("Register your expertise, availability, and timezone to work on structured product delivery.")}</p>
           <ul><li>{t("Skills and experience profile")}</li><li>{t("Assigned work and project context")}</li><li>{t("Epic-to-subtask collaboration")}</li></ul>
-          <Link href="/signup/workforce">{t("Create workforce account")} <span>→</span></Link>
+          <Link href="/signup/workforce">{t("Create workforce account")} <ArrowIcon /></Link>
         </article>
       </section>
 

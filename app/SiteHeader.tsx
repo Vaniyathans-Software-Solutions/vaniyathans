@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowIcon from "@/app/ArrowIcon";
 import BrandLogo from "./BrandLogo";
 import LanguageSwitcher from "./i18n/LanguageSwitcher";
 import Link from "./i18n/LocalizedLink";
@@ -44,7 +45,7 @@ export default function SiteHeader({ activeSection, onSelectSection }: SiteHeade
           {sectionLink("method", "Our process")}
           {sectionLink("journey", "User journey")}
           <Link className="signInLink" href="/signin">{t("Sign in")}</Link>
-          <Link className="navCta" href="/signup/client">{t("Sign up")} <span>↗</span></Link>
+          <Link className="navCta" href="/signup/client">{t("Sign up")} <ArrowIcon direction="up-right" /></Link>
           <details className="mobileMenu">
             <summary aria-label={t("Open navigation menu")}>☰</summary>
             <nav aria-label={t("Mobile navigation")}>

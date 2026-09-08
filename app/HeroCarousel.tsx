@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
 import Link from "@/app/i18n/LocalizedLink";
@@ -189,7 +190,7 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
           </div>
           <div className="heroActions">
             <Link className="primaryButton" href={slide.primary.href}>
-              {slide.theme === "personal" && locale === "en" ? "Build\u00a0My\u00a0Personal Brand" : t(slide.primary.label)} <span aria-hidden="true">↘</span>
+              {slide.theme === "personal" && locale === "en" ? "Build\u00a0My\u00a0Personal Brand" : t(slide.primary.label)} <ArrowIcon direction="down-right" />
             </Link>
             {slide.secondary && (
               <a className="secondaryButton" href={slide.secondary.href}>
@@ -237,8 +238,8 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
         </div>
         <div className="carouselActions">
           {autoPlay && <button className="carouselPause" type="button" aria-label={paused ? t("Resume automatic slides") : t("Pause automatic slides")} aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? t("Play") : t("Pause")}</button>}
-          <button type="button" aria-label={t("Previous slide")} disabled={activeIndex === 0} onClick={onPrevious}>←</button>
-          <button type="button" aria-label={activeIndex === slides.length - 1 ? t("Continue to our process") : t("Next slide")} onClick={onNext}>→</button>
+          <button type="button" aria-label={t("Previous slide")} disabled={activeIndex === 0} onClick={onPrevious}><ArrowIcon direction="left" /></button>
+          <button type="button" aria-label={activeIndex === slides.length - 1 ? t("Continue to our process") : t("Next slide")} onClick={onNext}><ArrowIcon /></button>
         </div>
       </div>
 

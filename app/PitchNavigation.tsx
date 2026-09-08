@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -135,9 +136,9 @@ export default function PitchNavigation({ children }: { children: ReactNode }) {
           setPresenting(!presenting);
           if (!presenting) goTo(current.current);
         }}>{presenting ? t("Exit pitch") : t("Pitch mode")}</button>
-        <button type="button" disabled={active === 0} aria-label={t("Previous pitch slide")} onClick={() => move(-1)}>←</button>
+        <button type="button" disabled={active === 0} aria-label={t("Previous pitch slide")} onClick={() => move(-1)}><ArrowIcon direction="left" /></button>
         <span className="pitchPosition" aria-live={presenting ? "polite" : "off"} aria-atomic="true">{String(active + 1).padStart(2, "0")} / {String(titles.length).padStart(2, "0")}<span className="pitchTitle"> · {t(titles[active])}</span></span>
-        <button type="button" disabled={active === titles.length - 1} aria-label={t("Next pitch slide")} onClick={() => move(1)}>→</button>
+        <button type="button" disabled={active === titles.length - 1} aria-label={t("Next pitch slide")} onClick={() => move(1)}><ArrowIcon /></button>
         {presenting && <span className="pitchKeys">{t("Enter / arrows · Esc to exit")}</span>}
       </nav>
     </>

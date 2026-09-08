@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
 import LanguageSwitcher from "@/app/i18n/LanguageSwitcher";
@@ -123,7 +124,7 @@ export default function SigninForm({ initialEmail, created, createdType }: {
       </section>
 
       <section className="authPanel" aria-labelledby="signin-title">
-        <div className="authPanelTop"><LanguageSwitcher /><Link href="/">{t("← Back to website")}</Link><span>{t("Need an account?")} <Link href="/signup">{t("Choose account type")}</Link></span></div>
+        <div className="authPanelTop"><LanguageSwitcher /><Link href="/"><ArrowIcon direction="left" /> {t("Back to website")}</Link><span>{t("Need an account?")} <Link href="/signup">{t("Choose account type")}</Link></span></div>
         <form className="authForm signinForm" onSubmit={submit} noValidate>
           {created && <div className="authSuccess"><span>✓</span><div><strong>{t("{type} account created", { type: t(createdType === "client" ? "Client" : "Workforce") })}</strong><p>{t("Sign in to open your Workspace Studio.")}</p></div></div>}
           <div className="authHeading">
@@ -152,12 +153,12 @@ export default function SigninForm({ initialEmail, created, createdType }: {
 
           {method === "password" && <div className="signinOptions"><label><input type="checkbox" defaultChecked /> {t("Keep me signed in")}</label><button type="button">{t("Forgot password?")}</button></div>}
           {error && <p className="authError" role="alert">{t(error)}</p>}
-          <button className="authPrimary authPrimaryWide" type="submit">{method === "otp" && !otpSent ? t("Send mobile OTP") : t("Open Workspace Studio")} <span>→</span></button>
+          <button className="authPrimary authPrimaryWide" type="submit">{method === "otp" && !otpSent ? t("Send mobile OTP") : t("Open Workspace Studio")} <ArrowIcon /></button>
 
           <div className="signupRoutes">
             <span>{t("New to Vaniyathans?")}</span>
-            <Link href="/signup/client"><i>◎</i><span><strong>{t("Client signup")}</strong><small>{t("Start a project")}</small></span>→</Link>
-            <Link href="/signup/workforce"><i>⌘</i><span><strong>{t("Workforce signup")}</strong><small>{t("Join delivery")}</small></span>→</Link>
+            <Link href="/signup/client"><i>◎</i><span><strong>{t("Client signup")}</strong><small>{t("Start a project")}</small></span><ArrowIcon /></Link>
+            <Link href="/signup/workforce"><i>⌘</i><span><strong>{t("Workforce signup")}</strong><small>{t("Join delivery")}</small></span><ArrowIcon /></Link>
           </div>
           <p className="authSupport">{t("Account support:")} <a href="mailto:support@vaniyathans.com">{t("support@vaniyathans.com")}</a></p>
           <p className="authDemoNote">{t("This hosted experience demonstrates the complete account flow. A production identity and messaging provider is still required before real passwords or OTPs can be issued.")}</p>

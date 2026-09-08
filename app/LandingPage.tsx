@@ -1,3 +1,4 @@
+import ArrowIcon from "@/app/ArrowIcon";
 import { type Locale } from "./i18n/shared";
 import { getTranslator } from "./i18n/dictionaries.server";
 import Link from "@/app/i18n/LocalizedLink";
@@ -182,7 +183,7 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
               <p>{t("Your idea. Our next conversation.")}</p>
               <h2 id="contact-title">{t("What would you")}<br />{t("like to build?")}</h2>
               <p className="contactSummary">{t("Share your idea, your priorities, and where you want to go.")}</p>
-              <Link className="primaryButton contactProject" href="/signup/client">{t("Start a project")} <span aria-hidden="true">↗</span></Link>
+              <Link className="primaryButton contactProject" href="/signup/client">{t("Start a project")} <ArrowIcon direction="up-right" /></Link>
             </div>
             <div className="contactActions">
               <a
@@ -202,13 +203,13 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
               </a>
               <a className="contactMail" href="mailto:mail@vaniyathans.com">
                 <span>{t("Prefer email?")}</span>
-                <strong>{t("mail@vaniyathans.com ↗")}</strong>
+                <strong>mail@vaniyathans.com <ArrowIcon direction="up-right" /></strong>
               </a>
             </div>
           </div>
           <footer className="contactFooter">
             <span>{t("© 2026 Vaniyathans Software Solutions Pvt. Ltd.")}</span>
-            <nav aria-label={t("More ways to connect")}><Link href="/signup/workforce">{t("Join our workforce ↗")}</Link><Link href="/signin">{t("Sign in ↗")}</Link></nav>
+            <nav aria-label={t("More ways to connect")}><Link href="/signup/workforce">{t("Join our workforce")} <ArrowIcon direction="up-right" /></Link><Link href="/signin">{t("Sign in")} <ArrowIcon direction="up-right" /></Link></nav>
           </footer>
         </section>
       </PitchNavigation>

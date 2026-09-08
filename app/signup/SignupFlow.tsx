@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
 import LanguageSwitcher from "@/app/i18n/LanguageSwitcher";
@@ -159,7 +160,7 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
 
       <section className="authPanel" aria-labelledby="signup-title">
         <div className="authPanelTop"><LanguageSwitcher />
-          <Link href="/signup">{t("← Choose account type")}</Link>
+          <Link href="/signup"><ArrowIcon direction="left" /> {t("Choose account type")}</Link>
           <span>{t("Already registered?")} <Link href="/signin">{t("Sign in")}</Link></span>
         </div>
 
@@ -226,8 +227,8 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
           {error && <p className="authError" role="alert">{t(error)}</p>}
 
           <div className="authActions">
-            {step > 0 ? <button className="authBack" type="button" onClick={() => { setStep((current) => current - 1); setError(""); }}>{t("← Previous")}</button> : <span />}
-            {step < 2 ? <button className="authPrimary" type="button" onClick={next}>{t("Continue")} <span>→</span></button> : <button className="authPrimary" type="submit">{t("Create {type} account", { type: t(accountType) })} <span>→</span></button>}
+            {step > 0 ? <button className="authBack" type="button" onClick={() => { setStep((current) => current - 1); setError(""); }}><ArrowIcon direction="left" /> {t("Previous")}</button> : <span />}
+            {step < 2 ? <button className="authPrimary" type="button" onClick={next}>{t("Continue")} <ArrowIcon /></button> : <button className="authPrimary" type="submit">{t("Create {type} account", { type: t(accountType) })} <ArrowIcon /></button>}
           </div>
           <p className="authSupport">{t("Need account help?")} <a href="mailto:support@vaniyathans.com">{t("support@vaniyathans.com")}</a></p>
         </form>

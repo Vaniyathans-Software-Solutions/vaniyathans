@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
 import LanguageSwitcher from "@/app/i18n/LanguageSwitcher";
@@ -210,7 +211,7 @@ export default function WorkspacePage() {
                       <div className="workCardMeta"><span className={`itemType type${item.type}`}>{typeGlyph[item.type]} {t(item.type)}</span><button aria-label={t("More options for {title}", { title: item.title })}>•••</button></div>
                       <h2>{item.title}</h2>
                       <p>{item.id} · {item.points} {t("story points")}</p>
-                      <div className="workCardFooter"><span className={`priority priority${item.priority}`}>{t(item.priority)}</span><div className="cardControls"><button disabled={status.key === "backlog"} onClick={() => moveItem(item.id, -1)} aria-label={t("Move {title} backward", { title: item.title })}>←</button><span className="assigneeAvatar">{item.assignee}</span><button disabled={status.key === "done"} onClick={() => moveItem(item.id, 1)} aria-label={t("Move {title} forward", { title: item.title })}>→</button></div></div>
+                      <div className="workCardFooter"><span className={`priority priority${item.priority}`}>{t(item.priority)}</span><div className="cardControls"><button disabled={status.key === "backlog"} onClick={() => moveItem(item.id, -1)} aria-label={t("Move {title} backward", { title: item.title })}><ArrowIcon direction="left" /></button><span className="assigneeAvatar">{item.assignee}</span><button disabled={status.key === "done"} onClick={() => moveItem(item.id, 1)} aria-label={t("Move {title} forward", { title: item.title })}><ArrowIcon /></button></div></div>
                     </article>)}
                     {!columnItems.length && <div className="emptyColumn">{t("No matching work")}</div>}
                   </div>
@@ -251,7 +252,7 @@ export default function WorkspacePage() {
             {composer.parent && <div className="parentContext"><span>{typeGlyph[composer.parent.type]}</span><div><small>{t("PARENT")} {t(composer.parent.type)}</small><strong>{composer.parent.title}</strong></div></div>}
             <label><span>{t(composer.type)} {t("title")}</span><input autoFocus value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={t("Describe this {type}", { type: t(composer.type) })} /></label>
             <div className="composerGrid"><label><span>{t("Priority")}</span><select value={newPriority} onChange={(event) => setNewPriority(event.target.value as Priority)}><option value="Critical">{t("Critical")}</option><option value="High">{t("High")}</option><option value="Medium">{t("Medium")}</option><option value="Low">{t("Low")}</option></select></label><label><span>{t("Assignee")}</span><select value={newAssignee} onChange={(event) => setNewAssignee(event.target.value)}><option value="AK">{t("Anand K.")}</option><option value="MS">{t("Maya S.")}</option><option value="RV">{t("Rahul V.")}</option><option value="NJ">{t("Nina J.")}</option><option value="PS">{t("Priya S.")}</option></select></label><label><span>{t("Story points")}</span><select value={newPoints} onChange={(event) => setNewPoints(Number(event.target.value))}><option value={1}>{t("1 point")}</option><option value={2}>{t("2 points")}</option><option value={3}>{t("3 points")}</option><option value={5}>{t("5 points")}</option><option value={8}>{t("8 points")}</option><option value={13}>{t("13 points")}</option></select></label></div>
-            <div className="composerActions"><button type="button" onClick={() => setComposer(null)}>{t("Cancel")}</button><button className="primaryStudioButton" type="submit" disabled={!newTitle.trim()}>{t("Create {type}", { type: t(composer.type) })} →</button></div>
+            <div className="composerActions"><button type="button" onClick={() => setComposer(null)}>{t("Cancel")}</button><button className="primaryStudioButton" type="submit" disabled={!newTitle.trim()}>{t("Create {type}", { type: t(composer.type) })} <ArrowIcon /></button></div>
           </form>
         </div>
       )}

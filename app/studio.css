@@ -35,7 +35,6 @@
 .accountChoiceCard li::before { content: "✓"; margin-right: 9px; color: var(--mint); }
 .workforceChoice li::before { color: var(--coral); }
 .accountChoiceCard > a { width: 100%; min-height: 52px; display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding: 0 20px; border-radius: 999px; background: #fff; color: #28166c; font-size: 14px; font-weight: 800; }
-.accountChoiceCard > a > span { font-size: 19px; }
 .accountChoiceFooter { margin-top: 30px; color: #8291ae; font-size: 14px; text-align: center; }
 .accountChoiceFooter a { color: var(--mint); font-weight: 700; }
 
@@ -141,7 +140,7 @@
 .authActions button, .authPrimary, .authBack { min-height: 50px; border: 0; border-radius: 999px; padding: 0 22px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
 .authBack { background: transparent; color: #656679; }
 .authPrimary { display: inline-flex; align-items: center; justify-content: center; gap: 24px; background: linear-gradient(120deg, #4f2bc4, #8640ca 55%, #e1477f); color: #fff; box-shadow: 0 14px 36px rgba(92, 47, 219, .25); }
-.authPrimary span { color: var(--gold); font-size: 18px; }
+.authPrimary .arrowIcon { color: var(--gold); }
 .authPrimaryWide { width: 100%; margin-top: 26px; }
 .signinForm { max-width: 560px; }
 .authSuccess { display: flex; gap: 14px; margin-bottom: 34px; padding: 14px 16px; border: 1px solid rgba(32, 185, 128, .24); border-radius: 14px; background: rgba(87, 242, 197, .09); }
@@ -290,7 +289,8 @@
 .priority { display: inline-flex; align-items: center; width: max-content; padding: 4px 7px; border-radius: 99px; background: #eeeef3; color: #777889; font-size: 8px; font-weight: 800; text-transform: uppercase; }
 .priorityCritical { background: #ffe7ef; color: #bc2858; }.priorityHigh { background: #fff0df; color: #ae6511; }.priorityMedium { background: #e8edff; color: #4965bd; }.priorityLow { background: #e4f8f0; color: #258262; }
 .cardControls { display: flex; align-items: center; gap: 6px; }
-.cardControls button { width: 24px; aspect-ratio: 1; border: 1px solid #e0e1e9; border-radius: 7px; background: #f8f8fb; color: #6b6c7c; cursor: pointer; }
+.cardControls .arrowIcon { width: 14px; height: 14px; }
+.cardControls button { display: inline-grid; place-items: center; padding: 0; width: 24px; aspect-ratio: 1; border: 1px solid #e0e1e9; border-radius: 7px; background: #f8f8fb; color: #6b6c7c; cursor: pointer; }
 .cardControls button:disabled { opacity: .25; cursor: not-allowed; }
 .assigneeAvatar { display: grid; place-items: center; flex: 0 0 auto; width: 27px; aspect-ratio: 1; border-radius: 50%; background: linear-gradient(145deg, #5a35c8, #168da0); color: #fff; font-size: 8px; font-weight: 800; }
 .emptyColumn { padding: 30px 8px; color: #a2a3b0; font-size: 10px; text-align: center; }
@@ -490,7 +490,7 @@
   box-shadow: -5px 8px 24px #008cff26, 5px 8px 24px #f000df26;
   transition: filter .2s ease, box-shadow .2s ease;
 }
-.authPrimary span { color: #fff; }
+.authPrimary .arrowIcon { color: #fff; }
 .authMethodTabs button.isActive {
   color: #7024d9;
   background: linear-gradient(110deg, #008cff0d, #f000df0d), #fff;
