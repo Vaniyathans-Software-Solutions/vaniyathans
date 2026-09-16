@@ -4,6 +4,8 @@ import { getTranslator } from "./i18n/dictionaries.server";
 import Link from "@/app/i18n/LocalizedLink";
 import PitchNavigation from "./PitchNavigation";
 import BackgroundDoodles from "./BackgroundDoodles";
+import ProductJourney from "./ProductJourney";
+import ProductJourneyGame from "./ProductJourneyGame";
 import "./landing-motion.css";
 
 export default async function LandingPage({ locale = "en" }: { locale?: Locale }) {
@@ -101,76 +103,8 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
           </ol>
         </section>
 
-        <section className="journey journeyOverview" id="journey" data-pitch-section aria-labelledby="journey-title">
-          <BackgroundDoodles variant="discover" />
-          <div className="journeyHeader">
-            <div className="journeyLabel"><span>{t("VSS / YOUR PRODUCT JOURNEY")}</span></div>
-            <h2 id="journey-title">{t("From idea")} <em>{t("to launch.")}</em></h2>
-          </div>
-          <div className="journeyPhases">
-            <div className="journeyPhase" id="journey-discover">
-              <h3>{t("01–03 / DISCOVER")}</h3>
-          <ol className="journeyMap" start={1}>
-            <li className="journeyCard" data-step="1">
-              <div className="journeyCardTop"><span>01</span><div className="journeyOwner"><small>{t("Client")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Share your idea")}</h4><p>{t("Define the problem and goal.")}</p></div>
-            </li>
-            <li className="journeyCard" data-step="2">
-              <div className="journeyCardTop"><span>02</span><div className="journeyOwner"><small>{t("Strategist")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Shape the scope")}</h4><p>{t("Turn your idea into features.")}</p></div>
-            </li>
-            <li className="journeyCard" data-step="3">
-              <div className="journeyCardTop"><span>03</span><div className="journeyOwner"><small>{t("Product Owner")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Focus on users")}</h4><p>{t("Define needs and success criteria.")}</p></div>
-            </li>
-          </ol>
-            </div>
-            <div className="journeyPhase" id="journey-plan">
-              <h3>{t("04–06 / SHAPE")}</h3>
-          <ol className="journeyMap" start={4}>
-            <li className="journeyCard" data-step="4">
-              <div className="journeyCardTop"><span>04</span><div className="journeyOwner"><small>{t("Tech Lead")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Assign the work")}</h4><p>{t("Set tasks and clear ownership.")}</p></div>
-            </li>
-            <li className="journeyCard" data-step="5">
-              <div className="journeyCardTop"><span>05</span><div className="journeyOwner"><small>{t("Delivery Lead")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Set priorities")}</h4><p>{t("Plan what matters most.")}</p></div>
-            </li>
-            <li className="journeyCard" data-step="6">
-              <div className="journeyCardTop"><span>06</span><div className="journeyOwner"><small>{t("Designer")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Design the experience")}</h4><p>{t("Make every interaction intuitive.")}</p></div>
-            </li>
-          </ol>
-            </div>
-            <div className="journeyPhase" id="journey-launch">
-              <h3>{t("07–09 / DELIVER")}</h3>
-          <ol className="journeyMap" start={7}>
-            <li className="journeyCard" data-step="7">
-              <div className="journeyCardTop"><span>07</span><div className="journeyOwner"><small>{t("Engineer")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Build together")}</h4><p>{t("Deliver in small, reviewed increments.")}</p></div>
-            </li>
-            <li className="journeyCard" data-step="8">
-              <div className="journeyCardTop"><span>08</span><div className="journeyOwner"><small>{t("Quality Engineer")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Test every detail")}</h4><p>{t("Check quality, speed, and reliability.")}</p></div>
-            </li>
-            <li className="journeyCard" data-step="9">
-              <div className="journeyCardTop"><span>09</span><div className="journeyOwner"><small>{t("Release Engineer")}</small></div></div>
-              <div className="journeyIllustration" aria-hidden="true" />
-              <div className="journeyCardCopy"><h4>{t("Launch and learn")}</h4><p>{t("Release, gather feedback, and improve.")}</p></div>
-            </li>
-          </ol>
-            </div>
-          </div>
-          <div className="journeyLoop"><span>{t("RELEASE INSIGHT")}</span><i aria-hidden="true">↺</i><strong>{t("FEEDS THE NEXT EPIC")}</strong></div>
-        </section>
+        <ProductJourney t={t} />
+        <ProductJourneyGame />
 
         <section className="contact" id="contact" data-pitch-section aria-labelledby="contact-title">
           <BackgroundDoodles variant="contact" />

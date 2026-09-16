@@ -1,5 +1,8 @@
 "use client";
 
+import { phoneSchema } from "@/lib/auth/validation";
+import PasswordInput from "@/app/PasswordInput";
+import { authClient } from "@/lib/auth/client";
 import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
@@ -9,17 +12,7 @@ import BrandLogo from "@/app/BrandLogo";
 import { useLocalizedRouter as useRouter } from "@/app/i18n/LocaleProvider";
 import { FormEvent, useState } from "react";
 
-type AuthMethod = "password" | "otp";
 type AccountType = "client" | "workforce";
-type StoredProfile = {
-  accountType?: AccountType;
-  fullName?: string;
-  email?: string;
-  phone?: string;
-  projectName?: string;
-};
-
-const normalizePhone = (value: string) => value.replace(/\D/g, "");
 
 export default function SigninForm({ initialEmail, created, createdType }: {
   initialEmail: string;
@@ -28,83 +21,75 @@ export default function SigninForm({ initialEmail, created, createdType }: {
 }) {
   const { t, locale } = useLocale();
   const router = useRouter();
-  const [method, setMethod] = useState<AuthMethod>("password");
+  const [method, setMethod] = useState<"email" | "phone">("email");
+  const [phone, setPhone] = useState("");
+  const [phoneCode, setPhoneCode] = useState("");
+  const [phoneSent, setPhoneSent] = useState(false);
+  const [phoneRetryAt, setPhoneRetryAt] = useState(0);
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
-  const readProfiles = () => {
-    const keys = ["vss_client_profile", "vss_workforce_profile", "vss_profile"];
-    return keys.flatMap((key) => {
-      try {
-        const value = localStorage.getItem(key);
-        return value ? [JSON.parse(value) as StoredProfile] : [];
-      } catch {
-        return [];
-      }
-    });
-  };
-
-  const completeSignIn = (profile: StoredProfile, authMethod: AuthMethod) => {
-    const accountType = profile.accountType ?? "client";
-    localStorage.setItem("vss_profile", JSON.stringify({ ...profile, accountType }));
-    localStorage.setItem("vss_session", JSON.stringify({
-      email: profile.email ?? email,
-      phone: profile.phone ?? phone,
-      name: profile.fullName ?? "Workspace member",
-      accountType,
-      authMethod,
-    }));
-    router.push("/workspace");
-  };
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
-    const profiles = readProfiles();
-
-    if (method === "password") {
-      if (!/^\S+@\S+\.\S+$/.test(email) || password.length < 8) {
-        setError("Enter your email and a password with at least 8 characters.");
+    if (busy) return;
+    setBusy(true); setError(""); setNotice(""); setNeedsVerification(false);
+    try {
+      if (method === "phone") {
+        const parsed = phoneSchema.safeParse(phone);
+        if (!parsed.success) { setError("Enter a valid mobile number with country code."); return; }
+        if (!phoneSent) {
+          if (Date.now() < phoneRetryAt) { setError("Please wait a minute before requesting another code."); return; }
+          const result = await authClient.phoneNumber.sendOtp({ phoneNumber: parsed.data });
+          if (result.error) { setError(result.error.message || "Could not send the code. Please try again shortly."); return; }
+          setPhone(parsed.data); setPhoneSent(true); setPhoneRetryAt(Date.now() + 60_000);
+          setNotice("Check your phone for a verification code."); return;
+        }
+        if (!/^\d{6}$/.test(phoneCode)) { setError("Enter the six-digit verification code."); return; }
+        const result = await authClient.phoneNumber.verify({ phoneNumber: parsed.data, code: phoneCode });
+        if (result.error) { setError("Invalid or expired code. Try again, or sign in with email to link your mobile number."); return; }
+        router.replace("/workspace"); router.refresh(); return;
+      }
+      const { error } = await authClient.signIn.email({ email: email.trim(), password, rememberMe });
+      if (error) {
+        setNeedsVerification(error.code === "EMAIL_NOT_VERIFIED");
+        setError(error.code === "EMAIL_NOT_VERIFIED" ? "Verify your email before signing in." : "Unable to sign in. Check your email and password and try again.");
         return;
       }
-      const profile = profiles.find((item) => item.email?.toLowerCase() === email.toLowerCase());
-      if (!profile) {
-        setError("No account was found for this email. Create a client or workforce account first.");
-        return;
-      }
-      completeSignIn(profile, "password");
-      return;
-    }
-
-    if (normalizePhone(phone).length < 10) {
-      setError("Enter the mobile number used during registration, including country code.");
-      return;
-    }
-    const profile = profiles.find((item) => normalizePhone(item.phone ?? "") === normalizePhone(phone));
-    if (!profile) {
-      setError("No account was found for this mobile number. Create an account first.");
-      return;
-    }
-    if (!otpSent) {
-      setOtpSent(true);
-      return;
-    }
-    if (otp !== "246810") {
-      setError("Enter the 6-digit demo OTP shown below.");
-      return;
-    }
-    completeSignIn(profile, "otp");
+      router.replace("/workspace"); router.refresh();
+    } catch { setError("Could not reach the server. Please try again."); }
+    finally { setBusy(false); }
   };
 
-  const switchMethod = (nextMethod: AuthMethod) => {
-    setMethod(nextMethod);
-    setError("");
-    setOtpSent(false);
-    setOtp("");
+  const sendEmail = async (kind: "reset" | "verify") => {
+    if (busy) return;
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) { setError("Enter a valid email address."); return; }
+    setBusy(true); setError(""); setNotice("");
+    try {
+      const result = kind === "reset"
+        ? await authClient.emailOtp.requestPasswordReset({ email: email.trim() })
+        : await authClient.emailOtp.sendVerificationOtp({ email: email.trim(), type: "email-verification" });
+      if (result.error) { setError("Could not send the email. Please try again shortly."); return; }
+      if (kind === "reset") router.push(`/reset-password?email=${encodeURIComponent(email.trim())}`);
+      setNotice("If this address is eligible, an email is on its way. Check your inbox and spam folder.");
+    } catch { setError("Could not reach the server. Please try again."); }
+    finally { setBusy(false); }
+  };
+
+  const verifyEmail = async () => {
+    if (busy) return;
+    setBusy(true); setError("");
+    try {
+      const { error } = await authClient.emailOtp.verifyEmail({ email: email.trim(), otp: verificationCode });
+      if (error) { setError("Invalid or expired verification code. Please try again."); return; }
+      setNeedsVerification(false); setNotice("Email verified. You can now sign in.");
+    } catch { setError("Could not reach the server. Please try again."); }
+    finally { setBusy(false); }
   };
 
   return (
@@ -130,30 +115,28 @@ export default function SigninForm({ initialEmail, created, createdType }: {
           <div className="authHeading">
             <span>{t("SECURE ACCOUNT ACCESS")}</span>
             <h2 id="signin-title">{t("Welcome back")}</h2>
-            <p>{t("Use your email and password or sign in with a one-time mobile code.")}</p>
+            <p>{t("Sign in with your email and password or a mobile verification code.")}</p>
           </div>
 
-          <div className="authMethodTabs" role="tablist" aria-label={t("Sign-in method")}>
-            <button className={method === "password" ? "isActive" : ""} type="button" role="tab" aria-selected={method === "password"} onClick={() => switchMethod("password")}><span>✉</span>{t("Email & password")}</button>
-            <button className={method === "otp" ? "isActive" : ""} type="button" role="tab" aria-selected={method === "otp"} onClick={() => switchMethod("otp")}><span>⌁</span>{t("Mobile OTP")}</button>
+          <div className="authMethodTabs" aria-label={t("Sign-in method")}>
+            {(["email", "phone"] as const).map(value => <button key={value} type="button" disabled={busy} aria-pressed={method === value} className={method === value ? "isActive" : ""} onClick={() => { setMethod(value); setError(""); setNotice(""); setNeedsVerification(false); }}>{t(value === "email" ? "Email and password" : "Mobile OTP")}</button>)}
           </div>
-
-          {method === "password" ? (
+          {method === "phone" ? <div className="authFields signinFields">
+            <label className="fieldWide"><span>{t("Mobile number")}</span><input type="tel" autoComplete="tel" placeholder="+91 98765 43210" value={phone} disabled={busy || phoneSent} onChange={e => setPhone(e.target.value)} /></label>
+            {phoneSent && <>
+              <label className="fieldWide"><span>{t("Verification code")}</span><input className="otpInput" inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={phoneCode} onChange={e => setPhoneCode(e.target.value.replace(/\D/g, ""))} /></label>
+              <button type="button" disabled={busy} onClick={() => { setPhoneSent(false); setPhoneCode(""); setNotice(""); setError(""); }}>{t("Change number or request a new code")}</button>
+            </>}
+          </div> : <>
             <div className="authFields signinFields">
               <label className="fieldWide"><span>{t("Email address")}</span><input autoFocus type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError(""); }} placeholder={t("you@example.com")} autoComplete="email" /></label>
-              <label className="fieldWide"><span>{t("Password")}</span><input type="password" value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} placeholder={t("Minimum 8 characters")} autoComplete="current-password" /></label>
+              <label className="fieldWide"><span>{t("Password")}</span><PasswordInput value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} placeholder={t("Minimum 8 characters")} autoComplete="current-password" /></label>
             </div>
-          ) : (
-            <div className="authFields signinFields">
-              <label className="fieldWide"><span>{t("Registered mobile number")}</span><input autoFocus type="tel" value={phone} disabled={otpSent} onChange={(event) => { setPhone(event.target.value); setError(""); }} placeholder="+91 98765 43210" autoComplete="tel" /></label>
-              {otpSent && <label className="fieldWide"><span>{t("6-digit OTP")}</span><input className="otpInput" value={otp} onChange={(event) => { setOtp(event.target.value.replace(/\D/g, "").slice(0, 6)); setError(""); }} placeholder="••••••" inputMode="numeric" autoComplete="one-time-code" /></label>}
-              {otpSent && <div className="otpStatus fieldWide"><span>{t("OTP ready for this prototype")}</span><strong>{t("Demo code: 246810")}</strong><button type="button" onClick={() => { setOtpSent(false); setOtp(""); setError(""); }}>{t("Change number")}</button></div>}
-            </div>
-          )}
-
-          {method === "password" && <div className="signinOptions"><label><input type="checkbox" defaultChecked /> {t("Keep me signed in")}</label><button type="button">{t("Forgot password?")}</button></div>}
+          <div className="signinOptions"><label><input type="checkbox" checked={rememberMe} onChange={event => setRememberMe(event.target.checked)} /> {t("Keep me signed in")}</label><button type="button" disabled={busy} onClick={() => sendEmail("reset")}>{t("Forgot password?")}</button></div></>}
+          {notice && <p role="status">{t(notice)}</p>}
+          {needsVerification && <><label>{t("Email verification code")}<input inputMode="numeric" autoComplete="one-time-code" value={verificationCode} onChange={e => setVerificationCode(e.target.value)} /></label><button type="button" disabled={busy} onClick={verifyEmail}>{t("Verify email")}</button><button type="button" disabled={busy} onClick={() => sendEmail("verify")}>{t("Resend verification email")}</button></>}
           {error && <p className="authError" role="alert">{t(error)}</p>}
-          <button className="authPrimary authPrimaryWide" type="submit">{method === "otp" && !otpSent ? t("Send mobile OTP") : t("Open Workspace Studio")} <ArrowIcon /></button>
+          <button className="authPrimary authPrimaryWide" type="submit" disabled={busy}>{busy ? t("Please wait…") : method === "phone" && !phoneSent ? t("Send verification code") : t("Open Workspace Studio")} <ArrowIcon /></button>
 
           <div className="signupRoutes">
             <span>{t("New to Vaniyathans?")}</span>
@@ -161,7 +144,6 @@ export default function SigninForm({ initialEmail, created, createdType }: {
             <Link href="/signup/workforce"><i>⌘</i><span><strong>{t("Workforce signup")}</strong><small>{t("Join delivery")}</small></span><ArrowIcon /></Link>
           </div>
           <p className="authSupport">{t("Account support:")} <a href="mailto:support@vaniyathans.com">{t("support@vaniyathans.com")}</a></p>
-          <p className="authDemoNote">{t("This hosted experience demonstrates the complete account flow. A production identity and messaging provider is still required before real passwords or OTPs can be issued.")}</p>
         </form>
       </section>
     </main>

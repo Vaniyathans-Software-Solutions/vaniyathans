@@ -4,6 +4,8 @@ import LandingPage from "../../LandingPage";
 import AccountChoice from "../../signup/AccountChoice";
 import SignupFlow from "../../signup/SignupFlow";
 import SigninForm from "../../signin/SigninForm";
+import Onboarding from "../../onboarding/page";
+import ResetPassword from "../../reset-password/page";
 import Workspace from "../../workspace/page";
 import { isLocale, locales, localizePath } from "../../i18n/shared";
 import { getTranslator } from "../../i18n/dictionaries.server";
@@ -12,7 +14,7 @@ type Props = {
   params: Promise<{ locale: string; path?: string[] }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
-const pages = ["", "signin", "signup", "signup/client", "signup/workforce", "workspace"];
+const pages = ["", "signin", "signup", "signup/client", "signup/workforce", "workspace", "onboarding", "reset-password"];
 async function route(params: Props["params"]) {
   const { locale, path = [] } = await params;
   const page = path.join("/");
@@ -40,6 +42,8 @@ export default async function LocalizedPage({ params, searchParams }: Props) {
   if (page === "signup") return <AccountChoice locale={locale} />;
   if (page === "signup/client") return <SignupFlow accountType="client" />;
   if (page === "signup/workforce") return <SignupFlow accountType="workforce" />;
+  if (page === "onboarding") return <Onboarding searchParams={searchParams} />;
+  if (page === "reset-password") return <ResetPassword searchParams={searchParams} />;
   if (page === "workspace") return <Workspace />;
   const query = await searchParams;
   const first = (value: string | string[] | undefined) => Array.isArray(value) ? value[0] : value;

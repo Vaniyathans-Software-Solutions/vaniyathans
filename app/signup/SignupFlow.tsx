@@ -1,5 +1,10 @@
 "use client";
 
+import ContactVerification from "@/app/ContactVerification";
+import PasswordInput from "@/app/PasswordInput";
+import { authClient } from "@/lib/auth/client";
+import { onboardingSchema, phoneSchema } from "@/lib/auth/validation";
+import { localizePath } from "@/app/i18n/shared";
 import ArrowIcon from "@/app/ArrowIcon";
 import { useLocale } from "@/app/i18n/LocaleProvider";
 
@@ -70,16 +75,19 @@ const workforceFields: Array<Array<keyof SignupData>> = [
 ];
 
 const passwordIsStrong = (password: string) => password.length >= 8 && /[a-z]/.test(password) && /[A-Z]/.test(password) && /\d/.test(password);
-const phoneIsValid = (phone: string) => phone.replace(/\D/g, "").length >= 10;
+const phoneIsValid = (phone: string) => phoneSchema.safeParse(phone).success;
 
-export default function SignupFlow({ accountType }: { accountType: AccountType }) {
+export default function SignupFlow({ accountType, existingUser }: { accountType: AccountType; existingUser?: { name: string; email: string } }) {
   const { t, locale } = useLocale();
   const router = useRouter();
   const isClient = accountType === "client";
   const [step, setStep] = useState(0);
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState({ ...initialData, fullName: existingUser?.name ?? "", email: existingUser?.email ?? "" });
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [registered, setRegistered] = useState(!!existingUser);
+  const [verifying, setVerifying] = useState(false);
 
   const update = (field: keyof SignupData, value: string) => {
     setData((current) => ({ ...current, [field]: value }));
@@ -87,7 +95,7 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
   };
 
   const validateStep = () => {
-    const fields = (isClient ? clientFields : workforceFields)[step];
+    const fields = (isClient ? clientFields : workforceFields)[step].filter(field => !registered || !["password", "confirmPassword"].includes(field));
     if (fields.some((field) => !data[field].trim())) {
       setError("Please complete every required field before continuing.");
       return false;
@@ -100,11 +108,11 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
       setError("Enter a valid mobile number with country code.");
       return false;
     }
-    if (step === 0 && !passwordIsStrong(data.password)) {
+    if (step === 0 && !registered && !passwordIsStrong(data.password)) {
       setError("Use at least 8 characters with uppercase, lowercase, and a number.");
       return false;
     }
-    if (step === 0 && data.password !== data.confirmPassword) {
+    if (step === 0 && !registered && data.password !== data.confirmPassword) {
       setError("The passwords do not match.");
       return false;
     }
@@ -119,17 +127,35 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
     if (validateStep()) setStep((current) => Math.min(2, current + 1));
   };
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!validateStep()) return;
-
-    const { password: _password, confirmPassword: _confirmPassword, ...safeData } = data;
-    void _password;
-    void _confirmPassword;
-    const profile = { ...safeData, accountType };
-    localStorage.setItem(`vss_${accountType}_profile`, JSON.stringify(profile));
-    localStorage.setItem("vss_profile", JSON.stringify(profile));
-    router.push(`/signin?created=1&type=${accountType}&email=${encodeURIComponent(data.email)}`);
+    if (busy || verifying || !validateStep()) return;
+    // Enter on an earlier step advances the wizard instead of registering early.
+    if (step < 2) { next(); return; }
+    const parsed = onboardingSchema.safeParse({ ...data, accountType, locale, agreed });
+    if (!parsed.success) { setError(parsed.error.issues[0].message); return; }
+    setBusy(true);
+    setError("");
+    try {
+      if (!registered) {
+        const result = await authClient.signUp.email({ name: data.fullName.trim(), email: data.email.trim(),
+          password: data.password, callbackURL: localizePath("/workspace", locale) });
+        if (result.error) { setError(result.error.message || "Could not create your account."); return; }
+        setRegistered(true);
+        setData(current => ({ ...current, password: "", confirmPassword: "" }));
+      }
+      const { data: session } = await authClient.getSession({ query: { disableCookieCache: true } });
+      if (!session?.user?.emailVerified || !session.user.phoneNumberVerified || session.user.phoneNumber !== parsed.data.phone) {
+        setVerifying(true);
+        return;
+      }
+      const response = await fetch("/api/onboarding", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
+      const result = await response.json();
+      if (!response.ok) { setError(result.error || "Could not save your profile. Please try again."); return; }
+      router.replace("/workspace");
+      router.refresh();
+    } catch { setError("Could not reach the server. Please try again."); }
+    finally { setBusy(false); }
   };
 
   const heading = isClient
@@ -175,18 +201,18 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
             <p>{t(description[step])}</p>
           </div>
 
-          {step === 0 && (
+          {!verifying && step === 0 && (
             <div className="authFields">
-              <label className="fieldWide"><span>{t("Full name")}</span><input autoFocus value={data.fullName} onChange={(event) => update("fullName", event.target.value)} placeholder={t("Your full name")} autoComplete="name" /></label>
-              <label className="fieldWide"><span>{t("Email address")}</span><input type="email" value={data.email} onChange={(event) => update("email", event.target.value)} placeholder={isClient ? t("you@company.com") : t("you@example.com")} autoComplete="email" /></label>
+              <label className="fieldWide"><span>{t("Full name")}</span><input autoFocus value={data.fullName} onChange={(event) => update("fullName", event.target.value)} placeholder={t("Your full name")} disabled={registered} autoComplete="name" /></label>
+              <label className="fieldWide"><span>{t("Email address")}</span><input type="email" value={data.email} onChange={(event) => update("email", event.target.value)} placeholder={isClient ? t("you@company.com") : t("you@example.com")} disabled={registered} autoComplete="email" /></label>
               <label className="fieldWide"><span>{t("Mobile number")}</span><input type="tel" value={data.phone} onChange={(event) => update("phone", event.target.value)} placeholder="+91 98765 43210" autoComplete="tel" /></label>
-              <label><span>{t("Password")}</span><input type="password" value={data.password} onChange={(event) => update("password", event.target.value)} placeholder={t("Create password")} autoComplete="new-password" /></label>
-              <label><span>{t("Confirm password")}</span><input type="password" value={data.confirmPassword} onChange={(event) => update("confirmPassword", event.target.value)} placeholder={t("Repeat password")} autoComplete="new-password" /></label>
-              <p className="passwordHint fieldWide">{t("Minimum 8 characters with uppercase, lowercase, and a number. Your mobile number can also be used for OTP sign-in.")}</p>
+              {!registered && <><label><span>{t("Password")}</span><PasswordInput value={data.password} onChange={(event) => update("password", event.target.value)} placeholder={t("Create password")} autoComplete="new-password" /></label>
+              <label><span>{t("Confirm password")}</span><PasswordInput value={data.confirmPassword} onChange={(event) => update("confirmPassword", event.target.value)} placeholder={t("Repeat password")} autoComplete="new-password" /></label>
+              <p className="passwordHint fieldWide">{t("Minimum 8 characters with uppercase, lowercase, and a number. Keep your password private.")}</p></>}
             </div>
           )}
 
-          {step === 1 && isClient && (
+          {!verifying && step === 1 && isClient && (
             <div className="authFields">
               <label><span>{t("Company")}</span><input autoFocus value={data.company} onChange={(event) => update("company", event.target.value)} placeholder={t("Company name")} autoComplete="organization" /></label>
               <label><span>{t("Your role")}</span><select value={data.role} onChange={(event) => update("role", event.target.value)}><option value="">{t("Select your role")}</option><option value="Founder / Owner">{t("Founder / Owner")}</option><option value="Product Leader">{t("Product Leader")}</option><option value="Technology Leader">{t("Technology Leader")}</option><option value="Operations Leader">{t("Operations Leader")}</option><option value="Other">{t("Other")}</option></select></label>
@@ -197,7 +223,7 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
             </div>
           )}
 
-          {step === 1 && !isClient && (
+          {!verifying && step === 1 && !isClient && (
             <div className="authFields">
               <label><span>{t("Primary role")}</span><select autoFocus value={data.primaryRole} onChange={(event) => update("primaryRole", event.target.value)}><option value="">{t("Select role")}</option><option value="Product / Business Analyst">{t("Product / Business Analyst")}</option><option value="UI / UX Designer">{t("UI / UX Designer")}</option><option value="Frontend Engineer">{t("Frontend Engineer")}</option><option value="Backend Engineer">{t("Backend Engineer")}</option><option value="Full-stack Engineer">{t("Full-stack Engineer")}</option><option value="QA Engineer">{t("QA Engineer")}</option><option value="DevOps / Cloud Engineer">{t("DevOps / Cloud Engineer")}</option><option value="Delivery Lead">{t("Delivery Lead")}</option></select></label>
               <label><span>{t("Experience")}</span><select value={data.experience} onChange={(event) => update("experience", event.target.value)}><option value="">{t("Select experience")}</option><option value="0–2 years">{t("0–2 years")}</option><option value="3–5 years">{t("3–5 years")}</option><option value="6–9 years">{t("6–9 years")}</option><option value="10+ years">{t("10+ years")}</option></select></label>
@@ -206,7 +232,7 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
             </div>
           )}
 
-          {step === 2 && isClient && (
+          {!verifying && step === 2 && isClient && (
             <div className="authFields">
               <label className="fieldWide"><span>{t("Target timeline")}</span><select autoFocus value={data.timeline} onChange={(event) => update("timeline", event.target.value)}><option value="">{t("Choose a timeline")}</option><option value="Immediate — start this week">{t("Immediate — start this week")}</option><option value="2–4 weeks">{t("2–4 weeks")}</option><option value="1–3 months">{t("1–3 months")}</option><option value="Exploring options">{t("Exploring options")}</option></select></label>
               <label className="fieldWide"><span>{t("Indicative budget")}</span><select value={data.budget} onChange={(event) => update("budget", event.target.value)}><option value="">{t("Choose a range")}</option><option value="₹1L–₹5L">{t("₹1L–₹5L")}</option><option value="₹5L–₹15L">{t("₹5L–₹15L")}</option><option value="₹15L–₹50L">{t("₹15L–₹50L")}</option><option value="₹50L+">{t("₹50L+")}</option><option value="Not decided yet">{t("Not decided yet")}</option></select></label>
@@ -214,7 +240,7 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
             </div>
           )}
 
-          {step === 2 && !isClient && (
+          {!verifying && step === 2 && !isClient && (
             <div className="authFields">
               <label><span>{t("Location")}</span><input autoFocus value={data.location} onChange={(event) => update("location", event.target.value)} placeholder={t("City, country")} autoComplete="address-level2" /></label>
               <label><span>{t("Weekly availability")}</span><select value={data.availability} onChange={(event) => update("availability", event.target.value)}><option value="">{t("Select availability")}</option><option value="10–20 hours / week">{t("10–20 hours / week")}</option><option value="20–30 hours / week">{t("20–30 hours / week")}</option><option value="30–40 hours / week">{t("30–40 hours / week")}</option><option value="Full-time availability">{t("Full-time availability")}</option></select></label>
@@ -223,13 +249,14 @@ export default function SignupFlow({ accountType }: { accountType: AccountType }
             </div>
           )}
 
-          {step === 2 && <label className="authConsent"><input type="checkbox" checked={agreed} onChange={(event) => { setAgreed(event.target.checked); setError(""); }} /><span>{t("I agree to the terms and allow Vaniyathans to use this information to create and operate my {type} account.", { type: t(accountType) })}</span></label>}
+          {!verifying && step === 2 && <label className="authConsent"><input type="checkbox" checked={agreed} onChange={(event) => { setAgreed(event.target.checked); setError(""); }} /><span>{t("I agree to the terms and allow Vaniyathans to use this information to create and operate my {type} account.", { type: t(accountType) })}</span></label>}
+          {verifying && <ContactVerification email={data.email.trim()} initialPhone={data.phone} onVerified={phone => { update("phone", phone); setVerifying(false); }} />}
           {error && <p className="authError" role="alert">{t(error)}</p>}
 
-          <div className="authActions">
+          {!verifying && <div className="authActions">
             {step > 0 ? <button className="authBack" type="button" onClick={() => { setStep((current) => current - 1); setError(""); }}><ArrowIcon direction="left" /> {t("Previous")}</button> : <span />}
-            {step < 2 ? <button className="authPrimary" type="button" onClick={next}>{t("Continue")} <ArrowIcon /></button> : <button className="authPrimary" type="submit">{t("Create {type} account", { type: t(accountType) })} <ArrowIcon /></button>}
-          </div>
+            {step < 2 ? <button className="authPrimary" type="button" onClick={next}>{t("Continue")} <ArrowIcon /></button> : <button className="authPrimary" type="submit" disabled={busy}>{busy ? t("Saving…") : registered ? t("Finish your profile") : t("Create {type} account", { type: t(accountType) })} <ArrowIcon /></button>}
+          </div>}
           <p className="authSupport">{t("Need account help?")} <a href="mailto:support@vaniyathans.com">{t("support@vaniyathans.com")}</a></p>
         </form>
       </section>

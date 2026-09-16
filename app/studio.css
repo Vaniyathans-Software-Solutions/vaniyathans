@@ -1,9 +1,6 @@
 /* Account selection, onboarding, and Workspace Studio */
 .accountChoicePage,
 .authPage { text-transform: uppercase; }
-.authPage input,
-.authPage textarea,
-.authPage select { text-transform: uppercase; }
 .accountChoicePage {
   min-height: 100svh;
   overflow: hidden;
@@ -123,6 +120,12 @@
   transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 .authFields input, .authFields select { height: 52px; padding: 0 15px; }
+.passwordInput { position: relative; display: block; width: 100%; }
+.authFields .passwordInput input { padding-inline-end: 52px; }
+.passwordToggle { position: absolute; inset-inline-end: 4px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: #626377; cursor: pointer; }
+.passwordToggle:hover { color: var(--purple); }
+.passwordToggle:focus-visible { outline: 2px solid var(--purple); outline-offset: -2px; }
+.passwordToggle:disabled { opacity: .5; cursor: not-allowed; }
 .authFields textarea { min-height: 112px; padding: 14px 15px; resize: vertical; }
 .authFields input:focus, .authFields select:focus, .authFields textarea:focus,
 .itemComposer input:focus, .itemComposer select:focus { border-color: var(--purple); background: #fff; box-shadow: 0 0 0 4px rgba(92, 47, 219, .09); }
@@ -157,7 +160,7 @@
 .authMethodTabs button.isActive { background: #fff; color: #4e2dbf; box-shadow: 0 7px 18px rgba(35, 37, 67, .09); }
 .signinFields { margin-top: 22px; }
 .authFields input:disabled { background: #efeff4; color: #858697; cursor: not-allowed; }
-.otpInput { font-family: var(--font-geist-mono) !important; font-size: 20px !important; letter-spacing: .3em; text-align: center; }
+.authFields .otpInput { font-size: 20px; letter-spacing: .3em; text-align: center; }
 .otpStatus { display: grid; grid-template-columns: 1fr auto; gap: 5px 16px; padding: 14px 16px; border: 1px solid rgba(32, 185, 128, .22); border-radius: 12px; background: rgba(87, 242, 197, .08); }
 .otpStatus span { color: #477565; font-size: 14px; }
 .otpStatus strong { grid-column: 1; color: #167b5b; font-family: var(--font-geist-mono); font-size: 14px; }

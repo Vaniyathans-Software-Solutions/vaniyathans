@@ -1,0 +1,179 @@
+.journey {
+  --journey-ink: #192345;
+  --journey-font: var(--locale-font, "Arial"), sans-serif;
+  position: relative;
+  isolation: isolate;
+  color: var(--journey-ink);
+  background: radial-gradient(ellipse at 0 15%, #008cff35, transparent 50%), radial-gradient(ellipse at 100% 85%, #f000df28, transparent 50%), var(--brand-night);
+  font-family: var(--journey-font);
+  text-transform: none;
+}
+/* Reserve space for the fixed site header and pitch navigation. */
+:global(#top) > .journey { display: block !important; height: 100svh; min-height: 0; padding: 102px clamp(20px, 3vw, 60px) 88px; scroll-margin-top: 0; }
+.inner { width: min(100%, 1640px); height: 100%; margin-inline: auto; min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 14px; }
+.header { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.eyebrow { display: flex; align-items: center; gap: 9px; margin: 0; font-size: 12px; line-height: 1.4; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; color: #c9d4f2; }
+.eyebrow > span { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-cyan); box-shadow: 0 0 15px #00cfeeaa; }
+.mapLink { display: inline-flex; align-items: center; gap: 12px; min-height: 32px; color: #badaff; font-size: 14px; font-weight: 650; }
+.mapLink:hover { color: white; }
+.journey :is(button, a, aside):focus-visible { outline: 3px solid #8a3dff; outline-offset: 3px; }
+.game { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: white; border: 1px solid #ffffff55; border-radius: 24px; box-shadow: 0 20px 80px #008cff20, 0 0 45px #f000df15; overflow: hidden; min-width: 0; min-height: 0; }
+.toolbar { padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 3px solid transparent; background: linear-gradient(#13132c, #13132c) padding-box, var(--brand-gradient) border-box; color: white; }
+.gameName { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.journey .gameName h2 { margin: 0; font: 800 clamp(23px, 2.3vw, 36px)/1.1 var(--journey-font); letter-spacing: -.035em; text-transform: none; }
+.gameIcon { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: var(--brand-gradient); color: #fff; font-size: 29px; }
+.gameEdition { margin-inline-start: 12px; padding-inline-start: 20px; border-inline-start: 1px solid #ffffff33; font-size: 11px; font-weight: 600; letter-spacing: .1em; color: #c2c7e0; }
+.gameTools { display: flex; align-items: center; gap: 8px; }
+.sparkCount { display: flex; align-items: center; gap: 6px; margin-inline-end: 10px; font-size: 20px; font-weight: 750; white-space: nowrap; }
+.sparkCount > span { color: var(--brand-orange); font-size: 26px; }
+.sparkCount small { color: #c2c7e0; font-size: 15px; font-weight: 500; }
+.game button { font-family: inherit; cursor: pointer; }
+.toolButton { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ffffff40; border-radius: 12px; background: #ffffff0b; color: white; font-size: 23px; }
+.toolButton:hover { background: #8a3dff55; border-color: #ac77ff; }
+.playArea { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(350px, 1fr); min-height: 0; }
+.map { position: relative; min-width: 0; min-height: 0; overflow: hidden; background: radial-gradient(ellipse at 10% 18%, #00cfee40, transparent 48%), radial-gradient(ellipse at 90% 50%, #8a3dff30, transparent 55%), radial-gradient(ellipse at 65% 100%, #ff427935, transparent 45%), #f4f7ff; }
+.map::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(#5964aa30 1px, transparent 1px); background-size: 20px 20px; pointer-events: none; mask-image: linear-gradient(transparent, #000 18%, #000 80%, transparent); }
+.canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.mapCaption { position: absolute; z-index: 2; top: 20px; inset-inline-start: 24px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 750; letter-spacing: .09em; color: #46557e; pointer-events: none; }
+.liveDot { width: 7px; height: 7px; border-radius: 50%; background: #7024d9; }
+.mapHint { position: absolute; bottom: 14px; inset-inline: 10px; margin: 0; text-align: center; color: #59617b; font-size: 13px; pointer-events: none; }
+.checkpoints { margin: 0; padding: 0; list-style: none; }
+.checkpoint { position: absolute; z-index: 2; left: var(--fallback-x); top: var(--fallback-y); display: flex; align-items: center; gap: 7px; transform: translate(-50%, -50%); padding: 6px 10px 6px 6px; min-height: 40px; max-width: 30%; border: 1px solid color-mix(in srgb, var(--checkpoint-color) 40%, white); border-radius: 11px; background: #ffffffed; box-shadow: 0 4px 12px #343b7210; color: #303c5b; font-size: clamp(12px, 1.05vw, 16px); font-weight: 700; line-height: 1.2; transition: background .2s, border-color .2s, box-shadow .2s; }
+.checkpoint > span { display: grid; place-items: center; flex-shrink: 0; width: 25px; height: 25px; color: white; background: var(--checkpoint-color); border-radius: 7px; font-size: 12px; font-weight: 800; }
+.checkpoint:disabled { cursor: default; color: #57627c; }
+.checkpoint[data-active="true"] { border: 2px solid var(--checkpoint-color); background: white; box-shadow: 0 0 0 4px color-mix(in srgb, var(--checkpoint-color) 16%, transparent), 0 6px 18px #343b721a; color: #192345; }
+.checkpoint:enabled:hover { background: color-mix(in srgb, var(--checkpoint-color) 10%, white); }
+.fallbackTrack { position: absolute; inset: 20% 22%; border: 5px solid #8a3dff; border-inline-start-color: #00cfee; border-bottom-color: #ff4279; border-radius: 36px; opacity: .6; }
+.map[data-render-mode="3d"] .fallbackTrack { display: none; }
+.map[data-render-mode="fallback"] .canvas { visibility: hidden; }
+.map:not([data-render-mode="3d"]) .checkpoint { left: var(--fallback-x) !important; top: var(--fallback-y) !important; }
+.map:not([data-render-mode="3d"]) .checkpoint::before { content: "✦"; position: absolute; bottom: calc(100% + 10px); left: calc(50% - 23px); display: grid; place-items: center; width: 46px; height: 38px; background: #fff; border-radius: 50%; color: var(--checkpoint-color); font-size: 25px; box-shadow: 0 7px 0 color-mix(in srgb, var(--checkpoint-color) 30%, white), 0 14px 17px #4b4b9920; }
+.mission { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #a88add #f8f5ff; padding: clamp(16px, 2.3svh, 28px) clamp(20px, 2.3vw, 36px); border-inline-start: 1px solid #ddd6f5; background: linear-gradient(155deg, color-mix(in srgb, var(--mission-color) 8%, white), white 55%); }
+.mission > * { flex-shrink: 0; }
+.missionEyebrow { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: .1em; color: #7024d9; margin: 0 0 12px; line-height: 1.5; }
+.missionEyebrow > span:not(.ofNine) { width: 7px; height: 7px; border-radius: 50%; background: var(--brand-magenta); }
+.journey .mission h3 { font-family: var(--journey-font); text-transform: none; font-weight: 800; font-size: clamp(28px, 2.7vw, 42px); line-height: 1.08; letter-spacing: -.04em; margin: 0 0 10px; outline: none; overflow-wrap: anywhere; }
+.missionDescription { font-size: clamp(15px, 1.2vw, 18px); color: #59617b; line-height: 1.5; margin: 0 0 12px; }
+.missionSubtitle { font-size: 16px; color: color-mix(in srgb, var(--mission-color) 60%, #192345); font-weight: 750; margin: -2px 0 8px; }
+.welcomeArt { height: clamp(44px, 8svh, 80px); position: relative; margin-bottom: 14px; width: 105px; }
+.welcomeArt > span { position: absolute; font-size: clamp(48px, 8svh, 78px); line-height: 1; color: var(--brand-purple); text-shadow: 4px 4px 0 #f000df44; transform: rotate(-12deg); }
+.welcomeArt i { position: absolute; font-style: normal; color: #eaa000; font-size: 30px; top: -5px; right: 4px; }
+.welcomeArt b { position: absolute; color: #008cff; font-size: 34px; bottom: -2px; right: 4px; }
+.questFacts { display: flex; flex-wrap: wrap; gap: 7px; margin: 2px 0 18px; }
+.questFacts span { border: 1px solid #8a3dff33; border-radius: 7px; padding: 6px 8px; background: #8a3dff08; font-size: 12px; color: #62449a; }
+.primary { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; border: none; border-radius: 12px; padding: 12px 18px; min-height: 48px; color: #fff; background: var(--brand-action-gradient); font-size: 16px; font-weight: 750; line-height: 1.4; box-shadow: 0 6px 18px #7024d92b; margin-top: auto; }
+.primary:hover { filter: brightness(1.12); }
+.primary > span { font-size: 23px; font-weight: 500; line-height: 1; }
+.noPressure { margin: 10px 0 0; text-align: center; font-size: 12px; color: #666f88; }
+.missionTop { display: flex; align-items: start; justify-content: space-between; gap: 8px; }
+.ofNine { margin-inline-start: 1px; color: #727a92; letter-spacing: 0; }
+.rewardChip { padding: 4px 8px; border: 1px solid #eea00055; border-radius: 7px; font-size: 13px; font-weight: 700; color: #885900; background: #fff2ce; white-space: nowrap; }
+.challenge { border-top: 1px solid #ddd6f5; padding-top: 12px; }
+.challenge > p { margin: 0 0 10px; font-size: 16px; font-weight: 750; line-height: 1.4; color: #263453; }
+.options { display: grid; gap: 8px; }
+.options button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 9px 12px; border: 1px solid #d5d9eb; border-radius: 10px; background: #fff; color: #3d4965; font-size: 15px; line-height: 1.4; text-align: start; }
+.options button > span { flex: 0 0 26px; display: grid; place-items: center; height: 26px; border-radius: 7px; background: #eee6ff; color: #7024d9; font-size: 13px; font-weight: 750; }
+.options button:hover:enabled { border-color: #8a3dff; background: #f4edff; }
+.options button:disabled { cursor: default; }
+.options button[data-correct="true"] { border-color: #20a778; background: #e7fbf2; color: #186046; }
+.options button[data-correct="true"] > span { background: #15855f; color: white; }
+.options button[data-wrong="true"] { border-color: #dc9900; background: #fff5d9; color: #785400; }
+.feedback { padding-block: 12px; color: #606a83; font-size: 14px; line-height: 1.45; }
+.feedback p { margin: 0; }
+.feedback[data-success="true"] { color: #186046; }
+.feedback strong { font-weight: 800; }
+.gameFooter { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 24px; border-top: 1px solid #ddd6f5; background: #f7f5ff; }
+.progressGroup { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.progressGroup > span { font-size: 11px; font-weight: 750; letter-spacing: .08em; color: #59617b; white-space: nowrap; }
+.progress { display: flex; align-items: center; gap: 5px; }
+.progress i { width: clamp(14px, 1.8vw, 30px); height: 8px; border-radius: 4px; background: #dedcec; }
+.progress i[data-filled="true"] { background: var(--checkpoint-color); box-shadow: 0 0 8px color-mix(in srgb, var(--checkpoint-color) 25%, transparent); }
+.progressGroup strong { font-size: 14px; color: #7024d9; font-weight: 750; }
+.controlsHint { margin: 0; font-size: 12px; color: #626b84; }
+.launchBanner { position: absolute; z-index: 3; top: 38%; inset-inline: 8%; padding: 24px; border: 2px solid #8a3dff55; border-radius: 20px; background: #fffffff2; box-shadow: 0 12px 60px #7024d940; text-align: center; font-size: clamp(28px, 4vw, 54px); font-weight: 800; letter-spacing: -.05em; color: #7024d9; }
+.launchBanner > span { color: #eaa000; margin-inline-end: 12px; }
+.launchBanner small { display: block; margin-top: 8px; font-size: 15px; font-weight: 500; letter-spacing: 0; color: #59617b; }
+.trophy { color: #f0ab00; text-shadow: 3px 5px 0 #ff427944; font-size: 70px; line-height: 1; margin: 3px 0 16px; }
+.finishScore { color: #7024d9; font-size: 36px; font-weight: 800; margin: 8px 0 24px; }
+.finishScore span { display: block; font-size: 14px; color: #59617b; font-weight: 500; margin-top: 3px; }
+.textButton { background: none; border: none; padding: 12px 8px 0; color: #7024d9; font-size: 14px; font-weight: 700; }
+@media (max-width: 1200px) { .gameEdition { display: none; } .controlsHint span { display: none; } }
+@media (min-width: 981px) and (max-height: 800px) {
+  .inner { gap: 10px; }
+  .toolbar { padding-block: 9px; }
+  .mission { padding-block: 16px; }
+  .journey .mission h3 { font-size: 30px; }
+  .missionDescription { font-size: 15px; margin-bottom: 8px; }
+  .missionEyebrow { margin-bottom: 8px; }
+  .missionSubtitle { font-size: 15px; }
+  .challenge { padding-top: 8px; }
+  .challenge > p { font-size: 15px; margin-bottom: 8px; }
+  .options { gap: 6px; }
+  .options button { padding-block: 7px; min-height: 42px; }
+  .feedback { padding-block: 9px; font-size: 13px; }
+  .gameFooter { padding-block: 10px; }
+  .welcomeArt { height: 48px; margin-bottom: 10px; }
+  .welcomeArt > span { font-size: 50px; }
+}
+@media (max-width: 980px) {
+  :global(#top) > .journey { padding: 94px 12px 84px; }
+  .inner { gap: 8px; }
+  .header { justify-content: flex-end; }
+  .header .eyebrow { display: none; }
+  .mapLink { font-size: 13px; }
+  .game { border-radius: 18px; }
+  .toolbar { padding: 10px 12px; gap: 8px; }
+  .gameName { gap: 8px; }
+  .journey .gameName h2 { font-size: clamp(19px, 4.3vw, 28px); }
+  .gameIcon { display: none; }
+  .gameTools { gap: 5px; }
+  .sparkCount { font-size: 16px; gap: 4px; margin-inline-end: 3px; }
+  .sparkCount > span { font-size: 20px; }
+  .sparkCount small { font-size: 12px; }
+  .toolButton { width: 40px; height: 40px; font-size: 21px; }
+  .playArea { grid-template-columns: minmax(0, 1fr); grid-template-rows: clamp(150px, 24svh, 220px) minmax(0, 1fr); }
+  .mapCaption, .mapHint { display: none; }
+  .mission { padding: 18px; border-inline-start: none; border-top: 2px solid #8a3dff33; }
+  .journey .mission h3 { font-size: 30px; }
+  .missionDescription, .options button { font-size: 16px; }
+  .welcomeArt, .questFacts { display: none; }
+  .missionEyebrow { margin-bottom: 8px; font-size: 11px; }
+  .primary { min-height: 48px; font-size: 16px; }
+  .options button { min-height: 48px; }
+  .gameFooter { padding: 12px 16px; }
+  .controlsHint { display: none; }
+  .progressGroup { width: 100%; justify-content: space-between; gap: 10px; }
+  .progress { flex: 1; max-width: 220px; }
+  .progress i { flex: 1; width: auto; }
+  .progressGroup > span { font-size: 10px; }
+  /* A compact checkpoint map keeps all nine stages readable on a phone. */
+  .map .canvas, .fallbackTrack { display: none; }
+  .checkpoints { position: absolute; inset: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .checkpoints li { display: flex; min-width: 0; }
+  .map .checkpoint { position: static; transform: none; width: 100%; max-width: none; min-height: 0; padding: 5px; gap: 5px; font-size: 12px; }
+  .checkpoint > span { width: 23px; height: 26px; font-size: 11px; }
+  .map:not([data-render-mode="3d"]) .checkpoint::before { display: none; }
+  .launchBanner { top: 12%; padding: 16px 10px; font-size: 28px; }
+  .launchBanner small { font-size: 13px; }
+}
+@media (max-width: 980px) and (max-height: 700px) {
+  .playArea { grid-template-rows: 70px minmax(0, 1fr); }
+  .checkpoints { inset: 10px; display: flex; overflow-x: auto; padding: 3px; scrollbar-width: thin; }
+  .checkpoints li { flex: 0 0 auto; }
+  .map .checkpoint { width: auto; padding-inline: 7px; font-size: 13px; }
+  .mission { padding: 16px; }
+  .noPressure { display: none; }
+}
+@media (max-height: 540px) and (min-width: 601px) {
+  :global(#top) > .journey { padding: 90px 12px 76px; }
+  .header { display: none; }
+  .inner { grid-template-rows: minmax(0, 1fr); }
+  .playArea { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: minmax(0, 1fr); }
+  .checkpoints { display: flex; flex-direction: column; overflow: auto; }
+  .checkpoints li { flex-shrink: 0; }
+  .map .checkpoint { min-height: 40px; width: 100%; }
+  .mission { padding: 12px 16px; border-top: 0; border-inline-start: 1px solid #ddd6f5; }
+  .toolbar { padding-block: 6px; }
+  .gameFooter { padding-block: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .checkpoint { transition: none; } }

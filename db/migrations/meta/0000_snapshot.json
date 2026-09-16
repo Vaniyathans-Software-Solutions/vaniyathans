@@ -1,0 +1,453 @@
+{
+  "id": "ef5753f0-c002-4880-b9ff-b6697658ec55",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "vss.account_profiles": {
+      "name": "account_profiles",
+      "schema": "vss",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "account_type": {
+          "name": "account_type",
+          "type": "account_type",
+          "typeSchema": "vss",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone_verified_at": {
+          "name": "phone_verified_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "locale": {
+          "name": "locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en'"
+        },
+        "terms_accepted_at": {
+          "name": "terms_accepted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "terms_version": {
+          "name": "terms_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "account_profiles_user_id_user_id_fk": {
+          "name": "account_profiles_user_id_user_id_fk",
+          "tableFrom": "account_profiles",
+          "tableTo": "user",
+          "schemaTo": "neon_auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "account_profiles_phone_unique": {
+          "name": "account_profiles_phone_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phone"
+          ]
+        },
+        "account_profiles_user_type_unique": {
+          "name": "account_profiles_user_type_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id",
+            "account_type"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "account_profiles_phone_e164": {
+          "name": "account_profiles_phone_e164",
+          "value": "\"vss\".\"account_profiles\".\"phone\" ~ '^[+][1-9][0-9]{7,14}$'"
+        },
+        "account_profiles_terms_version_nonempty": {
+          "name": "account_profiles_terms_version_nonempty",
+          "value": "length(trim(\"vss\".\"account_profiles\".\"terms_version\")) > 0"
+        },
+        "account_profiles_locale_nonempty": {
+          "name": "account_profiles_locale_nonempty",
+          "value": "length(trim(\"vss\".\"account_profiles\".\"locale\")) BETWEEN 2 AND 35"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "vss.client_profiles": {
+      "name": "client_profiles",
+      "schema": "vss",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "account_type": {
+          "name": "account_type",
+          "type": "account_type",
+          "typeSchema": "vss",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'client'"
+        },
+        "company": {
+          "name": "company",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_role": {
+          "name": "company_role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "client_profiles_account_fk": {
+          "name": "client_profiles_account_fk",
+          "tableFrom": "client_profiles",
+          "tableTo": "account_profiles",
+          "schemaTo": "vss",
+          "columnsFrom": [
+            "user_id",
+            "account_type"
+          ],
+          "columnsTo": [
+            "user_id",
+            "account_type"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "client_profiles_type_check": {
+          "name": "client_profiles_type_check",
+          "value": "\"vss\".\"client_profiles\".\"account_type\" = 'client'"
+        },
+        "client_profiles_company_nonempty": {
+          "name": "client_profiles_company_nonempty",
+          "value": "length(trim(\"vss\".\"client_profiles\".\"company\")) > 0"
+        },
+        "client_profiles_role_nonempty": {
+          "name": "client_profiles_role_nonempty",
+          "value": "length(trim(\"vss\".\"client_profiles\".\"company_role\")) > 0"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "vss.client_project_intakes": {
+      "name": "client_project_intakes",
+      "schema": "vss",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "project_name": {
+          "name": "project_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "epic": {
+          "name": "epic",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "outcome": {
+          "name": "outcome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_users": {
+          "name": "target_users",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timeline": {
+          "name": "timeline",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "budget": {
+          "name": "budget",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "client_project_intakes_user_idx": {
+          "name": "client_project_intakes_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "client_project_intakes_user_id_client_profiles_user_id_fk": {
+          "name": "client_project_intakes_user_id_client_profiles_user_id_fk",
+          "tableFrom": "client_project_intakes",
+          "tableTo": "client_profiles",
+          "schemaTo": "vss",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "client_project_intakes_required_fields": {
+          "name": "client_project_intakes_required_fields",
+          "value": "length(trim(\"vss\".\"client_project_intakes\".\"project_name\")) > 0 AND length(trim(\"vss\".\"client_project_intakes\".\"epic\")) > 0 AND length(trim(\"vss\".\"client_project_intakes\".\"outcome\")) > 0 AND length(trim(\"vss\".\"client_project_intakes\".\"target_users\")) > 0 AND length(trim(\"vss\".\"client_project_intakes\".\"timeline\")) > 0 AND length(trim(\"vss\".\"client_project_intakes\".\"budget\")) > 0"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "vss.workforce_profiles": {
+      "name": "workforce_profiles",
+      "schema": "vss",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "account_type": {
+          "name": "account_type",
+          "type": "account_type",
+          "typeSchema": "vss",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'workforce'"
+        },
+        "primary_role": {
+          "name": "primary_role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "experience": {
+          "name": "experience",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skills": {
+          "name": "skills",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timezone": {
+          "name": "timezone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "availability": {
+          "name": "availability",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "portfolio": {
+          "name": "portfolio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "workforce_profiles_account_fk": {
+          "name": "workforce_profiles_account_fk",
+          "tableFrom": "workforce_profiles",
+          "tableTo": "account_profiles",
+          "schemaTo": "vss",
+          "columnsFrom": [
+            "user_id",
+            "account_type"
+          ],
+          "columnsTo": [
+            "user_id",
+            "account_type"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "workforce_profiles_type_check": {
+          "name": "workforce_profiles_type_check",
+          "value": "\"vss\".\"workforce_profiles\".\"account_type\" = 'workforce'"
+        },
+        "workforce_profiles_required_fields": {
+          "name": "workforce_profiles_required_fields",
+          "value": "length(trim(\"vss\".\"workforce_profiles\".\"primary_role\")) > 0 AND length(trim(\"vss\".\"workforce_profiles\".\"experience\")) > 0 AND length(trim(\"vss\".\"workforce_profiles\".\"skills\")) > 0 AND length(trim(\"vss\".\"workforce_profiles\".\"timezone\")) > 0 AND length(trim(\"vss\".\"workforce_profiles\".\"location\")) > 0 AND length(trim(\"vss\".\"workforce_profiles\".\"availability\")) > 0"
+        },
+        "workforce_profiles_portfolio_url": {
+          "name": "workforce_profiles_portfolio_url",
+          "value": "\"vss\".\"workforce_profiles\".\"portfolio\" IS NULL OR \"vss\".\"workforce_profiles\".\"portfolio\" ~ '^https?://[^[:space:]]+$'"
+        }
+      },
+      "isRLSEnabled": true
+    }
+  },
+  "enums": {
+    "vss.account_type": {
+      "name": "account_type",
+      "schema": "vss",
+      "values": [
+        "client",
+        "workforce"
+      ]
+    }
+  },
+  "schemas": {
+    "vss": "vss"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

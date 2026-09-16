@@ -40,7 +40,13 @@ body {
   font-family: var(--font-geist-sans), Arial, sans-serif;
   text-transform: uppercase;
 }
-input, textarea, select { text-transform: none; }
+/* Field values use readable text fonts independently of the display font. */
+:root body :is(input, textarea, select) {
+  font-family: var(--locale-font, system-ui), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+}
 ::selection { background: var(--coral); color: #fff; }
 a { color: inherit; text-decoration: none; }
 .arrowIcon { display: inline-block; width: 20px; height: 20px; flex: 0 0 auto; vertical-align: middle; }

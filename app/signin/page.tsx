@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description: "One secure sign-in for Vaniyathans clients and workforce members.",
   openGraph: {
     title: "Sign in to Vaniyathans Workspace Studio",
-    description: "Access your client or workforce account with email or mobile OTP.",
+    description: "Access your client or workforce account with email and password.",
     images: [],
   },
   twitter: {
     card: "summary",
     title: "Sign in to Vaniyathans Workspace Studio",
-    description: "Access your client or workforce account with email or mobile OTP.",
+    description: "Access your client or workforce account with email and password.",
     images: [],
   },
 };
