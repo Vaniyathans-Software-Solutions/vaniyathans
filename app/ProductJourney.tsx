@@ -3,28 +3,23 @@ import Image from "next/image";
 import { journeySteps } from "./journey-game";
 import styles from "./ProductJourney.module.css";
 
-// Artwork cells and translated copy belong to a stage, regardless of its order.
+// Artwork cells belong to a stage, regardless of its order.
 const mapDetails: Record<(typeof journeySteps)[number]["title"], {
   illustration: number;
-  existingCopy: [string, string];
   anchor?: string;
 }> = {
-  Discover: { illustration: 0, existingCopy: ["Share your idea", "Define the problem and goal."], anchor: "journey-discover" },
-  "Define Users": { illustration: 2, existingCopy: ["Focus on users", "Define needs and success criteria."] },
-  Strategize: { illustration: 1, existingCopy: ["Shape the scope", "Turn your idea into features."] },
-  Prioritize: { illustration: 4, existingCopy: ["Set priorities", "Plan what matters most."] },
-  Plan: { illustration: 3, existingCopy: ["Assign the work", "Set tasks and clear ownership."], anchor: "journey-plan" },
-  Design: { illustration: 5, existingCopy: ["Design the experience", "Make every interaction intuitive."] },
-  Build: { illustration: 6, existingCopy: ["Build together", "Deliver in small, reviewed increments."], anchor: "journey-launch" },
-  Test: { illustration: 7, existingCopy: ["Test every detail", "Check quality, speed, and reliability."] },
-  Launch: { illustration: 8, existingCopy: ["Launch and learn", "Release, gather feedback, and improve."] },
+  Discover: { illustration: 0, anchor: "journey-discover" },
+  "Define Users": { illustration: 2 },
+  Strategize: { illustration: 1 },
+  Prioritize: { illustration: 4 },
+  Plan: { illustration: 3, anchor: "journey-plan" },
+  Design: { illustration: 5 },
+  Build: { illustration: 6, anchor: "journey-launch" },
+  Test: { illustration: 7 },
+  Launch: { illustration: 8 },
 };
 
 export default function ProductJourney({ t }: { t: (message: string) => string }) {
-  const copy = (message: string, existing: string) => {
-    const translated = t(message);
-    return translated !== message || t(existing) === existing ? translated : t(existing);
-  };
   return (
     <section className={styles.journey} id="journey" data-pitch-section aria-labelledby="journey-title">
       <div className={styles.inner}>
@@ -49,8 +44,8 @@ export default function ProductJourney({ t }: { t: (message: string) => string }
               <div className={styles.illustration} aria-hidden="true" />
               <div className={styles.copy}>
                 <h3>{t(step.title)}</h3>
-                <p className={styles.stepSubtitle}>{copy(step.subtitle, details.existingCopy[0])}</p>
-                <p className={styles.description}>{copy(step.description, details.existingCopy[1])}</p>
+                <p className={styles.stepSubtitle}>{t(step.subtitle)}</p>
+                <p className={styles.description}>{t(step.description)}</p>
               </div>
               {index < journeySteps.length - 1 && <span className={styles.connector} aria-hidden="true">→</span>}
             </li>;

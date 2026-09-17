@@ -85,6 +85,42 @@ test('English dictionary supplies copy and missing messages still interpolate sa
   assert.equal(translator('bn', {})('Create {type} account', { type: 'client' }), 'Create client account');
 });
 
+test('roadmap stages have current titles, subtitles, and descriptions in every enabled language', () => {
+  const { journeySteps } = loadModule('app/journey-game.ts');
+  const keys = journeySteps.flatMap(step => [step.title, step.subtitle, step.description]);
+  for (const locale of languages.locales) {
+    for (const key of keys) {
+      assert.ok(Object.hasOwn(messages, key), `Source catalog: ${key}`);
+      assert.ok(dictionaries[locale][key]?.trim(), `${locale}: missing roadmap copy: ${key}`);
+      if (locale !== 'en') assert.notEqual(dictionaries[locale][key], key, `${locale}: untranslated roadmap copy: ${key}`);
+    }
+  }
+});
+
+test('the entire journey game is translated, including conditional labels and every answer', () => {
+  const { journeySteps } = loadModule('app/journey-game.ts');
+  const keys = new Set(journeySteps.flatMap(step => [
+    step.title, step.subtitle, step.description, step.question, ...step.options, step.hint, step.reward,
+  ]));
+  const source = ts.createSourceFile('ProductJourneyGame.tsx', fs.readFileSync(path.join(root, 'app/ProductJourneyGame.tsx'), 'utf8'), ts.ScriptTarget.Latest, true);
+  const collect = node => {
+    if (ts.isStringLiteral(node)) keys.add(node.text);
+    ts.forEachChild(node, collect);
+  };
+  const visit = node => {
+    if (ts.isCallExpression(node) && node.expression.getText(source) === 't' && node.arguments[0]) collect(node.arguments[0]);
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  for (const locale of languages.locales) {
+    for (const key of keys) {
+      assert.ok(Object.hasOwn(messages, key), `Source catalog: ${key}`);
+      assert.ok(dictionaries[locale][key]?.trim(), `${locale}: missing game copy: ${key}`);
+      if (locale !== 'en') assert.notEqual(dictionaries[locale][key], key, `${locale}: untranslated game copy: ${key}`);
+    }
+  }
+});
+
 test('visible labels and validation errors have translations; brand names and data stay literal', () => {
   const literal = new Set(['5D', 'WhatsApp', 'mail@vaniyathans.com ↗', 'support@vaniyathans.com', 'you@company.com', 'you@example.com', '₹1L–₹5L', '₹5L–₹15L', '₹15L–₹50L', '₹50L+', 'https://linkedin.com/in/your-profile', 'V', 'AK', 'MS', 'RV', 'NJ', 'Anand K.', 'Maya S.', 'Rahul V.', 'Nina J.', 'Priya S.']);
   for (const file of ['LandingPage.tsx', 'SiteHeader.tsx', 'HeroCarousel.tsx', 'PitchNavigation.tsx', 'signup/AccountChoice.tsx', 'signup/SignupFlow.tsx', 'signin/SigninForm.tsx', 'workspace/page.tsx']) {

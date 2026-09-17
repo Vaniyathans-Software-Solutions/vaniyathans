@@ -123,7 +123,7 @@ export default function ProductJourneyGame() {
               {!state.started ? <>
                 <p className={styles.missionEyebrow}><span />{t("PLAYER ONE: YOU")}</p>
                 <div className={styles.welcomeArt} aria-hidden="true"><span>✦</span><i>✧</i><b>↗</b></div>
-                <h3 ref={mission} tabIndex={-1}>{t("Big ideas start")}<br />{t("with a little spark.")}</h3>
+                <h3 ref={mission} tabIndex={-1}>{t("Big ideas start with a little spark.")}</h3>
                 <p className={styles.missionDescription}>{t("Take your idea on an adventure. Make a choice at each checkpoint, collect nine sparks, and get ready for liftoff.")}</p>
                 <div className={styles.questFacts}><span>9 {t("checkpoints")}</span><span>~2 {t("minutes")}</span><span>{t("Your next big idea")}</span></div>
                 <button type="button" className={styles.primary} onClick={() => { dispatch({ type: "start" }); focusMission(); }}>{t("Let’s play")}<span aria-hidden="true">↗</span></button>
@@ -131,7 +131,7 @@ export default function ProductJourneyGame() {
               </> : state.launched ? <>
                 <p className={styles.missionEyebrow}><span />{t("ALL SYSTEMS GO")}</p>
                 <div className={styles.trophy} aria-hidden="true">✦</div>
-                <h3 ref={mission} tabIndex={-1}>{t("From a spark")}<br />{t("to something real.")}</h3>
+                <h3 ref={mission} tabIndex={-1}>{t("From a spark to something real.")}</h3>
                 <p className={styles.missionDescription}>{t("You navigated all nine stages. Now let’s turn your own idea into a product people love.")}</p>
                 <div className={styles.finishScore}>9 / 9 <span>{t("sparks collected")}</span></div>
                 <Link className={styles.primary} href="/signup/client">{t("Build my idea")}<span aria-hidden="true">↗</span></Link>

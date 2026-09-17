@@ -21,6 +21,7 @@
 .step { position: relative; display: grid; grid-template-columns: minmax(70px, .75fr) minmax(0, 1.25fr); align-items: center; gap: 10px; min-width: 0; padding: 18px 16px 16px; border: 2px solid color-mix(in srgb, var(--step-color) 55%, white); border-radius: 22px; background: white; box-shadow: 0 6px 0 color-mix(in srgb, var(--step-color) 14%, white); scroll-margin-top: 110px; }
 .number { position: absolute; top: -12px; inset-inline-start: 14px; display: grid; place-items: center; width: 34px; height: 30px; border-radius: 10px; background: var(--step-color); color: white; font-size: 16px; font-weight: 800; box-shadow: 0 0 0 4px #fafbff; }
 .illustration { width: 100%; aspect-ratio: 1; max-width: 140px; background: url('/business-journey-brand.png') var(--art-x) var(--art-y) / 300% 300%; }
+.copy { min-width: 0; overflow-wrap: anywhere; }
 .journey .copy h3 { margin: 0 0 5px; font: 800 clamp(19px, 1.7vw, 26px)/1.15 var(--journey-font); letter-spacing: -.03em; text-transform: none; }
 .stepSubtitle { margin: 0 0 5px; color: color-mix(in srgb, var(--step-color) 65%, #192345); font-size: 15px; font-weight: 700; line-height: 1.35; }
 .description { margin: 0; color: #59617b; font-size: 14px; line-height: 1.45; }
@@ -32,10 +33,10 @@
 .step:nth-child(4) .connector, .step:nth-child(5) .connector { inset-inline-end: auto; inset-inline-start: -26px; transform: rotate(180deg); }
 .tagline { margin: 24px 0 0; text-align: center; color: #7024d9; font-size: 14px; font-weight: 650; }
 @media (min-width: 981px) and (min-height: 700px) {
-  :global(#top) > .journey { height: 100svh; }
-  .inner { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 22px; }
+  /* Translated copy may need more than one viewport; never shrink its cards. */
+  .inner { min-height: calc(100svh - 198px); display: grid; grid-template-rows: auto minmax(min-content, 1fr) auto; gap: 22px; }
   .header, .tagline { margin: 0; }
-  .steps { grid-template-rows: repeat(3, minmax(0, 1fr)); }
+  .steps { grid-template-rows: repeat(3, minmax(min-content, 1fr)); }
   .step { min-height: 0; padding-block: 12px; }
   .illustration { max-width: min(140px, 14svh); }
 }
