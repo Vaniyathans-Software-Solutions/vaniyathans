@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useReducer, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import Link from "./i18n/LocalizedLink";
 import { useLocale } from "./i18n/LocaleProvider";
-import { initialJourney, journeyReducer, journeySteps } from "./journey-game";
+import { journeySteps } from "./journey-game";
+import { useJourney } from "./JourneyProvider";
+import JourneyAgent from "./JourneyAgent";
 import type { JourneyScene } from "./journey-scene";
 import styles from "./ProductJourneyGame.module.css";
 
 export default function ProductJourneyGame() {
   const { t } = useLocale();
-  const [state, dispatch] = useReducer(journeyReducer, initialJourney);
+  const { state, dispatch } = useJourney();
   const [renderMode, setRenderMode] = useState<"loading" | "3d" | "fallback">("loading");
   const [paused, setPaused] = useState(false);
   const map = useRef<HTMLDivElement>(null);
@@ -61,7 +63,7 @@ export default function ProductJourneyGame() {
     }, { rootMargin: "200px" });
     observer.observe(host);
     return () => { cancelled = true; observer.disconnect(); scene.current?.dispose(); scene.current = null; };
-  }, []);
+  }, [dispatch]);
 
   const focusMission = () => requestAnimationFrame(() => {
     mission.current?.closest("aside")?.scrollTo({ top: 0 });
@@ -138,6 +140,7 @@ export default function ProductJourneyGame() {
                 <button type="button" className={styles.textButton} onClick={() => { dispatch({ type: "reset" }); focusMission(); }}>{t("Play again")} ↺</button>
               </> : <>
                 <div className={styles.missionTop}><p className={styles.missionEyebrow}>{t("CHECKPOINT")} {String(state.active + 1).padStart(2, "0")}<span className={styles.ofNine}>/ 09</span></p><span className={styles.rewardChip}>✦ +1</span></div>
+                <div className={styles.missionAgent} role="status" aria-live="polite"><JourneyAgent index={state.active} /></div>
                 <h3 ref={mission} tabIndex={-1}>{t(step.title)}</h3>
                 <p className={styles.missionSubtitle}>{t(step.subtitle)}</p>
                 <p className={styles.missionDescription}>{t(step.description)}</p>

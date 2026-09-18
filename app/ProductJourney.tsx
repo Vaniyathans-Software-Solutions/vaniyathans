@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { journeySteps } from "./journey-game";
+import JourneyAgent from "./JourneyAgent";
 import styles from "./ProductJourney.module.css";
 
 // Artwork cells belong to a stage, regardless of its order.
@@ -41,6 +42,7 @@ export default function ProductJourney({ t }: { t: (message: string) => string }
               "--art-y": `${Math.floor(details.illustration / 3) * 50}%`,
             } as CSSProperties}>
               <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <div className={styles.agentCorner}><JourneyAgent index={index} /></div>
               <div className={styles.illustration} aria-hidden="true" />
               <div className={styles.copy}>
                 <h3>{t(step.title)}</h3>

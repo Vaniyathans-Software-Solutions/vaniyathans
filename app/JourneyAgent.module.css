@@ -1,0 +1,13 @@
+.agent { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 4px 11px 4px 5px; border: 1px solid color-mix(in srgb, var(--agent-color) 22%, white); border-radius: 15px; background: color-mix(in srgb, var(--agent-color) 5%, white); color: #192345; text-align: start; transition: box-shadow .2s, background .2s; }
+.avatar { flex: 0 0 42px; width: 42px; height: 42px; color: var(--agent-color); }
+.identity { display: grid; gap: 3px; min-width: 0; }
+.name { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 800; line-height: 1.2; }
+.ai { color: color-mix(in srgb, var(--agent-color) 65%, #192345); font-size: 9px; font-weight: 750; letter-spacing: .08em; }
+.status { display: flex; align-items: center; gap: 5px; color: #59617b; font-size: 10px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.status i { flex: 0 0 5px; height: 5px; border-radius: 50%; background: #929aae; }
+.agent[data-agent-status="active"] { background: color-mix(in srgb, var(--agent-color) 10%, white); border-color: var(--agent-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--agent-color) 12%, transparent); }
+.agent[data-agent-status="active"] .status { color: color-mix(in srgb, var(--agent-color) 65%, #192345); }
+.agent[data-agent-status="active"] .status i { background: var(--agent-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--agent-color) 16%, transparent); }
+.agent[data-agent-status="complete"] .status { color: #186046; }
+.agent[data-agent-status="complete"] .status i { background: #15855f; }
+@media (prefers-reduced-motion: reduce) { .agent { transition: none; } }

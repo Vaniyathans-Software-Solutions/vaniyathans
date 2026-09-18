@@ -6,6 +6,7 @@ import PitchNavigation from "./PitchNavigation";
 import BackgroundDoodles from "./BackgroundDoodles";
 import ProductJourney from "./ProductJourney";
 import ProductJourneyGame from "./ProductJourneyGame";
+import JourneyProvider from "./JourneyProvider";
 import "./landing-motion.css";
 
 export default async function LandingPage({ locale = "en" }: { locale?: Locale }) {
@@ -103,8 +104,10 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
           </ol>
         </section>
 
-        <ProductJourney t={t} />
-        <ProductJourneyGame />
+        <JourneyProvider>
+          <ProductJourney t={t} />
+          <ProductJourneyGame />
+        </JourneyProvider>
 
         <section className="contact" id="contact" data-pitch-section aria-labelledby="contact-title">
           <BackgroundDoodles variant="contact" />

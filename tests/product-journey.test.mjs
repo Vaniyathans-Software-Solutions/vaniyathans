@@ -1,6 +1,25 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { initialJourney, journeyReducer, journeySteps } from "../app/journey-game.ts";
+import { getJourneyAgentStatus, initialJourney, journeyReducer, journeySteps } from "../app/journey-game.ts";
+
+test("agent ownership follows progression, preserves completed work during review, and resets", () => {
+  const statuses = state => journeySteps.map((_, index) => getJourneyAgentStatus(state, index));
+  assert.ok(statuses(initialJourney).every(status => status === "ready"));
+  let state = journeyReducer(initialJourney, { type: "start" });
+  for (let i = 0; i < journeySteps.length; i++) {
+    assert.deepEqual(statuses(state).flatMap((status, index) => status === "active" ? [index] : []), [i]);
+    if (i === 3) assert.equal(journeySteps[state.active].agent, "Prion");
+    state = journeyReducer(state, { type: "answer", index: journeySteps[i].answer });
+    assert.equal(getJourneyAgentStatus(state, i), "complete");
+    state = journeyReducer(state, { type: "select", index: 0 });
+    assert.equal(getJourneyAgentStatus(state, 0), "complete", "review does not reactivate a completed agent");
+    if (i < journeySteps.length - 1) state = journeyReducer(state, { type: "next" });
+  }
+  state = journeyReducer(state, { type: "launch" });
+  assert.ok(statuses(state).every(status => status === "complete"));
+  state = journeyReducer(state, { type: "reset" });
+  assert.ok(statuses(state).every(status => status === "ready"));
+});
 
 test("checkpoints and launch stay locked until the preceding decisions are solved", () => {
   let state = journeyReducer(initialJourney, { type: "start" });
