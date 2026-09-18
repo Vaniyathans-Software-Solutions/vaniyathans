@@ -9,7 +9,7 @@ import RevealEffects from "./RevealEffects";
 import HeroCarousel, { heroSlides } from "./HeroCarousel";
 import SiteHeader from "./SiteHeader";
 
-const INTERACTIVE = 'a, button, input, textarea, select, summary, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="textbox"], [role="slider"], [role="combobox"], [role="listbox"], [role="menu"], [role="tablist"], video, audio';
+const INTERACTIVE = 'a, button, input, textarea, select, summary, [data-pitch-scroll], [contenteditable]:not([contenteditable="false"]), [role="button"], [role="textbox"], [role="slider"], [role="combobox"], [role="listbox"], [role="menu"], [role="tablist"], video, audio';
 const titles = [...heroSlides.map((slide) => slide.tab), "Our process", "Product Journey map", "Spark to Launch", "Let’s connect"];
 const lastHero = heroSlides.length - 1;
 
