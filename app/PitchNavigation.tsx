@@ -8,6 +8,7 @@ import type { ReactNode } from "react";
 import RevealEffects from "./RevealEffects";
 import HeroCarousel, { heroSlides } from "./HeroCarousel";
 import SiteHeader from "./SiteHeader";
+import { canScrollWithin, createPitchScrollGate } from "./pitch-scroll";
 
 const INTERACTIVE = 'a, button, input, textarea, select, summary, [data-pitch-scroll], [contenteditable]:not([contenteditable="false"]), [role="button"], [role="textbox"], [role="slider"], [role="combobox"], [role="listbox"], [role="menu"], [role="tablist"], video, audio';
 const titles = [...heroSlides.map((slide) => slide.tab), "Our process", "Product Journey map", "Spark to Launch", "Let’s connect"];
@@ -81,46 +82,104 @@ export default function PitchNavigation({ children }: { children: ReactNode }) {
       else settle();
     };
     const hashChange = () => followHash();
-    const navigate = (event: KeyboardEvent) => {
-      if (event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-      if (document.querySelector('dialog[open], [aria-modal="true"]')) return;
-      if (event.key === "Escape") { setPresenting(false); return; }
-      if (!["Enter", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(event.key)) return;
-      const target = event.target instanceof Element ? event.target : null;
-      // Enter retains native activation on links and buttons; arrows also work in pitch controls.
-      if (target?.closest(INTERACTIVE) && (event.key === "Enter" || !target.closest("[data-pitch-controls]"))) return;
-      event.preventDefault();
-      if (event.repeat) return;
-      setPresenting(true);
-      move(event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 1);
-    };
     // Hashes are only available in the browser; resolve after hydration.
     const initialFrame = requestAnimationFrame(() => {
       if (window.location.hash) followHash(true);
       else sync();
     });
-    window.addEventListener("keydown", navigate);
     window.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("scrollend", settle);
-    window.addEventListener("wheel", reset, { passive: true });
-    window.addEventListener("touchstart", reset, { passive: true });
     window.addEventListener("pointerdown", reset, { passive: true });
     window.addEventListener("resize", settle);
     window.addEventListener("hashchange", hashChange);
     window.addEventListener("popstate", hashChange);
     return () => {
       reset(); cancelAnimationFrame(frame); cancelAnimationFrame(initialFrame);
-      window.removeEventListener("keydown", navigate);
       window.removeEventListener("scroll", sync);
       window.removeEventListener("scrollend", settle);
-      window.removeEventListener("wheel", reset);
-      window.removeEventListener("touchstart", reset);
       window.removeEventListener("pointerdown", reset);
       window.removeEventListener("resize", settle);
       window.removeEventListener("hashchange", hashChange);
       window.removeEventListener("popstate", hashChange);
     };
-  }, [goTo, move]);
+  }, [goTo]);
+
+  useEffect(() => {
+    const resetDestination = () => { destination.current = null; clearTimeout(timer.current); };
+    if (!presenting) {
+      // Normal mode never intercepts wheel, touch, or keyboard scrolling.
+      resetDestination();
+      window.addEventListener("wheel", resetDestination, { passive: true });
+      window.addEventListener("touchstart", resetDestination, { passive: true });
+      return () => {
+        window.removeEventListener("wheel", resetDestination);
+        window.removeEventListener("touchstart", resetDestination);
+      };
+    }
+
+    const scrollDirection = createPitchScrollGate();
+    const blocked = (target: Element | null) => Boolean(
+      document.querySelector('dialog[open], [aria-modal="true"]') ||
+      target?.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')
+    );
+    const wheel = (event: WheelEvent) => {
+      if (event.defaultPrevented || !event.cancelable || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+      if (Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.deltaY === 0) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (blocked(target) || canScrollWithin(target, event.deltaY)) return;
+      event.preventDefault();
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+      const direction = scrollDirection(event.deltaY * unit, performance.now());
+      if (direction) move(direction);
+    };
+    let touch: { x: number; y: number; target: Element | null; navigated: boolean } | null = null;
+    const touchStart = (event: TouchEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      touch = event.touches.length === 1 && !blocked(target)
+        ? { x: event.touches[0].clientX, y: event.touches[0].clientY, target, navigated: false }
+        : null;
+    };
+    const touchMove = (event: TouchEvent) => {
+      if (!touch || event.touches.length !== 1 || event.defaultPrevented || !event.cancelable) return;
+      const point = event.touches[0];
+      const delta = touch.y - point.clientY;
+      const horizontal = touch.x - point.clientX;
+      touch.x = point.clientX;
+      touch.y = point.clientY;
+      if (Math.abs(horizontal) > Math.abs(delta) || delta === 0) return;
+      if (!touch.navigated && canScrollWithin(touch.target, delta)) return;
+      event.preventDefault();
+      if (touch.navigated) return;
+      const direction = scrollDirection(delta, performance.now());
+      if (direction) { touch.navigated = true; move(direction); }
+    };
+    const touchEnd = () => { touch = null; };
+    const navigate = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (document.querySelector('dialog[open], [aria-modal="true"]')) return;
+      if (event.key === "Escape") { setPresenting(false); return; }
+      if (!["Enter", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight", "PageDown", "PageUp", " "].includes(event.key)) return;
+      const target = event.target instanceof Element ? event.target : null;
+      // Keep native controls, the journey game, and scrollable panels usable.
+      if (target?.closest(INTERACTIVE) && (["Enter", " "].includes(event.key) || !target.closest("[data-pitch-controls]"))) return;
+      event.preventDefault();
+      if (!event.repeat) move(["ArrowUp", "ArrowLeft", "PageUp"].includes(event.key) ? -1 : 1);
+    };
+    window.addEventListener("wheel", wheel, { passive: false });
+    window.addEventListener("touchstart", touchStart, { passive: true });
+    window.addEventListener("touchmove", touchMove, { passive: false });
+    window.addEventListener("touchend", touchEnd);
+    window.addEventListener("touchcancel", touchEnd);
+    window.addEventListener("keydown", navigate);
+    return () => {
+      window.removeEventListener("wheel", wheel);
+      window.removeEventListener("touchstart", touchStart);
+      window.removeEventListener("touchmove", touchMove);
+      window.removeEventListener("touchend", touchEnd);
+      window.removeEventListener("touchcancel", touchEnd);
+      window.removeEventListener("keydown", navigate);
+    };
+  }, [presenting, move]);
 
   return (
     <>

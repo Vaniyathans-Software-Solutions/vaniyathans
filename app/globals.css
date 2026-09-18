@@ -1507,7 +1507,8 @@ h1, h2, h3,
 
 /* Desktop pitch layout: one chapter per viewport, with natural overflow for zoom. */
 @media (min-width: 981px) {
-  html:has(#top) { scroll-snap-type: y proximity; }
+  html:has(#top) { scroll-snap-type: none; }
+  html:has(.pitchNavigation[data-presenting="true"]) { scroll-snap-type: y proximity; }
   #top > section, #top > footer {
     min-height: 100svh;
     padding-block: 120px 64px;

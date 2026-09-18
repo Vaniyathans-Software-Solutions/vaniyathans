@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import { journeySteps } from "./journey-game";
 import JourneyAgent from "./JourneyAgent";
+import JourneyReveal from "./JourneyReveal";
 import styles from "./ProductJourney.module.css";
 
 // Artwork cells belong to a stage, regardless of its order.
@@ -22,13 +23,13 @@ const mapDetails: Record<(typeof journeySteps)[number]["title"], {
 
 export default function ProductJourney({ t }: { t: (message: string) => string }) {
   return (
-    <section className={styles.journey} id="journey" data-pitch-section aria-labelledby="journey-title">
+    <JourneyReveal>
       <div className={styles.inner}>
         <header className={styles.header}>
           <Image src="/vaniyathans-icon-logo2026.png" alt="" width={76} height={76} />
           <div className={styles.intro}>
             <p className={styles.eyebrow}>{t("Product Journey map")}</p>
-            <h2 id="journey-title">{t("From idea")} <span>{t("to launch.")}</span></h2>
+            <h2 id="journey-title"><span className={styles.titleLead}>{t("From idea")}</span>{" "}<span className={styles.titleAccent}>{t("to launch.")}</span></h2>
             <p className={styles.subtitle}>{t("Simpler Tools. Bigger Possibilities.")}</p>
           </div>
           <div className={styles.headerActions}>
@@ -54,11 +55,16 @@ export default function ProductJourney({ t }: { t: (message: string) => string }
                 <p className={styles.stepSubtitle}>{t(step.subtitle)}</p>
                 <p className={styles.description}>{t(step.description)}</p>
               </div>
-              {index < journeySteps.length - 1 && <span className={styles.connector} aria-hidden="true">→</span>}
+              {index < journeySteps.length - 1 && <span className={styles.connector} aria-hidden="true">
+                <svg viewBox="0 0 32 20" fill="none" focusable="false">
+                  <path className={styles.connectorLine} d="M3 10H27M21 4L27 10L21 16" pathLength="1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle className={styles.connectorSpark} cx="3" cy="10" r="3" fill="currentColor" />
+                </svg>
+              </span>}
             </li>;
           })}
         </ol>
       </div>
-    </section>
+    </JourneyReveal>
   );
 }

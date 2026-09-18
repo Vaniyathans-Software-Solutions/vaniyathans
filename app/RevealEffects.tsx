@@ -90,6 +90,7 @@ export default function RevealEffects() {
           }
         });
         root.querySelectorAll<HTMLElement>(TARGETS).forEach((element) => {
+          if (element.closest("[data-gsap-reveal]")) return;
           if (reveals.has(element)) return;
           const reveal: Reveal = { animation: null, visible: false };
           reveals.set(element, reveal);
