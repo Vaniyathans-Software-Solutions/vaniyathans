@@ -108,7 +108,7 @@ export const heroSlides: HeroSlide[] = [
     "label": "Rooted in Kerala. Open to the World.",
     "tab": "Kerala",
     "title": [
-      "From Our Naadu.",
+      "From KERALAM.",
       "For Everyone."
     ],
     "description": "From Thiruvananthapuram, we bring Kerala’s spirit of learning and community to software. Like the waterways that connect our land, we want ideas and knowledge to flow openly.",
