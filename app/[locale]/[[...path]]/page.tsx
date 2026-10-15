@@ -24,15 +24,15 @@ async function route(params: Props["params"]) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, page } = await route(params);
   const t = await getTranslator(locale);
-  const label = page === "" ? "Build Your Brand." : page === "signin" ? "Sign in" : page === "workspace" ? "Vaniyathans workspace" : page === "signup/workforce" ? "Create workforce account" : page === "signup/client" ? "Create client account" : "Choose account type";
+  const label = page === "" ? "Open source. Product first. Made in Kerala." : page === "signin" ? "Sign in" : page === "workspace" ? "Vaniyathans workspace" : page === "signup/workforce" ? "Create workforce account" : page === "signup/client" ? "Create client account" : "Choose account type";
   const title = `${t(label)} | Vaniyathans`;
-  const description = t(page === "" ? "Personal websites. Webshops. Custom software. AI agents. One team to help you get discovered, grow your business, and work smarter." : "Each account has its own shareable registration link. Both use the same secure sign-in and collaborate inside Workspace Studio.");
+  const description = t(page === "" ? "Vaniyathans is an open source, product-first software company from Kerala. We build open source software that people can use, study, change, and share." : "Each account has its own shareable registration link. Both use the same secure sign-in and collaborate inside Workspace Studio.");
   const path = `/${page}`;
   return {
     title, description,
     alternates: { canonical: localizePath(path, locale), languages: { ...Object.fromEntries(locales.map(language => [language, localizePath(path, language)])), "x-default": path } },
-    openGraph: { title, description, locale: `${locale}_IN`, url: localizePath(path, locale), images: [] },
-    twitter: { card: "summary", title, description, images: [] },
+    openGraph: { title, description, locale: `${locale}_IN`, url: localizePath(path, locale), images: page === "" ? [{ url: "/og-open-source.png", width: 1731, height: 909, alt: "Vaniyathans: Open Source. Product First. Made in Kerala." }] : [] },
+    twitter: { card: page === "" ? "summary_large_image" : "summary", title, description, images: page === "" ? ["/og-open-source.png"] : [] },
     ...(page === "workspace" ? { robots: { index: false, follow: false } } : {}),
   };
 }

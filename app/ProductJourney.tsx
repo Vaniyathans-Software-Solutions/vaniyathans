@@ -6,6 +6,9 @@ import JourneyReveal from "./JourneyReveal";
 import styles from "./ProductJourney.module.css";
 
 // Artwork cells belong to a stage, regardless of its order.
+// Bounds include each complete scene and exclude neighbouring illustrations.
+const artworkColumns = [[20, 415], [445, 385], [835, 419]] as const;
+const artworkRows = [[70, 380], [475, 350], [835, 380]] as const;
 const mapDetails: Record<(typeof journeySteps)[number]["title"], {
   illustration: number;
   anchor?: string;
@@ -28,29 +31,31 @@ export default function ProductJourney({ t }: { t: (message: string) => string }
         <header className={styles.header}>
           <Image src="/vaniyathans-icon-logo2026.png" alt="" width={76} height={76} />
           <div className={styles.intro}>
-            <p className={styles.eyebrow}>{t("Product Journey map")}</p>
-            <h2 id="journey-title"><span className={styles.titleLead}>{t("From idea")}</span>{" "}<span className={styles.titleAccent}>{t("to launch.")}</span></h2>
-            <p className={styles.subtitle}>{t("Simpler Tools. Bigger Possibilities.")}</p>
+            <p className={styles.eyebrow}>{t("Our open product journey")}</p>
+            <h2 id="journey-title"><span className={styles.titleLead}>{t("From shared ideas")}</span>{" "}<span className={styles.titleAccent}>{t("to open source software.")}</span></h2>
+            <p className={styles.subtitle}>{t("Useful products. Shared knowledge. Open collaboration.")}</p>
           </div>
           <div className={styles.headerActions}>
             <a className={styles.playLink} href="#spark-to-launch">{t("Play Spark to Launch")} <span aria-hidden="true">↗</span></a>
-            <p className={styles.tagline}>{t("Ideas today. A better tomorrow.")}</p>
+            <p className={styles.tagline}>{t("Made in Kerala. Improved together.")}</p>
           </div>
         </header>
         <ol className={styles.steps} aria-label={t("Your product journey")} tabIndex={0} data-pitch-scroll>
           {journeySteps.map((step, index) => {
             const details = mapDetails[step.title];
+            const [artX, artWidth] = artworkColumns[details.illustration % 3];
+            const [artY, artHeight] = artworkRows[Math.floor(details.illustration / 3)];
             return <li className={styles.step} key={step.title} id={details.anchor} style={{
               "--step-color": step.color,
-              "--art-x": `${(details.illustration % 3) * 50}%`,
-              "--art-y": `${Math.floor(details.illustration / 3) * 50}%`,
             } as CSSProperties}>
               <div className={styles.cardHeader}>
                 <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <h3>{t(step.title)}</h3>
                 <div className={styles.agentCorner}><JourneyAgent index={index} /></div>
               </div>
-              <div className={styles.illustration} aria-hidden="true" />
+              <svg className={styles.illustration} viewBox={`${artX} ${artY} ${artWidth} ${artHeight}`} aria-hidden="true" focusable="false">
+                <image href="/journey-open-source.png" width="1254" height="1254" />
+              </svg>
               <div className={styles.copy}>
                 <p className={styles.stepSubtitle}>{t(step.subtitle)}</p>
                 <p className={styles.description}>{t(step.description)}</p>

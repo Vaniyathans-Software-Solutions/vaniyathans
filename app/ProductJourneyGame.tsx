@@ -136,7 +136,7 @@ export default function ProductJourneyGame() {
                 <h3 ref={mission} tabIndex={-1}>{t("From a spark to something real.")}</h3>
                 <p className={styles.missionDescription}>{t("You navigated all nine stages. Now let’s turn your own idea into a product people love.")}</p>
                 <div className={styles.finishScore}>9 / 9 <span>{t("sparks collected")}</span></div>
-                <Link className={styles.primary} href="/signup/client">{t("Build my idea")}<span aria-hidden="true">↗</span></Link>
+                <Link className={styles.primary} href="https://www.software-system.design">{t("Build my idea")}<span aria-hidden="true">↗</span></Link>
                 <button type="button" className={styles.textButton} onClick={() => { dispatch({ type: "reset" }); focusMission(); }}>{t("Play again")} ↺</button>
               </> : <>
                 <div className={styles.missionTop}><p className={styles.missionEyebrow}>{t("CHECKPOINT")} {String(state.active + 1).padStart(2, "0")}<span className={styles.ofNine}>/ 09</span></p><span className={styles.rewardChip}>✦ +1</span></div>

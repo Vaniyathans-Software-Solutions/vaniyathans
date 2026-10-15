@@ -71,7 +71,7 @@ function setup(hash = '', pathname = '/') {
 }
 
 test('each hero anchor opens its matching slide on initial landing, including localized URLs', () => {
-  const anchors = ['vision', 'personal-brand', 'webshops', 'software', 'ai-agents'];
+  const anchors = ['vision', 'products', 'webshops', 'software', 'ai-agents'];
   for (const pathname of ['/', '/ml', '/ta', '/hi']) {
     anchors.forEach((anchor, index) => {
       const app = setup(`#${anchor}`, pathname);
@@ -92,13 +92,24 @@ test('selection creates a shareable link and history navigation restores the req
   assert.equal(app.writes.at(-1).state, app.historyState);
   assert.equal(app.location.pathname, '/ml');
   assert.equal(app.location.search, '?campaign=demo');
-  app.navigate('#personal-brand', 'popstate');
+  app.navigate('#products', 'popstate');
   assert.equal(app.render().activeIndex, 1);
   app.navigate('#ai-agents');
   assert.equal(app.render().activeIndex, 4);
   app.navigate('');
   assert.equal(app.render().activeIndex, 0);
   assert.equal(app.writes.length, 1);
+});
+
+test('Products navigation opens the product and old brand links remain usable', () => {
+  const app = setup();
+  app.header().onSelectSection('expertise');
+  assert.equal(app.render().activeIndex, 1);
+  assert.equal(app.location.hash, '#products');
+  assert.equal(app.slides[1].primary.href, 'https://www.software-system.design');
+  const legacy = setup('#personal-brand', '/ml');
+  assert.equal(legacy.render().activeIndex, 1);
+  assert.equal(legacy.writes.length, 0);
 });
 
 test('autoplay replaces hero history and the last hero still advances to the process', () => {

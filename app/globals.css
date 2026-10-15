@@ -26,6 +26,16 @@
 }
 
 * { box-sizing: border-box; }
+body, body * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* Keep normal text selection and editing available inside form fields. */
+body :is(input, textarea, select, [contenteditable]:not([contenteditable="false"])),
+body [contenteditable]:not([contenteditable="false"]) * {
+  -webkit-user-select: text;
+  user-select: text;
+}
 html { scroll-behavior: smooth; }
 .pitchHint { position: fixed; z-index: 30; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 7px; width: max-content; max-width: calc(100% - 24px); margin: 0; padding: 9px 14px; border: 1px solid #ffffff26; border-radius: 999px; background: #101025ed; color: #d6dded; font-size: 11px; pointer-events: none; }
 .pitchHint kbd { padding: 2px 5px; border: 1px solid #ffffff40; border-radius: 4px; font: inherit; color: #fff; }
@@ -569,7 +579,7 @@ h1, h2, h3,
   width: 100%;
   aspect-ratio: 1;
   margin: 12px 0 24px;
-  background-image: url('/business-journey-brand.png');
+  background-image: url('/journey-open-source.png');
   background-size: 300% 300%;
   background-repeat: no-repeat;
   border-radius: 12px;

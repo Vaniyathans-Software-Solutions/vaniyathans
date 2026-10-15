@@ -9,6 +9,7 @@ import BackgroundDoodles from "./BackgroundDoodles";
 import HeroGridBackground from "./HeroGridBackground";
 import { useEffect, useRef, useState } from "react";
 import type { PointerEvent } from "react";
+import "./hero-kerala.css";
 
 type HeroSlide = {
   anchor: string;
@@ -21,80 +22,114 @@ type HeroSlide = {
   primary: { label: string; href: string };
   secondary?: { label: string; href: string };
   theme: string;
+  artwork: string;
 };
 
 export const heroSlides: HeroSlide[] = [
   {
-    anchor: "vision",
-    index: "00",
-    label: "One partner for your digital growth",
-    tab: "Vision",
-    title: ["Build Your Brand.", "Sell Your Vision.", "Automate Your Future."],
-    description:
-      "Personal websites. Webshops. Custom software. AI agents. One team to help you get discovered, grow your business, and work smarter.",
-    primary: { label: "Start Your Project", href: "/signup/client" },
-    secondary: { label: "How We Work", href: "#method" },
-    theme: "vision",
+    "anchor": "vision",
+    "index": "00",
+    "label": "Open source. Product first. Made in Kerala.",
+    "tab": "Vision",
+    "title": [
+      "Open Source.",
+      "Product First.",
+      "Made in Kerala."
+    ],
+    "description": "Vaniyathans is an open source, product-first software company from Kerala. We build open source software that people can use, study, change, and share.",
+    "primary": {
+      "label": "Explore our products",
+      "href": "#products"
+    },
+    "secondary": {
+      "label": "How we build",
+      "href": "#method"
+    },
+    "theme": "vision",
+    "artwork": "/hero-open-source-vision.png"
   },
   {
-    anchor: "personal-brand",
-    index: "01",
-    label: "Personal Brand Websites",
-    tab: "Brand",
-    title: ["Turn Your Name", "Into a Brand."],
-    description:
-      "A personal website that tells your story, showcases your work, and makes it easy for people to choose you.",
-    supporting: "Your identity. Your story. Your digital presence.",
-    primary: { label: "Build My Personal Brand", href: "/signup/client" },
-    theme: "personal",
+    "anchor": "products",
+    "index": "01",
+    "label": "01 / OUR PRODUCTS",
+    "tab": "Products",
+    "title": [
+      "Software. Systems.",
+      "Design."
+    ],
+    "description": "Our product work starts with www.software-system.design. Explore it, bring your feedback, and help shape what we build next.",
+    "supporting": "www.software-system.design",
+    "primary": {
+      "label": "Visit the product",
+      "href": "https://www.software-system.design"
+    },
+    "theme": "personal",
+    "artwork": "/hero-open-source-product.png"
   },
   {
-    anchor: "webshops",
-    index: "02",
-    label: "Websites & Webshops",
-    tab: "Webshops",
-    title: ["Turn Your Brand", "Into a Business."],
-    description:
-      "A website or online store that showcases your offer and gives customers a clear path from discovery to purchase.",
-    supporting: "Showcase. Sell. Grow.",
-    primary: { label: "Launch My Brand", href: "/signup/client" },
-    theme: "commerce",
+    "anchor": "webshops",
+    "index": "02",
+    "label": "Open Source, by Principle",
+    "tab": "Openness",
+    "title": [
+      "Your Software.",
+      "Your Possibilities."
+    ],
+    "description": "Open source means building with transparency: explore the code, adapt it to your needs, and share improvements. Collaboration guides the products we create.",
+    "supporting": "Use. Study. Change. Share.",
+    "primary": {
+      "label": "Our open approach",
+      "href": "#method"
+    },
+    "theme": "commerce",
+    "artwork": "/hero-open-source-openness.png"
   },
   {
-    anchor: "software",
-    index: "03",
-    label: "Custom Software",
-    tab: "Software",
-    title: ["Software Built Around", "Your Business."],
-    description:
-      "Applications, platforms, and connected workflows built around your team, your customers, and the way your business works.",
-    supporting: "Your process. Your software. Your advantage.",
-    primary: { label: "Build Custom Software", href: "/signup/client" },
-    theme: "software",
+    "anchor": "software",
+    "index": "03",
+    "label": "Product First, Community Always",
+    "tab": "Community",
+    "title": [
+      "Real Problems.",
+      "Shared Progress."
+    ],
+    "description": "We focus on useful products, thoughtful design, and maintainable code. Feedback, documentation, testing, and contributions help software grow beyond its first release.",
+    "supporting": "Good products grow through shared knowledge.",
+    "primary": {
+      "label": "See our product journey",
+      "href": "#journey"
+    },
+    "theme": "software",
+    "artwork": "/hero-open-source-community.png"
   },
   {
-    anchor: "ai-agents",
-    index: "04",
-    label: "AI Agents & Automation",
-    tab: "AI agents",
-    title: ["Put AI to Work", "for Your Business."],
-    description:
-      "AI agents that handle repetitive tasks, support customers, and help your team put business knowledge to work.",
-    supporting: "Automate work. Accelerate decisions. Scale intelligently.",
-    primary: { label: "Build My AI Agent", href: "/signup/client" },
-    theme: "ai",
-  },
-
+    "anchor": "ai-agents",
+    "index": "04",
+    "label": "Rooted in Kerala. Open to the World.",
+    "tab": "Kerala",
+    "title": [
+      "From Our Naadu.",
+      "For Everyone."
+    ],
+    "description": "From Thiruvananthapuram, we bring Kerala’s spirit of learning and community to software. Like the waterways that connect our land, we want ideas and knowledge to flow openly.",
+    "supporting": "Nammude naadu. Shared knowledge. Open source collaboration.",
+    "primary": {
+      "label": "Build with us",
+      "href": "#contact"
+    },
+    "theme": "ai",
+    "artwork": "/hero-open-source-kerala.png"
+  }
 ];
 
 function TabIcon({ theme }: { theme: string }) {
   return (
     <svg className="carouselTabIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      {theme === "vision" && <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></>}
-      {theme === "personal" && <><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></>}
-      {theme === "commerce" && <><path d="M4 8h16l1 13H3L4 8Z" /><path d="M8 9V6a4 4 0 0 1 8 0v3" /></>}
-      {theme === "software" && <><path d="m7 6-6 6 6 6m10-12 6 6-6 6M14 3l-4 18" /></>}
-      {theme === "ai" && <><rect x="4" y="7" width="16" height="14" rx="3" /><path d="M12 3v4M1 12v5m22-5v5M9 17h6" /><circle cx="9" cy="12" r="1" /><circle cx="15" cy="12" r="1" /></>}
+      {theme === "vision" && <><circle cx="6" cy="5" r="2" /><circle cx="18" cy="5" r="2" /><circle cx="12" cy="19" r="2" /><path d="M6 7v3c0 3 6 2 6 7M18 7v3c0 3-6 2-6 7" /></>}
+      {theme === "personal" && <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /><path d="M10 6h7a1 1 0 0 1 1 1v7M6 10v7a1 1 0 0 0 1 1h7" /></>}
+      {theme === "commerce" && <><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16" /></>}
+      {theme === "software" && <><circle cx="9" cy="7" r="3" /><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M21 21v-3a6 6 0 0 0-4-5" /></>}
+      {theme === "ai" && <><path d="M12 21c3-6 4-11 2-16M14 5C9 0 5 3 3 7c4-2 7-3 11-2ZM14 5c5-4 8-1 8 3-3-2-5-3-8-3ZM14 5c-4-1-7 3-6 6 1-3 3-4 6-6ZM2 21c3-2 5 2 8 0s5 2 8 0 3 0 4 0" /></>}
     </svg>
   );
 }
@@ -109,7 +144,7 @@ type HeroCarouselProps = {
 };
 
 export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onSelect, onNext, onPrevious }: HeroCarouselProps) {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const slides = heroSlides;
   const sectionRef = useRef<HTMLElement>(null);
@@ -148,7 +183,7 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
   return (
     <section
       ref={sectionRef}
-      className="hero heroCarousel"
+      className="hero heroCarousel heroKerala"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
@@ -159,7 +194,7 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
       data-pitch-section
       data-theme={slide.theme}
       aria-roledescription="carousel"
-      aria-label={t("Our vision and services")}
+      aria-label={t("Our products and open source principles")}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={() => { pointerStart.current = null; }}
@@ -189,8 +224,13 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
             {slide.supporting && <strong>{t(slide.supporting)}</strong>}
           </div>
           <div className="heroActions">
-            <Link className="primaryButton" href={slide.primary.href}>
-              {slide.theme === "personal" && locale === "en" ? "Build\u00a0My\u00a0Personal Brand" : t(slide.primary.label)} <ArrowIcon direction="down-right" />
+            <Link className="primaryButton" href={slide.primary.href} onClick={(event) => {
+              const target = slides.findIndex((item) => slide.primary.href === `#${item.anchor}`);
+              if (target < 0 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              onSelect(target);
+            }}>
+              {t(slide.primary.label)} <ArrowIcon direction="down-right" />
             </Link>
             {slide.secondary && (
               <a className="secondaryButton" href={slide.secondary.href}>
@@ -206,7 +246,7 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
           <Image
             key={item.theme}
             className={index === activeIndex ? "isActive" : undefined}
-            src={`/hero-${item.theme}.png`}
+            src={item.artwork}
             alt=""
             width={1280}
             height={1280}
@@ -244,7 +284,7 @@ export default function HeroCarousel({ autoPlay, onAutoAdvance, activeIndex, onS
       </div>
 
       <div className="heroRail" aria-hidden="true">
-        <span>{t("PERSONAL BRAND × BUSINESS × SOFTWARE × AI")}</span>
+        <span>{t("KERALA × OPEN SOURCE × PRODUCTS × COMMUNITY")}</span>
         <span>{String(activeIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
       </div>
     </section>

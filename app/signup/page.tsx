@@ -3,16 +3,16 @@ import AccountChoice from "./AccountChoice";
 
 export const metadata: Metadata = {
   title: "Create an account | Vaniyathans",
-  description: "Choose a dedicated Vaniyathans account for starting a software project or joining the global workforce.",
+  description: "Collaborate on open source products or bring your skills to open source software development with Vaniyathans, Kerala.",
   openGraph: {
     title: "Choose your Vaniyathans account",
-    description: "Create a client account or join the Vaniyathans global workforce.",
+    description: "Join Vaniyathans to collaborate on products and build open source software together.",
     images: [],
   },
   twitter: {
     card: "summary",
     title: "Choose your Vaniyathans account",
-    description: "Create a client account or join the Vaniyathans global workforce.",
+    description: "Join Vaniyathans to collaborate on products and build open source software together.",
     images: [],
   },
 };

@@ -24,6 +24,8 @@
   animation: doodleFloat 10s ease-in-out infinite alternate;
 }
 .doodle i, .doodle b { display: block; font-style: normal; font-weight: 400; }
+.keralaPalm { width: clamp(65px, 8vw, 120px); height: auto; top: 12%; right: 5%; rotate: 8deg; animation-delay: -4s; }
+.keralaBackwater { width: clamp(110px, 14vw, 180px); height: auto; bottom: 8%; left: 5%; color: var(--doodle-accent); animation-delay: -7s; }
 .doodleGlyph { position: relative; }
 .doodleGlyph::before, .doodleGlyph::after { content: ""; position: absolute; }
 .doodleGlyph b { position: absolute; }

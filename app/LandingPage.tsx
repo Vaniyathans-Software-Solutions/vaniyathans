@@ -21,8 +21,8 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
               <span>{t("02 / HOW WE WORK")}</span>
               <strong>{t("5D")}</strong>
             </div>
-            <h2 id="lifecycle-title">{t("From idea")}<br /><em>{t("to launch.")}</em></h2>
-            <p>{t("Our 5D process connects your vision to a working product, with clear priorities and visible progress.")}</p>
+            <h2 id="lifecycle-title">{t("Built together,")}<br /><em>{t("shared openly.")}</em></h2>
+            <p>{t("Our 5D process turns shared needs into open source software: discover a real problem, build in the open, and keep improving with the people who use it.")}</p>
           </div>
 
           <ol className="lifecycleFlow">
@@ -32,13 +32,13 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
                 <div className="lifecycleIcon" aria-hidden="true">
                   <svg viewBox="0 0 120 120">
                     <circle className="iconHalo" cx="60" cy="60" r="38" />
-                    <path className="iconFill" d="M60 28 68.5 48.5 89 57 68.5 65.5 60 86 51.5 65.5 31 57 51.5 48.5Z" />
-                    <path d="M60 28 68.5 48.5 89 57 68.5 65.5 60 86 51.5 65.5 31 57 51.5 48.5Z" />
-                    <path d="M91 25v12M85 31h12M28 82v9M23.5 86.5h9" />
+                    <circle className="iconFill" cx="60" cy="43" r="11" />
+                    <circle cx="33" cy="54" r="8" /><circle cx="87" cy="54" r="8" />
+                    <path d="M42 86v-9a18 18 0 0 1 36 0v9M20 86v-6a13 13 0 0 1 17-12M100 86v-6a13 13 0 0 0-17-12" />
                   </svg>
                 </div>
               </div>
-              <div className="lifecycleCopy"><h3>{t("Dream")}</h3><p>{t("Define the problem, your users, and what success looks like.")}</p></div>
+              <div className="lifecycleCopy"><h3>{t("Dream")}</h3><p>{t("Listen to people and find a problem worth solving together.")}</p></div>
             </li>
 
             <li className="lifecycleStep">
@@ -55,7 +55,7 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
                   </svg>
                 </div>
               </div>
-              <div className="lifecycleCopy"><h3>{t("Design")}</h3><p>{t("Shape the experience and agree on a focused plan.")}</p></div>
+              <div className="lifecycleCopy"><h3>{t("Design")}</h3><p>{t("Design accessible experiences and share the thinking behind them.")}</p></div>
             </li>
 
             <li className="lifecycleStep">
@@ -64,12 +64,12 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
                 <div className="lifecycleIcon" aria-hidden="true">
                   <svg viewBox="0 0 120 120">
                     <circle className="iconHalo" cx="60" cy="60" r="38" />
-                    <path d="m43 39-21 21 21 21M77 39l21 21-21 21M69 27 51 93" />
-                    <path d="M52 39h16M48 81h24" />
+                    <circle cx="39" cy="33" r="7" /><circle cx="81" cy="33" r="7" /><circle className="iconFill" cx="60" cy="88" r="8" />
+                    <path d="M39 40v15c0 16 21 8 21 25M81 40v15c0 16-21 8-21 25M51 60l9 9 9-9" />
                   </svg>
                 </div>
               </div>
-              <div className="lifecycleCopy"><h3>{t("Develop")}</h3><p>{t("Build in small increments with regular reviews.")}</p></div>
+              <div className="lifecycleCopy"><h3>{t("Develop")}</h3><p>{t("Build readable code in small steps, with room for others to contribute.")}</p></div>
             </li>
 
             <li className="lifecycleStep">
@@ -79,12 +79,12 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
                   <svg viewBox="0 0 120 120">
                     <circle className="iconFill" cx="53" cy="53" r="31" />
                     <circle cx="53" cy="53" r="31" />
-                    <path d="m76 76 24 24M30 55h13l7-14 9 25 7-11h11" />
+                    <path d="m76 76 24 24M36 54l12 12 23-26" />
                     <path d="M25 31v-8h8M73 23h8v8" />
                   </svg>
                 </div>
               </div>
-              <div className="lifecycleCopy"><h3>{t("Diagnose")}</h3><p>{t("Test the details and resolve issues before launch.")}</p></div>
+              <div className="lifecycleCopy"><h3>{t("Diagnose")}</h3><p>{t("Test real use, welcome bug reports, and improve reliability.")}</p></div>
             </li>
 
             <li className="lifecycleStep">
@@ -93,13 +93,13 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
                 <div className="lifecycleIcon" aria-hidden="true">
                   <svg viewBox="0 0 120 120">
                     <circle className="iconHalo" cx="60" cy="60" r="38" />
-                    <path className="iconFill" d="M60 22 83 49 72 53v27H48V53L37 49Z" />
-                    <path d="M60 92V24M38 49l22-25 22 25M47 78h26" />
-                    <path d="M33 88c8 6 17 9 27 9s19-3 27-9" />
+                    <path className="iconFill" d="m60 29 29 16v35L60 96 31 80V45Z" />
+                    <path d="m31 45 29 16 29-16M60 61v35M46 37l29 16v16" />
+                    <path d="M85 24v18M76 33l9-9 9 9" />
                   </svg>
                 </div>
               </div>
-              <div className="lifecycleCopy"><h3>{t("Deploy")}</h3><p>{t("Launch, learn from real use, and keep improving.")}</p></div>
+              <div className="lifecycleCopy"><h3>{t("Deploy")}</h3><p>{t("Release useful software, document it, and grow with community feedback.")}</p></div>
             </li>
           </ol>
         </section>
@@ -112,20 +112,20 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
         <section className="contact" id="contact" data-pitch-section aria-labelledby="contact-title">
           <BackgroundDoodles variant="contact" />
           <div className="contactTop">
-            <span>{t("04 / LET’S BUILD TOGETHER")}</span>
+            <span>{t("04 / GROW THE COMMONS")}</span>
             <span>{t("THIRUVANANTHAPURAM · KERALA")}</span>
           </div>
           <div className="contactMain">
             <div>
-              <p>{t("Your idea. Our next conversation.")}</p>
-              <h2 id="contact-title">{t("What would you")}<br />{t("like to build?")}</h2>
-              <p className="contactSummary">{t("Share your idea, your priorities, and where you want to go.")}</p>
-              <Link className="primaryButton contactProject" href="/signup/client">{t("Start a project")} <ArrowIcon direction="up-right" /></Link>
+              <p>{t("A little curiosity. A shared beginning.")}</p>
+              <h2 id="contact-title">{t("What can we")}<br />{t("make open?")}</h2>
+              <p className="contactSummary">{t("Found a bug, have an idea, or want to help build open source software? Say hello from Kerala or anywhere in the world. Code, design, documentation, and thoughtful feedback all belong here.")}</p>
+              <Link className="primaryButton contactProject" href="/signup">{t("Join the community")} <ArrowIcon direction="up-right" /></Link>
             </div>
             <div className="contactActions">
               <a
                 className="contactButton"
-                href="https://wa.me/919074577932?text=Hello%20Vaniyathans%20Software%20Solutions%2C%20I%27d%20like%20to%20discuss%20a%20project."
+                href="https://wa.me/919074577932?text=Hello%20Vaniyathans%2C%20I%27d%20like%20to%20talk%20about%20your%20open%20source%20products."
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("Message Vaniyathans Software Solutions on WhatsApp")}
@@ -146,7 +146,7 @@ export default async function LandingPage({ locale = "en" }: { locale?: Locale }
           </div>
           <footer className="contactFooter">
             <span>{t("© 2026 Vaniyathans Software Solutions Pvt. Ltd.")}</span>
-            <nav aria-label={t("More ways to connect")}><Link href="/signup/workforce">{t("Join our workforce")} <ArrowIcon direction="up-right" /></Link><Link href="/signin">{t("Sign in")} <ArrowIcon direction="up-right" /></Link></nav>
+            <nav aria-label={t("More ways to connect")}><Link href="/signup/workforce">{t("Build with the community")} <ArrowIcon direction="up-right" /></Link><Link href="/signin">{t("Sign in")} <ArrowIcon direction="up-right" /></Link></nav>
           </footer>
         </section>
       </PitchNavigation>

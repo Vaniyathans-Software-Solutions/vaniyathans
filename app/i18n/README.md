@@ -85,3 +85,12 @@ Sources: [Audiowide metadata](https://github.com/google/fonts/blob/main/ofl/audi
 [Noto fonts](https://fonts.google.com/noto),
 [Noto Naskh Arabic language coverage](https://github.com/google/fonts/blob/main/ofl/notonaskharabic/METADATA.pb),
 [IndicTrans2 supported languages](https://github.com/AI4Bharat/IndicTrans2#indictrans2).
+
+## Open source rebrand
+
+The public company copy presents Vaniyathans as an open source, product-first
+company from Kerala. English and Malayalam include the new marketing copy.
+New copy uses English fallback in the other dictionaries pending translation;
+existing interface translations remain in place. Some stable message keys keep
+their earlier wording while their displayed values reflect the new positioning.
+Product names and URLs remain unchanged across locales.

@@ -3,16 +3,16 @@ import SignupFlow from "../SignupFlow";
 
 export const metadata: Metadata = {
   title: "Workforce signup | Vaniyathans",
-  description: "Create a Vaniyathans workforce account and join a global 24/7 software delivery team.",
+  description: "Bring your skills to open source product development with Vaniyathans, rooted in Kerala and open to the world.",
   openGraph: {
-    title: "Join the Vaniyathans global workforce",
-    description: "Register your skills, delivery role, timezone, and availability.",
+    title: "Build open source products with Vaniyathans",
+    description: "Share your skills, interests, timezone, and availability for product collaboration.",
     images: [],
   },
   twitter: {
     card: "summary",
-    title: "Join the Vaniyathans global workforce",
-    description: "Register your skills, delivery role, timezone, and availability.",
+    title: "Build open source products with Vaniyathans",
+    description: "Share your skills, interests, timezone, and availability for product collaboration.",
     images: [],
   },
 };

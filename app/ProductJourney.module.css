@@ -32,7 +32,7 @@
 .cardHeader { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
 .agentCorner { display: flex; justify-content: flex-end; flex-shrink: 0; }
 .step:has([data-agent-status="active"]) { border-color: var(--step-color); box-shadow: 0 6px 0 color-mix(in srgb, var(--step-color) 25%, white), 0 0 0 3px color-mix(in srgb, var(--step-color) 10%, transparent); }
-.illustration { width: 100%; aspect-ratio: 1; max-width: 140px; background: url('/business-journey-brand.png') var(--art-x) var(--art-y) / 300% 300%; }
+.illustration { width: 100%; aspect-ratio: 1; max-width: 140px; }
 .copy { min-width: 0; overflow-wrap: anywhere; }
 .journey .cardHeader h3 { min-width: 0; margin: 0; font: 800 clamp(19px, 1.7vw, 26px)/1.15 var(--journey-font); letter-spacing: -.03em; text-transform: none; overflow-wrap: anywhere; }
 .stepSubtitle { margin: 0 0 5px; color: color-mix(in srgb, var(--step-color) 65%, #192345); font-size: 15px; font-weight: 700; line-height: 1.35; }

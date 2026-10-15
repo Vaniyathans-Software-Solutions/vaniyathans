@@ -78,6 +78,7 @@ export default function PitchNavigation({ children }: { children: ReactNode }) {
       const hash = window.location.hash;
       const heroIndex = heroSlides.findIndex((slide) => hash === `#${slide.anchor}`);
       if (heroIndex !== -1) goTo(heroIndex, false, instant);
+      else if (hash === "#personal-brand") goTo(1, false, instant);
       else if (hash === "#top" || hash === "#expertise" || !hash) goTo(0, false, instant);
       else settle();
     };
@@ -185,7 +186,7 @@ export default function PitchNavigation({ children }: { children: ReactNode }) {
     <>
       <SiteHeader
         activeSection={active <= lastHero ? "expertise" : active === lastHero + 1 ? "method" : active === lastHero + 2 ? "journey" : null}
-        onSelectSection={(section) => goTo(section === "expertise" ? 0 : section === "method" ? lastHero + 1 : lastHero + 2)}
+        onSelectSection={(section) => goTo(section === "expertise" ? 1 : section === "method" ? lastHero + 1 : lastHero + 2)}
       />
       <RevealEffects />
       <HeroCarousel autoPlay={!presenting && active <= lastHero} onAutoAdvance={advanceHero} activeIndex={Math.min(active, lastHero)} onSelect={goTo} onNext={() => move(1)} onPrevious={() => move(-1)} />

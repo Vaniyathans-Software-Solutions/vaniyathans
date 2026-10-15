@@ -3,16 +3,16 @@ import SignupFlow from "../SignupFlow";
 
 export const metadata: Metadata = {
   title: "Client signup | Vaniyathans",
-  description: "Create a Vaniyathans client account and turn your software idea into a structured delivery workspace.",
+  description: "Bring a product idea or shared problem to Vaniyathans, an open source software company from Kerala.",
   openGraph: {
-    title: "Start your software project with Vaniyathans",
-    description: "Create a client account, share your first Epic, and enter Workspace Studio.",
+    title: "Collaborate on a product with Vaniyathans",
+    description: "Create a collaboration account and shape a useful product in Workspace Studio.",
     images: [],
   },
   twitter: {
     card: "summary",
-    title: "Start your software project with Vaniyathans",
-    description: "Create a client account, share your first Epic, and enter Workspace Studio.",
+    title: "Collaborate on a product with Vaniyathans",
+    description: "Create a collaboration account and shape a useful product in Workspace Studio.",
     images: [],
   },
 };

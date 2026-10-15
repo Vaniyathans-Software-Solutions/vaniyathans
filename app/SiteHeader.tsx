@@ -41,18 +41,18 @@ export default function SiteHeader({ activeSection, onSelectSection }: SiteHeade
 
         <nav className="mainNav" aria-label={t("Main navigation")}>
           <LanguageSwitcher />
-          {sectionLink("expertise", "Services")}
-          {sectionLink("method", "Our process")}
-          {sectionLink("journey", "User journey")}
+          {sectionLink("expertise", "Products")}
+          {sectionLink("method", "Build openly")}
+          {sectionLink("journey", "Product journey")}
           <Link className="signInLink" href="/signin">{t("Sign in")}</Link>
-          <Link className="navCta" href="/signup/client">{t("Sign up")} <ArrowIcon direction="up-right" /></Link>
+          <Link className="navCta" href="/signup">{t("Join us")} <ArrowIcon direction="up-right" /></Link>
           <details className="mobileMenu">
             <summary aria-label={t("Open navigation menu")}>☰</summary>
             <nav aria-label={t("Mobile navigation")}>
               <LanguageSwitcher />
-              {sectionLink("expertise", "Services")}
-              {sectionLink("method", "Our process")}
-              {sectionLink("journey", "User journey")}
+              {sectionLink("expertise", "Products")}
+              {sectionLink("method", "Build openly")}
+              {sectionLink("journey", "Product journey")}
               <Link href="/signin">{t("Sign in")}</Link>
             </nav>
           </details>

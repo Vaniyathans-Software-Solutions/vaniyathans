@@ -1,0 +1,11 @@
+/* The landing hero background stays behind the existing carousel components. */
+.pitchLanding#top > .heroCarousel.heroKerala {
+  background-image:
+    linear-gradient(90deg, rgb(3 9 27 / 92%), rgb(3 9 27 / 55%) 45%, rgb(3 9 27 / 12%)),
+    url('/hero-kerala-backdrop.png');
+  background-position: center right;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+/* Preserve the existing artwork space; the opening artwork is now behind it. */
+.heroCarousel.heroKerala[data-theme="vision"] > .heroOutcomeArt { visibility: hidden; }
